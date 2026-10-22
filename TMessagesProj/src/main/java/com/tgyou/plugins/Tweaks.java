@@ -74,8 +74,8 @@ final class Tweaks {
                     }
                     return false;
                 }),
-                new Tweak("keep_draft", "Не стирать черновик после отправки",
-                        "Текст остаётся в поле ввода после отправки сообщения.",
+                new Tweak("keep_draft", "Не удалять черновик на сервере",
+                        "Облачный черновик чата не стирается при отправке. Поле ввода всё равно очищается.",
                         Section.MESSAGES, false, r -> {
                     if (r instanceof TLRPC.TL_messages_sendMessage) {
                         ((TLRPC.TL_messages_sendMessage) r).clear_draft = false;

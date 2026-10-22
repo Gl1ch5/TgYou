@@ -20,6 +20,7 @@ public final class TgYouFonts {
 
     private static synchronized void load() {
         if (loaded) return;
+        if (ApplicationLoader.applicationContext == null) return;
         loaded = true;
         try {
             android.content.SharedPreferences p = ApplicationLoader.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
