@@ -113,6 +113,7 @@ public class TgYouSettingsActivity extends BaseFragment {
         addWide(context, R.drawable.settings_devices, IconBackgroundColors.PURPLE, "Шпион", "удалённые, правки, прочтения, вложения", animate ? index++ : -1, () -> presentFragment(new SpyScreen()));
         addWide(context, R.drawable.settings_data, IconBackgroundColors.ORANGE, "Основные", "скорость, профиль, архив, хранилище", animate ? index++ : -1, () -> presentFragment(new BasicScreen()));
         addWide(context, R.drawable.settings_chat, IconBackgroundColors.CYAN, "Чаты", "текст, стикеры, поле ввода", animate ? index++ : -1, () -> presentFragment(new ChatsScreen()));
+        addWide(context, R.drawable.settings_features, IconBackgroundColors.RED, "Кастомизация", "удалёнки, Pill Stack, полезные функции", animate ? index++ : -1, () -> presentFragment(new CustomizationScreen()));
         group(context, "Функции по разделам");
 
         LinearLayout rowLayout = null;
