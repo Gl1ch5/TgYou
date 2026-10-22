@@ -58,6 +58,8 @@ def parse_package(data: bytes, max_unpacked: int, max_files: int) -> Manifest:
         raw = json.loads(archive.read("manifest.json").decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError):
         raise PackageError("manifest.json is not valid JSON")
+    except (zipfile.BadZipFile, NotImplementedError, RuntimeError, OSError):
+        raise PackageError("archive cannot be read")
     if not isinstance(raw, dict):
         raise PackageError("manifest.json must be an object")
 

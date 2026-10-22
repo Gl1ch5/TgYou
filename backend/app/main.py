@@ -25,7 +25,7 @@ def create_app(settings: Optional[Settings] = None) -> FastAPI:
         return authorization[7:].strip()
 
     def require_admin(authorization: Optional[str] = Header(None)) -> None:
-        if not hmac.compare_digest(bearer(authorization), cfg.admin_token):
+        if not hmac.compare_digest(bearer(authorization).encode(), cfg.admin_token.encode()):
             raise HTTPException(403, "admin token required")
 
     def require_developer(authorization: Optional[str] = Header(None)) :

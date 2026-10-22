@@ -63,10 +63,18 @@ public final class ModStore {
                 throw new IllegalArgumentException("нет файла " + manifest.entry);
             }
             File target = dirOf(manifest.id);
-            deleteRecursively(target);
+            File backup = new File(root, ".old-" + System.nanoTime());
+            boolean hadOld = target.exists() && target.renameTo(backup);
+            if (!hadOld) {
+                deleteRecursively(target);
+            }
             if (!staging.renameTo(target)) {
+                if (hadOld) {
+                    backup.renameTo(target);
+                }
                 throw new IllegalStateException("не удалось сохранить мод");
             }
+            deleteRecursively(backup);
             return manifest;
         } finally {
             deleteRecursively(staging);

@@ -189,10 +189,22 @@ public final class IconPacks {
             return null;
         }
         try {
-            return new FileInputStream(new File(dir, file));
+            File f = inside(dir, file);
+            return f == null ? null : new FileInputStream(f);
         } catch (Throwable t) {
             return null;
         }
+    }
+
+    /** The file named by a pack's metadata, or null if it would escape the pack directory. */
+    private static File inside(File dir, String file) throws java.io.IOException {
+        File f = new File(dir, file).getCanonicalFile();
+        String base = dir.getCanonicalPath() + File.separator;
+        return f.getPath().startsWith(base) ? f : null;
+    }
+
+    private static boolean validId(String id) {
+        return id != null && id.matches("[A-Za-z0-9][A-Za-z0-9._-]*") && !id.contains("..");
     }
 
     public static List<Pack> list(Context context) {
@@ -225,6 +237,9 @@ public final class IconPacks {
     }
 
     public static synchronized void remove(Context context, String id) {
+        if (!validId(id)) {
+            return;
+        }
         if (id.equals(active(context))) {
             activate(context, "");
         }
@@ -267,7 +282,11 @@ public final class IconPacks {
         Bitmap bitmap = bitmaps.get(key);
         if (bitmap == null) {
             try {
-                bitmap = render(new File(dir, file), w, h);
+                File safe = inside(dir, file);
+                if (safe == null) {
+                    throw new SecurityException("path escapes the pack");
+                }
+                bitmap = render(safe, w, h);
             } catch (Throwable t) {
                 FileLog.e("tgyou: icon " + name + " failed", t);
                 activeMap.remove(name);
