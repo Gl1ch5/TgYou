@@ -130,7 +130,7 @@ public class IconPacksActivity extends BaseFragment {
         card.addView(mark, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.START, 0, 72, 0, 0));
         card.setOnClickListener(v -> {
             IconPacks.activate(context, "");
-            toast("Стандартные иконки вернутся после перезапуска приложения");
+            toast("Стандартные иконки включены");
             build(context);
         });
         return card;
@@ -164,7 +164,7 @@ public class IconPacksActivity extends BaseFragment {
         b.setView(box);
         b.setPositiveButton(selected ? "Выключить" : "Применить", (d, w) -> {
             IconPacks.activate(context, selected ? "" : pack.id);
-            toast(selected ? "Стандартные иконки вернутся после перезапуска" : "Иконки применены. Перезапустите приложение для полного эффекта");
+            toast(selected ? "Стандартные иконки включены" : "Иконки применены");
             build(context);
         });
         b.setNeutralButton("Удалить", (d, w) -> {

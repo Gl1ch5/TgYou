@@ -5,6 +5,8 @@
 | [ARCHITECTURE.md](ARCHITECTURE.md) | как устроен клиент: ядро плагинов, точки врезки в код Telegram, потоки данных |
 | [PLUGIN_API.md](PLUGIN_API.md) | как написать плагин: интерфейс, настройки, каталог хуков |
 | [BUILTIN_PLUGINS.md](BUILTIN_PLUGINS.md) | каждый встроенный плагин: что делает, настройки, как работает, ограничения |
+| [APPEARANCE.md](APPEARANCE.md) | внешний вид: прозрачность, скругление, быстрая перезагрузка |
+| [MODS.md](MODS.md), [ICON_PACKS.md](ICON_PACKS.md), [EXTERA_COMPAT.md](EXTERA_COMPAT.md) | моды (.mod), наборы иконок, совместимость с exteraGram |
 | [UPDATER.md](UPDATER.md) | обновление из релизов GitHub внутри приложения |
 | [MARKETPLACE.md](MARKETPLACE.md) | маркетплейс плагинов: сервер, формат пакета, API |
 | [../AGENTS.md](../AGENTS.md) | руководство для разработчика и агента: CI, сборка, сервер, подводные камни |

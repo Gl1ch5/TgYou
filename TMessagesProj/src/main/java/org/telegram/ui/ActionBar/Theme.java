@@ -8993,6 +8993,10 @@ public class Theme {
     }
 
     public static int getColor(int key, boolean[] isDefault, boolean ignoreAnimation) {
+        return com.tgyou.core.TgYouAppearance.color(key, getColorBase(key, isDefault, ignoreAnimation));
+    }
+
+    private static int getColorBase(int key, boolean[] isDefault, boolean ignoreAnimation) {
         if (!ignoreAnimation && animatingColors != null) {
             int index = animatingColors.indexOfKey(key);
             if (index >= 0) {

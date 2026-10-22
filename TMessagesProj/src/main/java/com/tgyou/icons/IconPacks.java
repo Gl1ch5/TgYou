@@ -184,6 +184,7 @@ public final class IconPacks {
         ensureLoaded(context);
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putString(KEY_ACTIVE, id == null ? "" : id).apply();
         applyActive(context, id);
+        com.tgyou.core.TgYouAppearance.reloadUi();
     }
 
     public static synchronized void remove(Context context, String id) {

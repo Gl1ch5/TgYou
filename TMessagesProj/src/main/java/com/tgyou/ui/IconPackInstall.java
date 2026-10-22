@@ -102,7 +102,7 @@ public final class IconPackInstall {
                     IconPacks.activate(context, pack.id);
                 }
                 AndroidUtilities.runOnUIThread(() -> {
-                    Toast.makeText(context, apply ? "Иконки применены. Перезапустите приложение для полного эффекта" : "Иконпак установлен", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, apply ? "Иконки применены" : "Иконпак установлен", Toast.LENGTH_LONG).show();
                     if (done != null) {
                         done.run();
                     }

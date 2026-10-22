@@ -107,6 +107,7 @@ public class TgYouSettingsActivity extends BaseFragment {
         }
         int index = 0;
         addBanners(context);
+        group(context, "Функции");
 
         LinearLayout rowLayout = null;
         int inRow = 0;
@@ -140,14 +141,29 @@ public class TgYouSettingsActivity extends BaseFragment {
             rowLayout.addView(new View(context), LayoutHelper.createLinear(0, 1, 1f, 5, 0, 0, 0));
         }
 
+        group(context, "Оформление");
+        addWide(context, R.drawable.settings_folders, IconBackgroundColors.CYAN, "Внешний вид", "прозрачность, скругление, размер текста", animate ? index++ : -1, () -> presentFragment(new AppearanceActivity()));
+        addWide(context, R.drawable.settings_folders, IconBackgroundColors.PURPLE, "Иконки", "наборы .icons с предпросмотром", animate ? index++ : -1, () -> presentFragment(new IconPacksActivity()));
+        addWide(context, R.drawable.settings_gift, IconBackgroundColors.RED, "Иконка приложения", "TgYou, Telegram и другие", animate ? index++ : -1, () -> presentFragment(new TgYouIconsActivity()));
+
+        group(context, "Расширения");
         addWide(context, R.drawable.settings_features, IconBackgroundColors.ORANGE_DEEP, "Моды", "маркетплейс, установленные, создать мод", animate ? index++ : -1, () -> presentFragment(new ModsActivity()));
         for (com.tgyou.mods.ModPages.Page page : com.tgyou.mods.ModPages.all()) {
             addWide(context, R.drawable.settings_calls, IconBackgroundColors.GREEN, page.title, "страница мода", animate ? index++ : -1, () -> presentFragment(new ModPageActivity(page)));
         }
+
+        group(context, "Приложение");
         addWide(context, R.drawable.settings_ask, IconBackgroundColors.BLUE, "Обновления", "новые версии из релизов GitHub", animate ? index++ : -1, () -> presentFragment(new TgYouUpdateActivity()));
-        addWide(context, R.drawable.settings_folders, IconBackgroundColors.PURPLE, "Иконки", "наборы .icons с предпросмотром", animate ? index++ : -1, () -> presentFragment(new IconPacksActivity()));
-        addWide(context, R.drawable.settings_gift, IconBackgroundColors.RED, "Иконка приложения", "TgYou, Telegram и другие", animate ? index++ : -1, () -> presentFragment(new TgYouIconsActivity()));
         addWide(context, R.drawable.settings_faq, IconBackgroundColors.GRAY, "Все функции", host.plugins().size() + " плагинов и модов", animate ? index++ : -1, () -> presentFragment(new TgYouSectionActivity((Section) null)));
+    }
+
+    private void group(Context context, String title) {
+        TextView t = new TextView(context);
+        t.setText(title.toUpperCase());
+        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        t.setTypeface(AndroidUtilities.bold());
+        t.setTextColor(org.telegram.ui.ActionBar.Theme.getColor(org.telegram.ui.ActionBar.Theme.key_windowBackgroundWhiteBlueHeader));
+        content.addView(t, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 6, 10, 6, 8));
     }
 
     private static final String[][] BANNERS = {
