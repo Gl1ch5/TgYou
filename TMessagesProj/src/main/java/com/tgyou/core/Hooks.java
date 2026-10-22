@@ -27,6 +27,10 @@ public final class Hooks {
      */
     /** Before a message leaves: plugins may edit the params in place; true cancels the send. */
     public static final HookPoint<org.telegram.messenger.SendMessagesHelper.SendMessageParams, Boolean> SEND_MESSAGE = new HookPoint<>("message.send");
+    /** Input: {account, request, error}. Value: the response; handlers may return a replacement. */
+    public static final HookPoint<Object[], TLObject> RESPONSE = new HookPoint<>("request.response");
+    /** Incoming updates container; true drops it. */
+    public static final HookPoint<org.telegram.tgnet.TLRPC.Updates, Boolean> UPDATES = new HookPoint<>("updates.incoming");
     public static final HookPoint<TLObject, Boolean> OUTGOING_REQUEST = new HookPoint<>("request.outgoing");
 
     /** Input: unused. Value: whether the window must be hidden from screenshots and screen capture. */

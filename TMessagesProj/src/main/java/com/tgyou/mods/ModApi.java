@@ -57,6 +57,19 @@ public final class ModApi {
                     return blocked || truthy(r);
                 });
                 break;
+            case "request.response":
+                context.on(Hooks.RESPONSE, (in, response) -> {
+                    PyObject r = fn.call(in[0], in[1], response, in[2]);
+                    if (r == null || isNone(r)) {
+                        return response;
+                    }
+                    org.telegram.tgnet.TLObject replaced = r.toJava(org.telegram.tgnet.TLObject.class);
+                    return replaced == null ? response : replaced;
+                });
+                break;
+            case "updates.incoming":
+                context.on(Hooks.UPDATES, (updates, dropped) -> dropped || truthy(fn.call(updates)));
+                break;
             case "message.send":
                 context.on(Hooks.SEND_MESSAGE, (params, cancelled) -> {
                     PyObject r = fn.call(org.telegram.messenger.UserConfig.selectedAccount, params);

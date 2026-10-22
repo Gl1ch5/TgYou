@@ -115,3 +115,166 @@ def run_async(fn, delay=0):
         t = threading.Thread(target=body)
     t.daemon = True
     t.start()
+
+
+# --- TL request / response / update hooks ---------------------------------------
+
+def _short(java_obj):
+    name = java_obj.getClass().getSimpleName()
+    return name
+
+
+def _norm(n):
+    return n[3:] if n.startswith("TL_") else n
+
+
+def _match(plugin, name):
+    for hook, sub in plugin._hooks:
+        if hook == name or _norm(hook) == _norm(name) or (sub and hook in name):
+            return True
+    return False
+
+
+def _is_cancel(result):
+    from base_plugin import HookStrategy
+    return result is not None and getattr(result, "strategy", None) == HookStrategy.CANCEL
+
+
+def _account():
+    from java import jclass
+    return jclass("org.telegram.messenger.UserConfig").selectedAccount
+
+
+def install_tl_hooks(plugin):
+    api = plugin._api
+    if plugin._tl_installed or api is None:
+        return
+    plugin._tl_installed = True
+
+    def pre(name, request):
+        handler = getattr(plugin, "pre_request_hook", None)
+        if handler is None or not _match(plugin, name):
+            return False
+        try:
+            result = handler(name, _account(), request)
+        except Exception as e:
+            log(plugin, "pre_request_hook: " + repr(e))
+            return False
+        if _is_cancel(result):
+            return True
+        new = getattr(result, "request", None) if result is not None else None
+        if new is not None and new is not request:
+            _copy_fields(new, request)
+        return False
+
+    def post(account, request, response, error):
+        handler = getattr(plugin, "post_request_hook", None)
+        name = _short(request)
+        if handler is None or not _match(plugin, name):
+            return None
+        try:
+            result = handler(name, account, response, error)
+        except Exception as e:
+            log(plugin, "post_request_hook: " + repr(e))
+            return None
+        new = getattr(result, "response", None) if result is not None else None
+        return new if new is not None and new is not response else None
+
+    def updates(container):
+        dropped = False
+        h_all = getattr(plugin, "on_updates_hook", None)
+        h_one = getattr(plugin, "on_update_hook", None)
+        account = _account()
+        cname = _short(container)
+        if h_all is not None and _match(plugin, cname):
+            try:
+                if _is_cancel(h_all(cname, account, container)):
+                    return True
+            except Exception as e:
+                log(plugin, "on_updates_hook: " + repr(e))
+        if h_one is None:
+            return False
+        singles = []
+        try:
+            lst = container.updates
+            for i in range(lst.size()):
+                singles.append(lst.get(i))
+        except Exception:
+            pass
+        try:
+            if container.update is not None:
+                singles.append(container.update)
+        except Exception:
+            pass
+        for upd in singles:
+            uname = _short(upd)
+            if not _match(plugin, uname):
+                continue
+            try:
+                result = h_one(uname, account, upd)
+            except Exception as e:
+                log(plugin, "on_update_hook: " + repr(e))
+                continue
+            if _is_cancel(result):
+                try:
+                    container.updates.remove(upd)
+                except Exception:
+                    dropped = dropped or False
+        return dropped
+
+    api.hook("request.outgoing", pre)
+    api.hook("request.response", post)
+    api.hook("updates.incoming", updates)
+
+
+def _copy_fields(src, dst):
+    """A plugin returned a different request object: copy its public fields onto the original."""
+    try:
+        for f in src.getClass().getFields():
+            if not f.getModifiers() & 8:
+                f.set(dst, f.get(src))
+    except Exception as e:
+        if current_api is not None:
+            current_api.log("request copy: " + repr(e))
+
+
+# --- menu items -------------------------------------------------------------------
+
+def install_menu(plugin):
+    api = plugin._api
+    if plugin._menu_installed or api is None:
+        return
+    plugin._menu_installed = True
+
+    def message_menu(menu):
+        for item in sorted(plugin._menu_items, key=lambda i: -(getattr(i, "priority", 0) or 0)):
+            if getattr(item, "menu_type", None) != "MESSAGE_CONTEXT_MENU":
+                continue
+            ctx = {
+                "account": _account(),
+                "message": menu.message,
+                "messageObject": menu.message,
+                "fragment": menu.fragment,
+                "dialog_id": menu.message.getDialogId(),
+                "dialogId": menu.message.getDialogId(),
+            }
+            try:
+                cond = getattr(item, "condition", None)
+                if cond is not None and not cond(ctx):
+                    continue
+            except Exception as e:
+                log(plugin, "menu condition: " + repr(e))
+                continue
+
+            def action(item=item, ctx=ctx):
+                try:
+                    if item.on_click is not None:
+                        item.on_click(ctx)
+                except Exception as e:
+                    log(plugin, "menu click: " + repr(e))
+
+            from client_utils import runnable
+            icon = item.icon if isinstance(item.icon, int) else 0
+            menu.add(str(item.text), icon, runnable(action))
+
+    api.hook("message.menu", message_menu)

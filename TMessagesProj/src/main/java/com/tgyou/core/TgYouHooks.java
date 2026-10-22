@@ -66,6 +66,21 @@ public final class TgYouHooks {
         return true;
     }
 
+    /** @return the response to hand to the caller: the original unless a plugin replaced it */
+    public static TLObject interceptResponse(int account, TLObject request, TLObject response, TLRPC.TL_error error) {
+        PluginHost host = PluginHost.get();
+        if (host == null) {
+            return response;
+        }
+        return host.dispatch(Hooks.RESPONSE, new Object[]{account, request, error}, response);
+    }
+
+    /** @return true when a plugin dropped the incoming updates */
+    public static boolean interceptUpdates(TLRPC.Updates updates) {
+        PluginHost host = PluginHost.get();
+        return host != null && updates != null && host.dispatch(Hooks.UPDATES, updates, false);
+    }
+
     /** @return true when a plugin cancelled the outgoing message */
     public static boolean beforeSend(org.telegram.messenger.SendMessagesHelper.SendMessageParams params) {
         PluginHost host = PluginHost.get();

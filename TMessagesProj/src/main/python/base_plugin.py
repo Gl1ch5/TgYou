@@ -21,8 +21,25 @@ class HookResult:
         self.__dict__.update(kw)
 
 
+class MenuItemType:
+    MESSAGE_CONTEXT_MENU = "MESSAGE_CONTEXT_MENU"
+    DRAWER_MENU = "DRAWER_MENU"
+    CHAT_ACTION_MENU = "CHAT_ACTION_MENU"
+    PROFILE_ACTION_MENU = "PROFILE_ACTION_MENU"
+    CHAT_MENU = "CHAT_ACTION_MENU"
+    PROFILE_MENU = "PROFILE_ACTION_MENU"
+
+
 class MenuItemData:
-    def __init__(self, *args, **kw):
+    def __init__(self, menu_type=None, text="", on_click=None, item_id=None, icon=None, subtext=None, condition=None, priority=0, **kw):
+        self.menu_type = menu_type
+        self.text = text
+        self.on_click = on_click
+        self.item_id = item_id
+        self.icon = icon
+        self.subtext = subtext
+        self.condition = condition
+        self.priority = priority
         self.__dict__.update(kw)
 
 
@@ -49,6 +66,10 @@ class BasePlugin:
         self._api = None
         self._schema = {}
         self._send_hooked = False
+        self._hooks = []
+        self._tl_installed = False
+        self._menu_items = []
+        self._menu_installed = False
 
     # --- settings -------------------------------------------------------
     def get_setting(self, key, default=None):
@@ -66,6 +87,21 @@ class BasePlugin:
 
     def remove_on_send_message_hook(self):
         pass
+
+    def add_hook(self, name, match_substring=False, priority=0):
+        """Subscribes to a TL request/response/update by class name (e.g. TL_messages_sendMessage)."""
+        self._hooks.append((str(name), bool(match_substring)))
+        rt.install_tl_hooks(self)
+
+    def remove_hook(self, name):
+        self._hooks = [h for h in self._hooks if h[0] != str(name)]
+
+    def add_menu_item(self, item):
+        self._menu_items.append(item)
+        rt.install_menu(self)
+
+    def remove_menu_item(self, item_id):
+        self._menu_items = [i for i in self._menu_items if getattr(i, "item_id", None) != item_id]
 
     def log(self, message):
         rt.log(self, message)

@@ -24,6 +24,13 @@ def run_on_ui_thread(fn, delay=0):
         jclass("org.telegram.messenger.AndroidUtilities").runOnUIThread(R())
 
 
+def runnable(fn):
+    class R(dynamic_proxy(_Runnable)):
+        def run(self):
+            fn()
+    return R()
+
+
 def _account():
     return jclass("org.telegram.messenger.UserConfig").selectedAccount
 
