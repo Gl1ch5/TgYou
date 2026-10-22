@@ -45,6 +45,9 @@ public class LiquidGlassEffect {
         float index,
         int foregroundColor
     ) {
+        thickness = com.tgyou.core.TgYouGlass.thickness(thickness);
+        intensity = com.tgyou.core.TgYouGlass.intensity(intensity);
+        index = com.tgyou.core.TgYouGlass.index(index);
         float resolutionX = node.getWidth();
         float resolutionY = node.getHeight();
         float centerX = (left + right) / 2;
