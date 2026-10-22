@@ -119,6 +119,23 @@ public final class ModApi {
         });
     }
 
+    /** Python-style names used by mods (api.hook, api.add_page, api.settings_get ...). */
+    public void hook(String name, PyObject fn) {
+        on(name, fn);
+    }
+
+    public void add_page(String title, PyObject fn) {
+        addPage(title, fn);
+    }
+
+    public String settings_get(String key, String def) {
+        return getString(key, def);
+    }
+
+    public void settings_put(String key, String value) {
+        putString(key, value);
+    }
+
     public String getString(String key, String def) {
         return settings().getString(key, def);
     }

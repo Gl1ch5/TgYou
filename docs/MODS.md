@@ -11,3 +11,6 @@ UI: `ui/ModsActivity`, `ui/ModPageActivity`, `ui/ModCell`. Моды лежат �
 Тестовый мод `stats` (assets/mods/stats) — страница «Статистика» и пункт меню сообщения.
 Справка по API и шаблон: `TMessagesProj/src/main/assets/mod-sdk/` (отдаётся кнопкой «Скачать архив для агента»).
 Маркетплейс: см. MARKETPLACE.md.
+
+## Имена в Python API
+Моды вызывают `api.hook`, `api.add_page`, `api.settings_get/put` (snake_case); в Java это алиасы к `on/addPage/getString/putString`. Статус: скомпилировано, на устройстве не проверено.

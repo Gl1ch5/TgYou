@@ -3,62 +3,32 @@ package com.tgyou.ui;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.graphics.drawable.GradientDrawable;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.tgyou.core.Plugin;
 import com.tgyou.core.PluginHost;
 import com.tgyou.core.Section;
 
+import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.Theme;
-import org.telegram.ui.Cells.HeaderCell;
-import org.telegram.ui.Cells.TextInfoPrivacyCell;
-import org.telegram.ui.Cells.TextSettingsCell;
 import org.telegram.ui.Components.LayoutHelper;
-import org.telegram.ui.Components.RecyclerListView;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /** Main TgYou screen: a list of tabs, each opening {@link TgYouSectionActivity}. */
 public class TgYouSettingsActivity extends BaseFragment {
 
-    private static final int TYPE_HEADER = 0;
-    private static final int TYPE_ITEM = 1;
-    private static final int TYPE_INFO = 2;
-
-    private static final int ACTION_SECTION = 0;
-    private static final int ACTION_ALL_PLUGINS = 1;
-    private static final int ACTION_ICONS = 2;
-    private static final int ACTION_UPDATES = 3;
-    private static final int ACTION_MODS = 4;
-    private static final int ACTION_MOD_PAGE = 5;
-
-    private static final class Row {
-        final int type;
-        final Section section;
-        final String title;
-        final String value;
-        final int action;
-        com.tgyou.mods.ModPages.Page page;
-
-        Row(int type, Section section, String title, String value, int action) {
-            this.type = type;
-            this.section = section;
-            this.title = title;
-            this.value = value;
-            this.action = action;
-        }
-    }
-
-    private final List<Row> rows = new ArrayList<>();
+    private LinearLayout content;
 
     @Override
     public View createView(Context context) {
@@ -74,30 +44,100 @@ public class TgYouSettingsActivity extends BaseFragment {
             }
         });
 
-        FrameLayout frameLayout = new FrameLayout(context);
-        frameLayout.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundGray));
-        fragmentView = frameLayout;
+        FrameLayout frame = new FrameLayout(context);
+        frame.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundGray));
+        fragmentView = frame;
 
-        RecyclerListView listView = new RecyclerListView(context);
-        listView.setSections();
-        actionBar.setAdaptiveBackground(listView);
-        listView.setLayoutManager(new LinearLayoutManager(context));
-        listView.setVerticalScrollBarEnabled(false);
-        listView.setAdapter(new ListAdapter(context));
-        listView.setOnItemClickListener((view, position) -> onRowClicked(rows.get(position)));
-        frameLayout.addView(listView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
+        ScrollView scroll = new ScrollView(context);
+        scroll.setVerticalScrollBarEnabled(false);
+        content = new LinearLayout(context);
+        content.setOrientation(LinearLayout.VERTICAL);
+        int side = AndroidUtilities.dp(14);
+        content.setPadding(side, AndroidUtilities.dp(8), side, AndroidUtilities.dp(28));
+        scroll.addView(content, new ScrollView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        frame.addView(scroll, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
-        buildRows();
+        build(context);
         return fragmentView;
     }
 
-    private void buildRows() {
-        rows.clear();
+    private static int iconFor(Section section) {
+        switch (section) {
+            case PRIVACY:
+                return R.drawable.msg_secret;
+            case MESSAGES:
+                return R.drawable.msg_discussion;
+            case FILTERS:
+                return R.drawable.msg_block;
+            case INTERFACE:
+                return R.drawable.msg_theme;
+            case AI:
+                return R.drawable.msg_voicechat;
+            default:
+                return R.drawable.msg_settings;
+        }
+    }
+
+    private static int accentFor(Section section) {
+        switch (section) {
+            case PRIVACY:
+                return 0xFF7C5CFF;
+            case MESSAGES:
+                return 0xFF2FA4E7;
+            case FILTERS:
+                return 0xFFE8883A;
+            case INTERFACE:
+                return 0xFFE05A9B;
+            case AI:
+                return 0xFF3DBE8B;
+            default:
+                return 0xFF8E9AA8;
+        }
+    }
+
+    private void build(Context context) {
+        content.removeAllViews();
         PluginHost host = PluginHost.get();
         if (host == null) {
             return;
         }
-        rows.add(new Row(TYPE_HEADER, null, "Разделы", null, ACTION_SECTION));
+        int index = 0;
+
+        LinearLayout hero = new LinearLayout(context);
+        hero.setOrientation(LinearLayout.VERTICAL);
+        int hp = AndroidUtilities.dp(22);
+        hero.setPadding(hp, hp, hp, hp);
+        GradientDrawable heroBg = new GradientDrawable(GradientDrawable.Orientation.TL_BR, new int[]{0xFF7C5CFF, 0xFF3B8BFF});
+        heroBg.setCornerRadius(AndroidUtilities.dp(28));
+        hero.setBackground(heroBg);
+        TextView name = new TextView(context);
+        name.setText("Telegram You");
+        name.setTextSize(TypedValue.COMPLEX_UNIT_SP, 26);
+        name.setTypeface(AndroidUtilities.bold());
+        name.setTextColor(0xFFFFFFFF);
+        hero.addView(name, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
+        int enabledAll = 0;
+        int modsOn = 0;
+        for (Plugin plugin : host.plugins()) {
+            if (host.isEnabled(plugin)) {
+                if (plugin.isMod()) {
+                    modsOn++;
+                } else {
+                    enabledAll++;
+                }
+            }
+        }
+        TextView sub = new TextView(context);
+        sub.setText(BuildVars.BUILD_VERSION_STRING + "  ·  функций включено: " + enabledAll + "  ·  модов: " + modsOn);
+        sub.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+        sub.setTextColor(0xCCFFFFFF);
+        hero.addView(sub, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 0, 6, 0, 0));
+        content.addView(hero, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 0, 4, 0, 14));
+        hero.setAlpha(0f);
+        hero.animate().alpha(1f).setDuration(350).start();
+
+        LinearLayout rowLayout = null;
+        int inRow = 0;
         for (Section section : Section.values()) {
             int total = 0;
             int enabled = 0;
@@ -109,101 +149,44 @@ public class TgYouSettingsActivity extends BaseFragment {
                     }
                 }
             }
-            if (total > 0) {
-                rows.add(new Row(TYPE_ITEM, section, section.title, enabled + " из " + total, ACTION_SECTION));
+            if (total == 0) {
+                continue;
             }
+            if (inRow == 0) {
+                rowLayout = new LinearLayout(context);
+                content.addView(rowLayout, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 0, 0, 0, 10));
+            }
+            TgYouTile tile = new TgYouTile(context, iconFor(section), accentFor(section), section.title, enabled + " из " + total + " включено", false);
+            tile.setOnClickListener(v -> presentFragment(new TgYouSectionActivity(section)));
+            tile.enter(index++);
+            rowLayout.addView(tile, LayoutHelper.createLinear(0, LayoutHelper.WRAP_CONTENT, 1f, inRow == 0 ? 0 : 5, 0, inRow == 0 ? 5 : 0, 0));
+            inRow = (inRow + 1) % 2;
         }
-        rows.add(new Row(TYPE_HEADER, null, "Моды", null, ACTION_SECTION));
-        rows.add(new Row(TYPE_ITEM, null, "Моды", "маркетплейс и свои", ACTION_MODS));
+        if (inRow == 1) {
+            rowLayout.addView(new View(context), LayoutHelper.createLinear(0, 1, 1f, 5, 0, 0, 0));
+        }
+
+        addWide(context, R.drawable.msg_customize, 0xFF9B59E8, "Моды", "маркетплейс, установленные, создать мод", index++, () -> presentFragment(new ModsActivity()));
         for (com.tgyou.mods.ModPages.Page page : com.tgyou.mods.ModPages.all()) {
-            Row row = new Row(TYPE_ITEM, null, page.title, "мод", ACTION_MOD_PAGE);
-            row.page = page;
-            rows.add(row);
+            addWide(context, R.drawable.msg_stats, 0xFF3DBE8B, page.title, "страница мода", index++, () -> presentFragment(new ModPageActivity(page)));
         }
-        rows.add(new Row(TYPE_HEADER, null, "Управление", null, ACTION_SECTION));
-        rows.add(new Row(TYPE_ITEM, null, "Обновления", "GitHub", ACTION_UPDATES));
-        rows.add(new Row(TYPE_ITEM, null, "Иконка приложения", "", ACTION_ICONS));
-        rows.add(new Row(TYPE_ITEM, null, "Все функции", String.valueOf(host.plugins().size()), ACTION_ALL_PLUGINS));
-        rows.add(new Row(TYPE_INFO, null, "Telegram You " + BuildVars.BUILD_VERSION_STRING
-                + "\nВсе функции работают как плагины: их можно включать и выключать по отдельности.", null, ACTION_SECTION));
+        addWide(context, R.drawable.msg_download, 0xFF2FA4E7, "Обновления", "новые версии из релизов GitHub", index++, () -> presentFragment(new TgYouUpdateActivity()));
+        addWide(context, R.drawable.msg_photos, 0xFFE05A9B, "Иконка приложения", "TgYou, Telegram и другие", index++, () -> presentFragment(new TgYouIconsActivity()));
+        addWide(context, R.drawable.msg_list, 0xFF8E9AA8, "Все функции", host.plugins().size() + " плагинов и модов", index++, () -> presentFragment(new TgYouSectionActivity((Section) null)));
     }
 
-    private void onRowClicked(Row row) {
-        if (row.type != TYPE_ITEM) {
-            return;
-        }
-        if (row.action == ACTION_MODS) {
-            presentFragment(new ModsActivity());
-        } else if (row.action == ACTION_MOD_PAGE) {
-            presentFragment(new ModPageActivity(row.page));
-        } else if (row.action == ACTION_UPDATES) {
-            presentFragment(new TgYouUpdateActivity());
-        } else if (row.action == ACTION_ICONS) {
-            presentFragment(new TgYouIconsActivity());
-        } else {
-            presentFragment(new TgYouSectionActivity(row.action == ACTION_ALL_PLUGINS ? null : row.section));
-        }
+    private void addWide(Context context, int icon, int accent, String title, String subtitle, int index, Runnable action) {
+        TgYouTile tile = new TgYouTile(context, icon, accent, title, subtitle, true);
+        tile.setOnClickListener(v -> action.run());
+        tile.enter(index);
+        content.addView(tile, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 0, 0, 0, 10));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        buildRows();
-        if (fragmentView != null) {
-            RecyclerListView list = (RecyclerListView) ((FrameLayout) fragmentView).getChildAt(0);
-            if (list.getAdapter() != null) {
-                list.getAdapter().notifyDataSetChanged();
-            }
-        }
-    }
-
-    private class ListAdapter extends RecyclerListView.SelectionAdapter {
-        private final Context context;
-
-        private ListAdapter(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        public int getItemCount() {
-            return rows.size();
-        }
-
-        @Override
-        public boolean isEnabled(RecyclerView.ViewHolder holder) {
-            return holder.getItemViewType() == TYPE_ITEM;
-        }
-
-        @NonNull
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view;
-            if (viewType == TYPE_HEADER) {
-                view = new HeaderCell(context);
-            } else if (viewType == TYPE_ITEM) {
-                view = new TextSettingsCell(context);
-            } else {
-                view = new TextInfoPrivacyCell(context);
-            }
-            view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
-            return new RecyclerListView.Holder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            Row row = rows.get(position);
-            if (row.type == TYPE_HEADER) {
-                ((HeaderCell) holder.itemView).setText(row.title);
-            } else if (row.type == TYPE_ITEM) {
-                ((TextSettingsCell) holder.itemView).setTextAndValue(row.title, row.value, false);
-            } else {
-                ((TextInfoPrivacyCell) holder.itemView).setText(row.title);
-            }
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return rows.get(position).type;
+        if (content != null && getParentActivity() != null) {
+            build(getParentActivity());
         }
     }
 }
