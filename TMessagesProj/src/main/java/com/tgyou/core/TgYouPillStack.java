@@ -122,6 +122,9 @@ public final class TgYouPillStack {
                     return;
                 }
                 setVisibility(VISIBLE);
+                boolean dark = Theme.isCurrentThemeDark();
+                ((GradientDrawable) getBackground()).setColor(dark ? Theme.multAlpha(0xFF000000, 0.28f)
+                        : Theme.multAlpha(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText), 0.08f));
                 String id = list.get(index[0] % list.size());
                 setText(text(id));
                 int res = icon(id);
@@ -131,8 +134,19 @@ public final class TgYouPillStack {
                     d.setColorFilter(new android.graphics.PorterDuffColorFilter(color, android.graphics.PorterDuff.Mode.MULTIPLY));
                     d.setBounds(0, 0, AndroidUtilities.dp(20), AndroidUtilities.dp(20));
                     setTextColor(color);
+                } else {
+                    setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
                 }
                 setCompoundDrawables(d, null, null, null);
+            }
+
+            @Override
+            protected void onMeasure(int widthSpec, int heightSpec) {
+                // Адаптивность: таблетка занимает не больше 45% поля, остальное — подсказка поиска.
+                View parent = (View) getParent();
+                View field2 = parent == null ? null : (View) parent.getParent();
+                int max = field2 == null || field2.getWidth() == 0 ? AndroidUtilities.dp(140) : (int) (field2.getWidth() * 0.45f);
+                super.onMeasure(MeasureSpec.makeMeasureSpec(Math.min(MeasureSpec.getSize(widthSpec), max), MeasureSpec.AT_MOST), heightSpec);
             }
 
             @Override
@@ -158,11 +172,11 @@ public final class TgYouPillStack {
         pill.setTypeface(AndroidUtilities.bold());
         pill.setGravity(Gravity.CENTER);
         pill.setSingleLine(true);
+        pill.setEllipsize(android.text.TextUtils.TruncateAt.END);
         pill.setCompoundDrawablePadding(AndroidUtilities.dp(6));
         pill.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
         GradientDrawable bg = new GradientDrawable();
         bg.setCornerRadius(AndroidUtilities.dp(16));
-        bg.setColor(Theme.multAlpha(0xFF000000, 0.28f));
         pill.setBackground(bg);
         pill.setPadding(AndroidUtilities.dp(12), 0, AndroidUtilities.dp(14), 0);
         pill.setOnClickListener(v -> { });
