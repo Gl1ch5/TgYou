@@ -20655,7 +20655,7 @@ public class ChatActivity extends BaseFragment implements
         if (postponedScroll) {
             postponedScrollToLastMessageQueryIndex = 0;
         }
-        ArrayList<MessageObject> messArr = (ArrayList<MessageObject>) args[2];
+        ArrayList<MessageObject> messArr = com.tgyou.core.TgYouHooks.filterMessages((ArrayList<MessageObject>) args[2]);
 
         boolean universalNotify = false;
         HashMap<Integer, MessageObject> oldMessages = null;
@@ -25428,6 +25428,7 @@ public class ChatActivity extends BaseFragment implements
         processNewMessages(arr, true);
     }
     private void processNewMessages(ArrayList<MessageObject> arr, final boolean animatedFromBottom) {
+        arr = com.tgyou.core.TgYouHooks.filterMessages(arr);
         FileLog.d("processNewMessages " + arr.size() + " messages");
 
         final boolean isBot = UserObject.isBot(currentUser);

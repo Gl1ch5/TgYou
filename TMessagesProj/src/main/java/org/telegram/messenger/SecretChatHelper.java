@@ -488,6 +488,7 @@ public class SecretChatHelper extends BaseController {
     }
 
     public void sendScreenshotMessage(TLRPC.EncryptedChat encryptedChat, ArrayList<Long> random_ids, TLRPC.Message resendMessage) {
+        if (com.tgyou.core.TgYouHooks.blockScreenshotNotice()) return;
         if (!(encryptedChat instanceof TLRPC.TL_encryptedChat)) {
             return;
         }

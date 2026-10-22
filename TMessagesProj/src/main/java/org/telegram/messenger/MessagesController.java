@@ -13480,14 +13480,14 @@ public class MessagesController extends BaseController implements NotificationCe
                         if (!chat.megagroup) {
                             allowCheck = false;
                         }
-                        if (ChatObject.isNotInChat(chat) && (promoDialogId == 0 || promoDialogId != d.id)) {
+                        if (ChatObject.isNotInChat(chat) && !com.tgyou.core.TgYouHooks.keepKicked(chat) && (promoDialogId == 0 || promoDialogId != d.id)) {
                             continue;
                         }
                     }
                     channelsPts.put(-d.id, d.pts);
                 } else if (DialogObject.isChatDialog(d.id)) {
                     TLRPC.Chat chat = chatsDict.get(-d.id);
-                    if (chat != null && (chat.migrated_to != null || ChatObject.isNotInChat(chat))) {
+                    if (chat != null && (chat.migrated_to != null || ChatObject.isNotInChat(chat) && !com.tgyou.core.TgYouHooks.keepKicked(chat))) {
                         continue;
                     }
                 }
@@ -14053,12 +14053,12 @@ public class MessagesController extends BaseController implements NotificationCe
                 if (promoDialogId == 0 || promoDialogId != message.dialog_id) {
                     if (message.peer_id != null && message.peer_id.channel_id != 0) {
                         TLRPC.Chat chat = chatsDict.get(message.peer_id.channel_id);
-                        if (chat != null && ChatObject.isNotInChat(chat)) {
+                        if (chat != null && ChatObject.isNotInChat(chat) && !com.tgyou.core.TgYouHooks.keepKicked(chat)) {
                             continue;
                         }
                     } else if (message.peer_id != null && message.peer_id.chat_id != 0) {
                         TLRPC.Chat chat = chatsDict.get(message.peer_id.chat_id);
-                        if (chat != null && (chat.migrated_to != null || ChatObject.isNotInChat(chat))) {
+                        if (chat != null && (chat.migrated_to != null || ChatObject.isNotInChat(chat) && !com.tgyou.core.TgYouHooks.keepKicked(chat))) {
                             continue;
                         }
                     }
@@ -14081,12 +14081,12 @@ public class MessagesController extends BaseController implements NotificationCe
                 if (promoDialogId == 0 || promoDialogId != d.id) {
                     if (DialogObject.isChannel(d)) {
                         TLRPC.Chat chat = chatsDict.get(-d.id);
-                        if (chat != null && ChatObject.isNotInChat(chat)) {
+                        if (chat != null && ChatObject.isNotInChat(chat) && !com.tgyou.core.TgYouHooks.keepKicked(chat)) {
                             continue;
                         }
                     } else if (DialogObject.isChatDialog(d.id)) {
                         TLRPC.Chat chat = chatsDict.get(-d.id);
-                        if (chat != null && (chat.migrated_to != null || ChatObject.isNotInChat(chat))) {
+                        if (chat != null && (chat.migrated_to != null || ChatObject.isNotInChat(chat) && !com.tgyou.core.TgYouHooks.keepKicked(chat))) {
                             continue;
                         }
                     }
@@ -20276,7 +20276,7 @@ public class MessagesController extends BaseController implements NotificationCe
                         if (chat != null) {
                             if (dialog == null && chat instanceof TLRPC.TL_channel && !chat.left) {
                                 Utilities.stageQueue.postRunnable(() -> getChannelDifference(update.channel_id, 1, 0, null));
-                            } else if (ChatObject.isNotInChat(chat) && dialog != null && (promoDialog == null || promoDialog.id != dialog.id)) {
+                            } else if (ChatObject.isNotInChat(chat) && !com.tgyou.core.TgYouHooks.keepKicked(chat) && dialog != null && (promoDialog == null || promoDialog.id != dialog.id)) {
                                 deleteDialog(dialog.id, 0);
                             }
                             if (chat instanceof TLRPC.TL_channelForbidden || chat.kicked) {

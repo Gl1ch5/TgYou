@@ -45,6 +45,15 @@ public final class Hooks {
     /** Input: the long-press menu of a message; handlers add entries. */
     public static final HookPoint<MessageMenu, Void> MESSAGE_MENU = new HookPoint<>("message.menu");
 
+    /** Input: a message about to be shown in a chat. Value: false to hide it. */
+    public static final HookPoint<MessageObject, Boolean> MESSAGE_VISIBLE = new HookPoint<>("message.visible");
+
+    /** Input: a chat the user is no longer in (kicked or banned). Value: true to keep it in the dialog list. */
+    public static final HookPoint<TLRPC.Chat, Boolean> KEEP_KICKED_CHAT = new HookPoint<>("chat.keep_kicked");
+
+    /** Input: unused. Value: true to not tell the other side about a screenshot in a secret chat. */
+    public static final HookPoint<Void, Boolean> SCREENSHOT_NOTICE = new HookPoint<>("secret.screenshot_notice");
+
     public static final class DeletedMessages {
         public final int account;
         /** Negative channel id for channels, 0 for private chats and basic groups (ids are global there). */

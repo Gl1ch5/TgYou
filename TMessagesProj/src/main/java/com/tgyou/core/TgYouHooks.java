@@ -66,6 +66,37 @@ public final class TgYouHooks {
         return true;
     }
 
+    /** @return the messages that may be shown; the same list when nothing is hidden */
+    public static java.util.ArrayList<MessageObject> filterMessages(java.util.ArrayList<MessageObject> messages) {
+        PluginHost host = PluginHost.get();
+        if (host == null || messages == null || messages.isEmpty()) {
+            return messages;
+        }
+        java.util.ArrayList<MessageObject> kept = null;
+        for (int i = 0; i < messages.size(); i++) {
+            MessageObject m = messages.get(i);
+            boolean visible = host.dispatch(Hooks.MESSAGE_VISIBLE, m, true);
+            if (!visible && kept == null) {
+                kept = new java.util.ArrayList<>(messages.subList(0, i));
+            } else if (visible && kept != null) {
+                kept.add(m);
+            }
+        }
+        return kept == null ? messages : kept;
+    }
+
+    public static boolean keepKicked(TLRPC.Chat chat) {
+        PluginHost host = PluginHost.get();
+        return host != null && chat != null && (chat.kicked || chat instanceof TLRPC.TL_channelForbidden || chat instanceof TLRPC.TL_chatForbidden)
+                && host.dispatch(Hooks.KEEP_KICKED_CHAT, chat, false);
+    }
+
+    /** @return true when the screenshot notice must not be sent */
+    public static boolean blockScreenshotNotice() {
+        PluginHost host = PluginHost.get();
+        return host != null && host.dispatch(Hooks.SCREENSHOT_NOTICE, null, false);
+    }
+
     public static boolean flagSecure(boolean real) {
         PluginHost host = PluginHost.get();
         return host == null ? real : host.dispatch(Hooks.FLAG_SECURE, null, real);
