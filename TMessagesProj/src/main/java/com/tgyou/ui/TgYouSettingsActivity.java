@@ -107,7 +107,9 @@ public class TgYouSettingsActivity extends BaseFragment {
         }
         int index = 0;
         addBanners(context);
-        group(context, "Функции");
+        group(context, "Настройки");
+        addWide(context, R.drawable.settings_privacy, IconBackgroundColors.GREEN, "Режим Призрака", "не читать, не печатать, офлайн, отложка", animate ? index++ : -1, () -> presentFragment(new GhostScreen()));
+        group(context, "Функции по разделам");
 
         LinearLayout rowLayout = null;
         int inRow = 0;
