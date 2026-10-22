@@ -20132,6 +20132,13 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
     @SuppressLint("WrongCall")
     @Override
     protected void onDraw(Canvas canvas) {
+        float tgyouAlpha = com.tgyou.core.TgYouHooks.messageAlpha(currentMessageObject);
+        if (tgyouAlpha < 1f) {
+            int save = canvas.saveLayerAlpha(0, 0, getWidth(), getHeight(), (int) (tgyouAlpha * 255));
+            drawInternal(canvas);
+            canvas.restoreToCount(save);
+            return;
+        }
         drawInternal(canvas);
     }
     public void drawInternal(Canvas canvas) {

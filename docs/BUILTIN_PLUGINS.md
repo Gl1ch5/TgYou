@@ -55,3 +55,12 @@
 
 ## Скрывать скриншоты (`screenshot_notice`, Приватность)
 Хук `secret.screenshot_notice` в `SecretChatHelper.sendScreenshotMessage` и блок `messages.sendScreenshotNotification` через `request.outgoing`. Статус: компилируется, не проверено.
+
+## Сохранять временные фото (`ttl_media`, Сообщения)
+Хук `media.keep_ttl`: `MessageObject.isSecretMedia` и `needDrawBluredPreview` для обычных чатов возвращают false, медиа с таймером открывается как обычное и не стирается. Не работает для уже истёкших на сервере и для секретных чатов. Статус: компилируется, не проверено.
+
+## Удалённые сообщения: оформление
+Хук `message.alpha` (`ChatMessageCell.onDraw` рисует пузырь через `saveLayerAlpha`): удалённые сообщения полупрозрачны (настройка 100/70/50/35%). Пометка в строке времени — векторные значки `tgyou_deleted` и `tgyou_edited` вместо эмодзи (или текст, или ничего).
+
+## ProGuard
+В `proguard-rules.pro` добавлено `-keep class com.tgyou.**`: без него R8 в релизной сборке переименовывал методы `ModApi`, и мод падал с «object has no attribute 'add_page'».

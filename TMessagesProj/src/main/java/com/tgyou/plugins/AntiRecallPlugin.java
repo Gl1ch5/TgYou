@@ -34,8 +34,10 @@ public final class AntiRecallPlugin implements Plugin {
     private static final String MARK_DELETED = "mark_deleted";
     private static final String MARK_EDITED = "mark_edited";
 
-    private static final String[] DELETED_MARKS = {"🗑", "удалено", "deleted", "нет"};
-    private static final String[] EDITED_MARKS = {"✎", "ред.", "нет"};
+    private static final String DIM = "dim";
+    private static final String[] DELETED_MARKS = {"значок", "текст", "нет"};
+    private static final String[] EDITED_MARKS = {"значок", "текст", "нет"};
+    private static final String[] DIM_LEVELS = {"100%", "70%", "50%", "35%"};
 
     private PluginSettings settings;
 
@@ -66,7 +68,8 @@ public final class AntiRecallPlugin implements Plugin {
                 SettingField.toggle(KEEP_DELETED, "Сохранять удалённые сообщения", true),
                 SettingField.toggle(KEEP_EDITS, "Сохранять историю правок", true),
                 SettingField.choice(MARK_DELETED, "Пометка удалённых", DELETED_MARKS[0], DELETED_MARKS),
-                SettingField.choice(MARK_EDITED, "Пометка изменённых", EDITED_MARKS[0], EDITED_MARKS)
+                SettingField.choice(MARK_EDITED, "Пометка изменённых", EDITED_MARKS[0], EDITED_MARKS),
+                SettingField.choice(DIM, "Прозрачность удалённых", DIM_LEVELS[2], DIM_LEVELS)
         );
     }
 
@@ -106,19 +109,24 @@ public final class AntiRecallPlugin implements Plugin {
             long key = TgYouDb.dialogKey(message);
             CharSequence result = time;
             if (db.isDeleted(account, key, message.getId())) {
-                String mark = settings.getString(MARK_DELETED, DELETED_MARKS[0]);
-                if (!mark.equals("нет")) {
-                    result = TextUtils.concat(mark, " ", result);
-                }
+                result = TextUtils.concat(mark(settings.getString(MARK_DELETED, DELETED_MARKS[0]),
+                        org.telegram.messenger.R.drawable.tgyou_deleted, "удалено"), " ", result);
             }
             int edits = db.editCount(account, key, message.getId());
             if (edits > 0) {
-                String mark = settings.getString(MARK_EDITED, EDITED_MARKS[0]);
-                if (!mark.equals("нет")) {
-                    result = TextUtils.concat(mark + edits + " ", result);
-                }
+                result = TextUtils.concat(mark(settings.getString(MARK_EDITED, EDITED_MARKS[0]),
+                        org.telegram.messenger.R.drawable.tgyou_edited, "ред."), edits > 1 ? edits + " " : " ", result);
             }
             return result;
+        });
+
+        context.on(Hooks.MESSAGE_ALPHA, (message, alpha) -> {
+            if (message == null || message.messageOwner == null || !TgYouDb.get().hasDeleted()
+                    || !TgYouDb.get().isDeleted(message.currentAccount, TgYouDb.dialogKey(message), message.getId())) {
+                return alpha;
+            }
+            String level = settings.getString(DIM, DIM_LEVELS[2]);
+            return level.equals(DIM_LEVELS[1]) ? 0.7f : level.equals(DIM_LEVELS[2]) ? 0.5f : level.equals(DIM_LEVELS[3]) ? 0.35f : alpha;
         });
 
         context.on(Hooks.MESSAGE_MENU, (menu, ignored) -> {
@@ -135,6 +143,22 @@ public final class AntiRecallPlugin implements Plugin {
             }
             return null;
         });
+    }
+
+    /** The vector icon, plain text or nothing, depending on the chosen style. */
+    private static CharSequence mark(String style, int icon, String text) {
+        if (style.equals("нет")) {
+            return "";
+        }
+        if (style.equals("текст")) {
+            return text;
+        }
+        android.graphics.drawable.Drawable d = ApplicationLoader.applicationContext.getResources().getDrawable(icon).mutate();
+        int size = org.telegram.messenger.AndroidUtilities.dp(12);
+        d.setBounds(0, 0, size, size);
+        android.text.SpannableString span = new android.text.SpannableString(" ");
+        span.setSpan(new android.text.style.ImageSpan(d, android.text.style.ImageSpan.ALIGN_BOTTOM), 0, 1, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return span;
     }
 
     private void showHistory(com.tgyou.core.MessageMenu menu, int account, long key, MessageObject message) {

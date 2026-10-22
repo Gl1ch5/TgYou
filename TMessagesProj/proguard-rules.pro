@@ -58,3 +58,5 @@
 # Use -keep to explicitly keep any other classes shrinking would remove
 #-dontoptimize
 #-dontobfuscate
+# TgYou: plugins and mods are reached through reflection and from Python (Chaquopy)
+-keep class com.tgyou.** { *; }

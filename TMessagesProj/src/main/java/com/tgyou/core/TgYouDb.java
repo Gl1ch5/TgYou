@@ -97,6 +97,10 @@ public final class TgYouDb extends SQLiteOpenHelper {
         return dialogKey(message.messageOwner);
     }
 
+    public synchronized boolean hasDeleted() {
+        return !deleted.isEmpty();
+    }
+
     public synchronized boolean isDeleted(int account, long dialogKey, int msg) {
         return deleted.contains(key(account, dialogKey, msg));
     }

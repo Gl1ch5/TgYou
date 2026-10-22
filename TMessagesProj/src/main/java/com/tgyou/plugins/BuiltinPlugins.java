@@ -18,6 +18,7 @@ public final class BuiltinPlugins {
                 new AdBlockPlugin(),
                 new MessageFilterPlugin(),
                 new SavedChatsPlugin(),
+                new TtlMediaPlugin(),
                 new ScreenshotNoticePlugin(),
                 new LocalPremiumPlugin(),
                 new WhisperTranscribePlugin()

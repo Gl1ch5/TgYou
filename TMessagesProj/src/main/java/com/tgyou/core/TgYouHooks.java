@@ -85,6 +85,16 @@ public final class TgYouHooks {
         return kept == null ? messages : kept;
     }
 
+    public static float messageAlpha(MessageObject message) {
+        PluginHost host = PluginHost.get();
+        return host == null || message == null ? 1f : host.dispatch(Hooks.MESSAGE_ALPHA, message, 1f);
+    }
+
+    public static boolean keepTtlMedia() {
+        PluginHost host = PluginHost.get();
+        return host != null && host.dispatch(Hooks.KEEP_TTL_MEDIA, null, false);
+    }
+
     public static boolean keepKicked(TLRPC.Chat chat) {
         PluginHost host = PluginHost.get();
         return host != null && chat != null && (chat.kicked || chat instanceof TLRPC.TL_channelForbidden || chat instanceof TLRPC.TL_chatForbidden)

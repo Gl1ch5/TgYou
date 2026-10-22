@@ -54,6 +54,12 @@ public final class Hooks {
     /** Input: unused. Value: true to not tell the other side about a screenshot in a secret chat. */
     public static final HookPoint<Void, Boolean> SCREENSHOT_NOTICE = new HookPoint<>("secret.screenshot_notice");
 
+    /** Input: a message about to be drawn. Value: opacity of its bubble, 1 = normal. */
+    public static final HookPoint<MessageObject, Float> MESSAGE_ALPHA = new HookPoint<>("message.alpha");
+
+    /** Input: unused. Value: true to treat self-destructing photos and videos as ordinary media. */
+    public static final HookPoint<Void, Boolean> KEEP_TTL_MEDIA = new HookPoint<>("media.keep_ttl");
+
     public static final class DeletedMessages {
         public final int account;
         /** Negative channel id for channels, 0 for private chats and basic groups (ids are global there). */
