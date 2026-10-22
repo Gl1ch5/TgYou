@@ -132,17 +132,53 @@ public final class TgYouPillStack {
         }
     }
 
-    private static int icon(String id) {
-        switch (id) {
-            case "date":
-                return org.telegram.messenger.R.drawable.msg_calendar2;
-            case "proxy":
-            case "ping":
-                return org.telegram.messenger.R.drawable.proxy_check;
-            case "ghost":
-                return org.telegram.messenger.R.drawable.msg_secret;
-            default:
-                return 0;
+    /** Small shield with a tick, drawn by hand: the stock bitmaps are oversized for a pill. */
+    private static final class ShieldDrawable extends android.graphics.drawable.Drawable {
+        private final android.graphics.Paint fill = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+        private final android.graphics.Paint tick = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+        private final android.graphics.Path shield = new android.graphics.Path();
+        private final android.graphics.Path mark = new android.graphics.Path();
+
+        ShieldDrawable(int color, int tickColor) {
+            fill.setColor(color);
+            tick.setColor(tickColor);
+            tick.setStyle(android.graphics.Paint.Style.STROKE);
+            tick.setStrokeCap(android.graphics.Paint.Cap.ROUND);
+            tick.setStrokeJoin(android.graphics.Paint.Join.ROUND);
+        }
+
+        @Override
+        public void draw(android.graphics.Canvas c) {
+            android.graphics.Rect r = getBounds();
+            float w = r.width(), h = r.height(), x = r.left, y = r.top;
+            shield.reset();
+            shield.moveTo(x + w * 0.5f, y);
+            shield.lineTo(x + w * 0.92f, y + h * 0.16f);
+            shield.lineTo(x + w * 0.92f, y + h * 0.5f);
+            shield.quadTo(x + w * 0.92f, y + h * 0.84f, x + w * 0.5f, y + h);
+            shield.quadTo(x + w * 0.08f, y + h * 0.84f, x + w * 0.08f, y + h * 0.5f);
+            shield.lineTo(x + w * 0.08f, y + h * 0.16f);
+            shield.close();
+            c.drawPath(shield, fill);
+            tick.setStrokeWidth(w * 0.11f);
+            mark.reset();
+            mark.moveTo(x + w * 0.3f, y + h * 0.5f);
+            mark.lineTo(x + w * 0.45f, y + h * 0.65f);
+            mark.lineTo(x + w * 0.72f, y + h * 0.35f);
+            c.drawPath(mark, tick);
+        }
+
+        @Override
+        public void setAlpha(int alpha) {
+        }
+
+        @Override
+        public void setColorFilter(android.graphics.ColorFilter filter) {
+        }
+
+        @Override
+        public int getOpacity() {
+            return android.graphics.PixelFormat.TRANSLUCENT;
         }
     }
 
@@ -174,15 +210,13 @@ public final class TgYouPillStack {
                         : Theme.multAlpha(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText), 0.08f));
                 String id = list.get(index[0] % list.size());
                 setText(text(id));
-                int res = icon(id);
-                android.graphics.drawable.Drawable d = res == 0 ? null : getContext().getResources().getDrawable(res).mutate();
-                if (d != null) {
-                    int color = "ping".equals(id) && SharedConfig.isProxyEnabled() ? 0xFF4CAF50 : Theme.getColor(Theme.key_windowBackgroundWhiteBlackText);
-                    d.setColorFilter(new android.graphics.PorterDuffColorFilter(color, android.graphics.PorterDuff.Mode.MULTIPLY));
-                    d.setBounds(0, 0, AndroidUtilities.dp(20), AndroidUtilities.dp(20));
-                    setTextColor(color);
-                } else {
-                    setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
+                boolean shieldIcon = "proxy".equals(id) || "ping".equals(id);
+                int color = "ping".equals(id) && SharedConfig.isProxyEnabled() ? 0xFF4CAF50 : Theme.getColor(Theme.key_windowBackgroundWhiteBlackText);
+                setTextColor(color);
+                android.graphics.drawable.Drawable d = null;
+                if (shieldIcon) {
+                    d = new ShieldDrawable(color, Theme.isCurrentThemeDark() ? 0xFF1C1C1E : 0xFFFFFFFF);
+                    d.setBounds(0, 0, AndroidUtilities.dp(16), AndroidUtilities.dp(18));
                 }
                 setCompoundDrawables(d, null, null, null);
             }
