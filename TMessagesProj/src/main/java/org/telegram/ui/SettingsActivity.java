@@ -624,7 +624,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
         }
 
         items.add(UItem.asCustomShadow(topView, 200 - 12));
-        items.add(SettingCell.Factory.of(100, 0, 0, R.mipmap.ic_tgyou_round, "TgYou", "Плагины, моды и настройки"));
+        items.add(SettingCell.Factory.of(100, 0, 0, R.drawable.tgyou_logo, "TgYou", "Плагины, моды и настройки"));
         items.add(UItem.asShadow(null));
 
         accountNumbers.clear();
@@ -1230,6 +1230,7 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
             subtitleView.setTranslationX(icon == 0 ? dp(2) : 0);
 
             iconBackground.setColor(iconColorTop, iconColorBottom);
+            iconView.getLayoutParams().width = iconView.getLayoutParams().height = dp(icon == R.drawable.tgyou_logo ? 28 : 24);
             iconView.setImageResource(icon);
             titleView.setText(title);
             subtitleView.setVisibility((twoLines = !TextUtils.isEmpty(subtitle)) ? View.VISIBLE : View.GONE);

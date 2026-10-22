@@ -92,7 +92,7 @@ public class TgYouSettingsActivity extends TgYouScreen {
         box.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         ImageView icon = new ImageView(context);
-        icon.setImageResource(R.mipmap.ic_tgyou);
+        icon.setImageResource(R.drawable.tgyou_logo);
         icon.setScaleType(ImageView.ScaleType.CENTER_CROP);
         icon.setOutlineProvider(new ViewOutlineProvider() {
             @Override
