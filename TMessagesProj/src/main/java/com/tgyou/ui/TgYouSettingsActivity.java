@@ -39,16 +39,16 @@ public class TgYouSettingsActivity extends TgYouScreen {
         custom("hero", this::createHero, v -> {});
 
         header("Категории");
-        item(R.drawable.ghost, "Режим Призрака", null, () -> presentFragment(new GhostScreen()));
-        item(R.drawable.msg_secret, "Шпион", null, () -> presentFragment(new SpyScreen()));
-        item(R.drawable.msg_folders, "Фильтры", null, () -> presentFragment(new FiltersScreen()));
-        item(R.drawable.msg_settings, "Основные", null, () -> presentFragment(new BasicScreen()));
-        item(R.drawable.msg_msgbubble3, "Чаты", null, () -> presentFragment(new ChatsScreen()));
-        item(R.drawable.msg_theme, "Внешний вид", null, () -> presentFragment(new AppearanceScreen()));
-        item(R.drawable.msg_customize, "Кастомизация", null, () -> presentFragment(new CustomizationScreen()));
-        item(R.drawable.msg_palette, "Иконки", null, () -> presentFragment(new IconPacksActivity()));
-        item(R.drawable.msg_photo_settings, "Иконка приложения", null, () -> presentFragment(new TgYouIconsActivity()));
-        item(R.drawable.msg_bot, "Моды", null, () -> presentFragment(new ModsActivity()));
+        item(R.drawable.tgy_ghost, "Режим Призрака", null, () -> presentFragment(new GhostScreen()));
+        item(R.drawable.tgy_spy, "Шпион", null, () -> presentFragment(new SpyScreen()));
+        item(R.drawable.tgy_filters, "Фильтры", null, () -> presentFragment(new FiltersScreen()));
+        item(R.drawable.tgy_basic, "Основные", null, () -> presentFragment(new BasicScreen()));
+        item(R.drawable.tgy_chats, "Чаты", null, () -> presentFragment(new ChatsScreen()));
+        item(R.drawable.tgy_theme, "Внешний вид", null, () -> presentFragment(new AppearanceScreen()));
+        item(R.drawable.tgy_palette, "Кастомизация", null, () -> presentFragment(new CustomizationScreen()));
+        item(R.drawable.tgy_star, "Иконки", null, () -> presentFragment(new IconPacksActivity()));
+        item(R.drawable.tgy_phone, "Иконка приложения", null, () -> presentFragment(new TgYouIconsActivity()));
+        item(R.drawable.tgy_mods, "Моды", null, () -> presentFragment(new ModsActivity()));
         if (host != null) {
             for (Section section : Section.values()) {
                 int total = 0;
@@ -62,25 +62,25 @@ public class TgYouSettingsActivity extends TgYouScreen {
                     }
                 }
                 if (total > 0) {
-                    item(R.drawable.msg_view_file, section.title, enabled + "/" + total, () -> presentFragment(new TgYouSectionActivity(section)));
+                    item(R.drawable.tgy_list, section.title, enabled + "/" + total, () -> presentFragment(new TgYouSectionActivity(section)));
                 }
             }
         }
         for (com.tgyou.mods.ModPages.Page page : com.tgyou.mods.ModPages.all()) {
-            item(R.drawable.msg_media, page.title, null, () -> presentFragment(new ModPageActivity(page)));
+            item(R.drawable.tgy_mods, page.title, null, () -> presentFragment(new ModPageActivity(page)));
         }
         for (com.tgyou.mods.ModPages.Action action : com.tgyou.mods.ModPages.actions()) {
-            item(R.drawable.msg_instant, action.title, null, () -> AndroidUtilities.runOnUIThread(action.run));
+            item(R.drawable.tgy_bolt, action.title, null, () -> AndroidUtilities.runOnUIThread(action.run));
         }
         gap();
 
         header("Ссылки");
-        item(R.drawable.msg_download, "Обновления", "GitHub", () -> presentFragment(new TgYouUpdateActivity()));
+        item(R.drawable.tgy_update, "Обновления", "GitHub", () -> presentFragment(new TgYouUpdateActivity()));
         if (host != null) {
-            item(R.drawable.msg_info, "Все функции", String.valueOf(host.plugins().size()), () -> presentFragment(new TgYouSectionActivity((Section) null)));
+            item(R.drawable.tgy_list, "Все функции", String.valueOf(host.plugins().size()), () -> presentFragment(new TgYouSectionActivity((Section) null)));
         }
-        item(R.drawable.msg_link, "Исходный код", "Gl1ch5/TgYou", () -> org.telegram.messenger.browser.Browser.openUrl(getParentActivity(), "https://github.com/Gl1ch5/TgYou"));
-        item(R.drawable.msg_language, "Веб-сайт", "telegram-you.ru", () -> org.telegram.messenger.browser.Browser.openUrl(getParentActivity(), "https://telegram-you.ru"));
+        item(R.drawable.tgy_code, "Исходный код", "Gl1ch5/TgYou", () -> org.telegram.messenger.browser.Browser.openUrl(getParentActivity(), "https://github.com/Gl1ch5/TgYou"));
+        item(R.drawable.tgy_globe, "Веб-сайт", "telegram-you.ru", () -> org.telegram.messenger.browser.Browser.openUrl(getParentActivity(), "https://telegram-you.ru"));
         gap();
     }
 
