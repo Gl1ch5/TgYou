@@ -105,8 +105,7 @@ public final class TgYouPillStack {
                         + place.getDouble("latitude") + "&longitude=" + place.getDouble("longitude");
                 org.json.JSONObject cur = new org.json.JSONObject(get(url)).getJSONObject("current");
                 int code = cur.getInt("weather_code");
-                String sky = code == 0 ? "☀️" : code <= 3 ? "⛅" : code <= 48 ? "☁️" : code <= 67 || (code >= 80 && code <= 82) ? "🌧" : code <= 77 || code >= 85 && code <= 86 ? "❄️" : "⛈";
-                weather = sky + " " + Math.round(cur.getDouble("temperature_2m")) + "°C";
+                weather = Math.round(cur.getDouble("temperature_2m")) + "°C";
                 weatherTime = System.currentTimeMillis();
             } catch (Throwable t) {
                 weather = "Погода ?";
@@ -129,6 +128,38 @@ public final class TgYouPillStack {
             return out.toString("UTF-8");
         } finally {
             c.disconnect();
+        }
+    }
+
+    /** Simple cloud for the weather pill. */
+    private static final class CloudDrawable extends android.graphics.drawable.Drawable {
+        private final android.graphics.Paint paint = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+
+        CloudDrawable(int color) {
+            paint.setColor(color);
+        }
+
+        @Override
+        public void draw(android.graphics.Canvas c) {
+            android.graphics.Rect r = getBounds();
+            float w = r.width(), h = r.height(), x = r.left, y = r.top;
+            c.drawCircle(x + w * 0.28f, y + h * 0.62f, h * 0.26f, paint);
+            c.drawCircle(x + w * 0.5f, y + h * 0.42f, h * 0.34f, paint);
+            c.drawCircle(x + w * 0.74f, y + h * 0.62f, h * 0.26f, paint);
+            c.drawRect(x + w * 0.28f, y + h * 0.62f, x + w * 0.74f, y + h * 0.88f, paint);
+        }
+
+        @Override
+        public void setAlpha(int alpha) {
+        }
+
+        @Override
+        public void setColorFilter(android.graphics.ColorFilter filter) {
+        }
+
+        @Override
+        public int getOpacity() {
+            return android.graphics.PixelFormat.TRANSLUCENT;
         }
     }
 
@@ -214,7 +245,10 @@ public final class TgYouPillStack {
                 int color = "ping".equals(id) && SharedConfig.isProxyEnabled() ? 0xFF4CAF50 : Theme.getColor(Theme.key_windowBackgroundWhiteBlackText);
                 setTextColor(color);
                 android.graphics.drawable.Drawable d = null;
-                if (shieldIcon) {
+                if ("weather".equals(id)) {
+                    d = new CloudDrawable(color);
+                    d.setBounds(0, 0, AndroidUtilities.dp(20), AndroidUtilities.dp(16));
+                } else if (shieldIcon) {
                     d = new ShieldDrawable(color, Theme.isCurrentThemeDark() ? 0xFF1C1C1E : 0xFFFFFFFF);
                     d.setBounds(0, 0, AndroidUtilities.dp(16), AndroidUtilities.dp(18));
                 }
@@ -249,17 +283,17 @@ public final class TgYouPillStack {
                 return super.performClick();
             }
         };
-        pill.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        pill.setTypeface(AndroidUtilities.bold());
+        pill.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        pill.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
         pill.setGravity(Gravity.CENTER);
         pill.setSingleLine(true);
         pill.setEllipsize(android.text.TextUtils.TruncateAt.END);
-        pill.setCompoundDrawablePadding(AndroidUtilities.dp(6));
+        pill.setCompoundDrawablePadding(AndroidUtilities.dp(8));
         pill.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
         GradientDrawable bg = new GradientDrawable();
-        bg.setCornerRadius(AndroidUtilities.dp(16));
+        bg.setCornerRadius(AndroidUtilities.dp(20));
         pill.setBackground(bg);
-        pill.setPadding(AndroidUtilities.dp(12), 0, AndroidUtilities.dp(14), 0);
+        pill.setPadding(AndroidUtilities.dp(14), 0, AndroidUtilities.dp(16), 0);
         pill.setOnClickListener(v -> { });
         pill.setOnLongClickListener(v -> {
             BaseFragment fragment = LaunchActivity.getSafeLastFragment();
@@ -268,7 +302,7 @@ public final class TgYouPillStack {
             }
             return true;
         });
-        android.widget.LinearLayout.LayoutParams lp = new android.widget.LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, AndroidUtilities.dp(32));
+        android.widget.LinearLayout.LayoutParams lp = new android.widget.LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, AndroidUtilities.dp(34));
         lp.gravity = Gravity.CENTER_VERTICAL;
         lp.rightMargin = AndroidUtilities.dp(2);
         pill.setLayoutParams(lp);
