@@ -1977,6 +1977,7 @@ public class ChatActivity extends BaseFragment implements
             } else {
                 return;
             }
+            if (com.tgyou.core.TgYouGestures.doubleTap(ChatActivity.this, messageObject)) return;
             if (messageObject.isSecret() || !messageObject.canSetReaction() || messageObject.isExpiredStory() || messageObject.type == MessageObject.TYPE_JOINED_CHANNEL) {
                 return;
             }
@@ -5052,7 +5053,7 @@ public class ChatActivity extends BaseFragment implements
                             getMessageType(message) == 1 && (message.getDialogId() == mergeDialogId || message.needDrawBluredPreview()) ||
                             currentEncryptedChat == null && message.getId() < 0 ||
                             currentChat != null && ChatObject.isForum(currentChat) && !allowReplyOnOpenTopic ||
-                            hasTextSelection() ||
+                            hasTextSelection() || com.tgyou.core.TgYouGestures.swipeNone() ||
                             message.isEphemeral() && message.isOut()
                         ) {
                             slidingViewSetOffset(0);
@@ -5133,7 +5134,7 @@ public class ChatActivity extends BaseFragment implements
                             final DialogsActivity fragment = new DialogsActivity(args);
                             fragment.setDelegate(ChatActivity.this);
                             presentFragment(fragment);
-                        } else {
+                        } else if (!com.tgyou.core.TgYouGestures.swipe(ChatActivity.this, getSlidingMessageObject())) {
                             showFieldPanelForReply(getSlidingMessageObject());
                         }
                     }
@@ -14793,11 +14794,12 @@ public class ChatActivity extends BaseFragment implements
 
     public void showFieldPanelForReply(MessageObject messageObjectToReply) {
         showFieldPanel(true, messageObjectToReply, null, null, null, true, 0, null, false, 0, true);
+        com.tgyou.core.TgYouChatTweaks.replyMention(this, messageObjectToReply);
     }
 
     private Runnable onHideFieldPanelRunnable;
     public void showFieldPanelForReplyQuote(MessageObject messageObjectToReply, ReplyQuote quote) {
-        showFieldPanel(true, messageObjectToReply, null, null, null, true, 0, quote, false, 0, true);
+        showFieldPanel(true, messageObjectToReply, null, null, null, true, 0, com.tgyou.core.TgYouChatTweaks.dropQuote(quote), false, 0, true);
     }
 
     public void showFieldPanelForEdit(boolean show, MessageObject messageObjectToEdit) {
@@ -16997,7 +16999,7 @@ public class ChatActivity extends BaseFragment implements
                     chatScrollHelper.setScrollDirection(scrollDirection);
                 }
                 removeSelectedMessageHighlight();
-                if (select) {
+                if (select && !com.tgyou.core.TgYouChatTweaks.noReplyHighlight()) {
                     highlightMessageId = id;
                     highlightTaskId = taskId;
                     highlightPollOptionId = pollOptionId;

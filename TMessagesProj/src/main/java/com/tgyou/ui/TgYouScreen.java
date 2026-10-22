@@ -89,6 +89,7 @@ public abstract class TgYouScreen extends BaseFragment {
         int color2;
         boolean red;
         String[] keys;
+        boolean[] defs;
         String[] titles;
         String masterId;
         Factory factory;
@@ -267,18 +268,25 @@ public abstract class TgYouScreen extends BaseFragment {
      * locked, a tap elsewhere folds the list, a long press on an option locks its value.
      */
     protected void master(String id, String title, String[] keys, String[] titles, boolean[] defs) {
+        master(id, title, keys, titles, defs, null);
+    }
+
+    protected void master(String id, String title, String[] keys, String[] titles, boolean[] defs, Setter<Object> onChange) {
         Row m = add(T_MASTER);
+        m.onChange = onChange;
         m.masterId = id;
         m.title = title;
         m.keys = keys;
+        m.defs = defs;
         m.titles = titles;
         if (expanded.contains(id)) {
             for (int i = 0; i < keys.length; i++) {
                 Row o = add(T_OPTION);
                 o.key = keys[i];
                 o.title = titles[i];
-                o.def = defs == null || defs[i];
+                o.def = defs != null && defs[i];
                 o.masterId = id;
+                o.onChange = onChange;
             }
         }
     }
@@ -291,8 +299,8 @@ public abstract class TgYouScreen extends BaseFragment {
 
     private int countOn(Row master) {
         int n = 0;
-        for (String key : master.keys) {
-            if (TgYouPrefs.bool(key, false)) {
+        for (int i = 0; i < master.keys.length; i++) {
+            if (TgYouPrefs.bool(master.keys[i], master.defs != null && master.defs[i])) {
                 n++;
             }
         }
@@ -329,7 +337,7 @@ public abstract class TgYouScreen extends BaseFragment {
                     toast("Значение зафиксировано. Зажмите, чтобы снять фиксацию.");
                     break;
                 }
-                boolean now = !TgYouPrefs.bool(row.key, false);
+                boolean now = !TgYouPrefs.bool(row.key, row.def);
                 TgYouPrefs.setBool(row.key, now);
                 fire(row, now);
                 refresh();
@@ -343,6 +351,7 @@ public abstract class TgYouScreen extends BaseFragment {
                             TgYouPrefs.setBool(key, now);
                         }
                     }
+                    fire(row, now);
                 } else if (!expanded.remove(row.masterId)) {
                     expanded.add(row.masterId);
                 }
@@ -560,7 +569,7 @@ public abstract class TgYouScreen extends BaseFragment {
                 case T_OPTION: {
                     TextCheckCell cell = (TextCheckCell) view;
                     boolean locked = lockedOn(row.key);
-                    cell.setTextAndValueAndCheck(row.title, locked ? "Зафиксировано" : "", TgYouPrefs.bool(row.key, false), false, divider);
+                    cell.setTextAndValueAndCheck(row.title, locked ? "Зафиксировано" : "", TgYouPrefs.bool(row.key, row.def), false, divider);
                     break;
                 }
                 case T_VALUE: {

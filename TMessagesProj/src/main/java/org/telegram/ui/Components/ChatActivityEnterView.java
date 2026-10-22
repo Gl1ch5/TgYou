@@ -5988,6 +5988,7 @@ public class ChatActivityEnterView extends FrameLayout implements
                     ignorePrevTextChange = false;
                     return;
                 }
+                com.tgyou.core.TgYouCalc.process(editable);
                 if (innerTextChange == 0) {
                     if (nextChangeIsSend) {
                         sendMessage();
@@ -6078,7 +6079,7 @@ public class ChatActivityEnterView extends FrameLayout implements
 
     private boolean shownAiButton;
     private void showAiButton(boolean show_) {
-        final boolean show = (show_ || richDraftActive) && parentFragment != null && !parentFragment.isSecretChat();
+        final boolean show = (show_ || richDraftActive) && parentFragment != null && !parentFragment.isSecretChat() && com.tgyou.core.TgYouChatTweaks.aiEditor();
 
         if (shownAiButton == show) return;
         if (show) {

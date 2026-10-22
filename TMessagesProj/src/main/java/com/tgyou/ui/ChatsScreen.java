@@ -3,7 +3,11 @@ package com.tgyou.ui;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
+import com.tgyou.core.TgYouAi;
 import com.tgyou.core.TgYouChatTweaks;
+import com.tgyou.core.TgYouGestures;
+import com.tgyou.core.TgYouPrefs;
+import com.tgyou.plugins.ChatExtrasPlugin;
 
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.SharedConfig;
@@ -50,6 +54,52 @@ public class ChatsScreen extends TgYouScreen {
 
         header("Пустой чат");
         toggle(TgYouChatTweaks.HIDE_GREETING, "Скрыть приветственный стикер", "В пустом личном чате не показывается стикер-приветствие.", false);
+        gap();
+
+        header("Поле ввода: вычисления");
+        toggle(TgYouChatTweaks.CALC, "Результаты вычислений", "После «=» в конце выражения (2+2=) подставляется результат. Поддерживаются + - * / ^ %, скобки.", false);
+        gap();
+
+        header("Ответы");
+        master("replies", "Ответы", TgYouChatTweaks.REPLY_KEYS, new String[]{
+                "Без подсветки при переходе к ответу",
+                "Ответ без цитаты",
+                "Упоминать автора при ответе"}, null);
+        info("Подсветка: сообщение не мигает после перехода по ответу. Без цитаты: выделенный фрагмент не прикрепляется. Упоминание: в группах в пустое поле ввода подставляется @имя автора.");
+        gap();
+
+        header("Посты");
+        master("wide", "Широкие посты", TgYouChatTweaks.WIDE_KEYS, new String[]{
+                "Каналы",
+                "Лента (посты каналов в обсуждениях)"}, null);
+        info("Текст постов занимает почти всю ширину экрана. Применяется к сообщениям, загруженным после включения (переоткройте чат).");
+        gap();
+
+        header("ИИ-функции");
+        master("ai", "ИИ-функции", TgYouChatTweaks.AI_KEYS, new String[]{
+                "Редактор",
+                "Краткие сводки",
+                "Сводки в Instant View"}, new boolean[]{true, true, true});
+        info("Редактор: кнопка ИИ рядом с полем ввода. Краткие сводки: кнопка в длинных сообщениях. Сводки в Instant View: пункт «Краткая сводка страницы» в меню сообщения со ссылкой, делается через Groq с ключом из раздела «ИИ».");
+        value("Модель для сводок", () -> TgYouPrefs.str(TgYouAi.MODEL, TgYouAi.DEFAULT_MODEL), () -> askText("Модель Groq", TgYouPrefs.str(TgYouAi.MODEL, TgYouAi.DEFAULT_MODEL), false, text -> {
+            TgYouPrefs.setStr(TgYouAi.MODEL, text.isEmpty() ? TgYouAi.DEFAULT_MODEL : text);
+            refresh();
+        }));
+        gap();
+
+        header("Админ");
+        master("admin", "Быстрые админ-действия", TgYouChatTweaks.ADMIN_KEYS, new String[]{
+                "Удалить и забанить",
+                "Заглушить"}, null);
+        choice(TgYouChatTweaks.ADMIN_MUTE_TERM, "Срок заглушения", null, 1, ChatExtrasPlugin.MUTE_LABELS);
+        info("Пункты появляются в меню сообщения пользователя в группе, если у вас есть право блокировать участников. Заглушение работает в супергруппах.");
+        gap();
+
+        header("Жесты");
+        master("swipe", "Быстрый переход свайпом", TgYouGestures.SWIPE_KEYS, new String[]{
+                "Свайп по пузырю: ответ",
+                "Свайп по пузырю: в избранное"}, new boolean[]{true, false});
+        info("Если включены оба пункта, свайп по чужому сообщению отвечает, а по своему отправляет в Избранное. Остальные жесты: Кастомизация, Жесты.");
         gap();
     }
 }

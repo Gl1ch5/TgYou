@@ -30,7 +30,8 @@ public final class BuiltinPlugins {
                 new MessageInfoPlugin(),
                 new LocalPremiumPlugin(),
                 new WhisperTranscribePlugin(),
-                new MessageToolsPlugin()
+                new MessageToolsPlugin(),
+                new ChatExtrasPlugin()
         ));
         all.addAll(Tweaks.create());
         return all;
