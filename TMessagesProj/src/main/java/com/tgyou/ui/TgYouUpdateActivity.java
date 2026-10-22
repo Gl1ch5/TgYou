@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.tgyou.update.UpdateManager;
 import com.tgyou.update.Updater;
 
 import org.telegram.messenger.AndroidUtilities;
@@ -25,7 +26,7 @@ import java.io.File;
 import java.util.Locale;
 
 /** Checks GitHub releases for a newer build and installs it from inside the app. */
-public class TgYouUpdateActivity extends BaseFragment {
+public class TgYouUpdateActivity extends BaseFragment implements UpdateManager.Listener {
 
     private TextView titleView;
     private TextView subtitleView;
@@ -108,7 +109,8 @@ public class TgYouUpdateActivity extends BaseFragment {
         scroll.addView(column);
         frame.addView(scroll, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
-        render("Установлена: " + installedLabel());
+        UpdateManager.addListener(this);
+        onUpdateChanged();
         check();
         return fragmentView;
     }
@@ -164,61 +166,36 @@ public class TgYouUpdateActivity extends BaseFragment {
     }
 
     private void check() {
-        if (busy) {
-            return;
-        }
-        busy = true;
-        render("Проверяю релизы на GitHub…");
-        Updater.check((rel, isNewer, error) -> {
-            busy = false;
-            if (error != null) {
-                release = null;
-                render("Не удалось проверить: " + error);
-            } else if (rel == null) {
-                release = null;
-                render("В релизах пока нет APK.");
-            } else if (!isNewer) {
-                release = null;
-                render("У вас последняя версия: " + installedLabel());
-            } else {
-                release = rel;
-                downloaded = null;
-                String notes = rel.notes == null ? "" : rel.notes.trim();
-                render("Доступна " + rel.tag + " (у вас " + installedLabel() + ")" + (notes.isEmpty() ? "" : "\n\n" + notes));
-            }
-        });
+        UpdateManager.check(false);
     }
 
     private void installOrDownload() {
-        if (release == null || busy) {
-            return;
-        }
-        Context context = getParentActivity();
-        if (downloaded != null) {
-            Updater.install(context, downloaded);
-            return;
-        }
-        busy = true;
-        Updater.download(context, release, new Updater.DownloadCallback() {
-            @Override
-            public void progress(int percent) {
-                titleView.setText("Скачиваю…");
-                subtitleView.setText(release.tag + " · " + percent + "%");
-                progress.setVisibility(View.VISIBLE);
-                progress.setProgress(percent);
-            }
+        UpdateManager.download();
+    }
 
-            @Override
-            public void done(File apk, String error) {
-                busy = false;
-                if (error != null) {
-                    render("Не удалось скачать: " + error);
-                } else {
-                    downloaded = apk;
-                    render("Система спросит подтверждение, данные сохранятся.");
-                    Updater.install(context, apk);
-                }
-            }
-        });
+    @Override
+    public void onUpdateChanged() {
+        release = UpdateManager.release();
+        downloaded = UpdateManager.downloaded();
+        busy = UpdateManager.isChecking() || UpdateManager.isDownloading();
+        if (UpdateManager.isDownloading()) {
+            titleView.setText("Скачиваю…");
+            subtitleView.setText(release.tag + " · " + UpdateManager.progress() + "%");
+            progress.setVisibility(View.VISIBLE);
+            progress.setProgress(UpdateManager.progress());
+            return;
+        }
+        if (release != null) {
+            String notes = release.notes == null ? "" : release.notes.replace("**", "").trim();
+            render(notes.isEmpty() ? "Улучшения и исправления." : notes);
+        } else {
+            render(UpdateManager.isChecking() ? "Проверяю релизы на GitHub…" : "У вас последняя версия. Проверка идёт автоматически каждую минуту.");
+        }
+    }
+
+    @Override
+    public void onFragmentDestroy() {
+        super.onFragmentDestroy();
+        UpdateManager.removeListener(this);
     }
 }

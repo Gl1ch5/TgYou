@@ -3274,6 +3274,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             downloadsItem.addView(downloadProgressIcon = new DownloadProgressIcon(currentAccount, context));
             downloadsItem.setContentDescription(getString(R.string.DownloadsTabs));
             downloadsItem.setVisibility(View.GONE);
+            com.tgyou.ui.UpdateIndicator.attach(menu, context);
 
             updateProxyButton(false, false);
         }

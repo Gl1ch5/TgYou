@@ -51,6 +51,9 @@ public final class Updater {
         return BuildConfig.TG_RELEASE_TAG;
     }
 
+    private static String etag;
+    private static Release cached;
+
     public static void check(CheckCallback callback) {
         Utilities.globalQueue.postRunnable(() -> {
             Release found = null;
@@ -60,10 +63,17 @@ public final class Updater {
                 c.setConnectTimeout(15000);
                 c.setReadTimeout(20000);
                 c.setRequestProperty("Accept", "application/vnd.github+json");
-                if (c.getResponseCode() != 200) {
-                    throw new IllegalStateException("GitHub ответил " + c.getResponseCode());
+                if (etag != null && cached != null) {
+                    c.setRequestProperty("If-None-Match", etag);
                 }
-                JSONArray list = new JSONArray(readAll(c.getInputStream()));
+                int code = c.getResponseCode();
+                if (code == 304 && cached != null) {
+                    found = cached;
+                } else if (code != 200) {
+                    throw new IllegalStateException("GitHub ответил " + code);
+                }
+                JSONArray list = found != null ? new JSONArray() : new JSONArray(readAll(c.getInputStream()));
+                etag = c.getHeaderField("ETag");
                 for (int i = 0; i < list.length() && found == null; i++) {
                     JSONObject r = list.getJSONObject(i);
                     if (r.optBoolean("draft")) {
@@ -84,6 +94,7 @@ public final class Updater {
                         }
                     }
                 }
+                cached = found;
             } catch (Throwable t) {
                 error = t.getMessage() != null ? t.getMessage() : t.toString();
             }
