@@ -34,8 +34,8 @@ public final class TgYouPillStack {
 
     public static final String PILLS = "pill.items";
 
-    public static final String[] IDS = {"time", "date", "battery", "memory", "proxy", "ghost"};
-    public static final String[] TITLES = {"Время", "Дата", "Заряд батареи", "Память приложения", "Прокси", "Режим призрака"};
+    public static final String[] IDS = {"time", "date", "battery", "memory", "proxy", "ping", "ghost"};
+    public static final String[] TITLES = {"Время", "Дата", "Заряд батареи", "Память приложения", "Прокси", "Пинг прокси", "Режим призрака"};
 
     private TgYouPillStack() {
     }
@@ -74,10 +74,28 @@ public final class TgYouPillStack {
             }
             case "proxy":
                 return SharedConfig.isProxyEnabled() ? "Прокси вкл." : "Без прокси";
+            case "ping": {
+                SharedConfig.ProxyInfo p = SharedConfig.currentProxy;
+                return SharedConfig.isProxyEnabled() && p != null && p.available ? p.ping + " мс" : "Без прокси";
+            }
             case "ghost":
                 return GhostModePlugin.active() ? "Призрак вкл." : "Призрак выкл.";
             default:
                 return "";
+        }
+    }
+
+    private static int icon(String id) {
+        switch (id) {
+            case "date":
+                return org.telegram.messenger.R.drawable.msg_calendar2;
+            case "proxy":
+            case "ping":
+                return org.telegram.messenger.R.drawable.proxy_check;
+            case "ghost":
+                return org.telegram.messenger.R.drawable.msg_secret;
+            default:
+                return 0;
         }
     }
 
@@ -104,7 +122,17 @@ public final class TgYouPillStack {
                     return;
                 }
                 setVisibility(VISIBLE);
-                setText(text(list.get(index[0] % list.size())));
+                String id = list.get(index[0] % list.size());
+                setText(text(id));
+                int res = icon(id);
+                android.graphics.drawable.Drawable d = res == 0 ? null : getContext().getResources().getDrawable(res).mutate();
+                if (d != null) {
+                    int color = "ping".equals(id) && SharedConfig.isProxyEnabled() ? 0xFF4CAF50 : Theme.getColor(Theme.key_windowBackgroundWhiteBlackText);
+                    d.setColorFilter(new android.graphics.PorterDuffColorFilter(color, android.graphics.PorterDuff.Mode.MULTIPLY));
+                    d.setBounds(0, 0, AndroidUtilities.dp(20), AndroidUtilities.dp(20));
+                    setTextColor(color);
+                }
+                setCompoundDrawables(d, null, null, null);
             }
 
             @Override
@@ -126,16 +154,17 @@ public final class TgYouPillStack {
                 return super.performClick();
             }
         };
-        pill.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        pill.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         pill.setTypeface(AndroidUtilities.bold());
         pill.setGravity(Gravity.CENTER);
         pill.setSingleLine(true);
-        pill.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlueText4));
+        pill.setCompoundDrawablePadding(AndroidUtilities.dp(6));
+        pill.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
         GradientDrawable bg = new GradientDrawable();
-        bg.setCornerRadius(AndroidUtilities.dp(12));
-        bg.setColor(Theme.multAlpha(Theme.getColor(Theme.key_windowBackgroundWhiteBlueText4), 0.15f));
+        bg.setCornerRadius(AndroidUtilities.dp(16));
+        bg.setColor(Theme.multAlpha(0xFF000000, 0.28f));
         pill.setBackground(bg);
-        pill.setPadding(AndroidUtilities.dp(8), AndroidUtilities.dp(3), AndroidUtilities.dp(8), AndroidUtilities.dp(3));
+        pill.setPadding(AndroidUtilities.dp(12), 0, AndroidUtilities.dp(14), 0);
         pill.setOnClickListener(v -> { });
         pill.setOnLongClickListener(v -> {
             BaseFragment fragment = LaunchActivity.getSafeLastFragment();
@@ -144,6 +173,10 @@ public final class TgYouPillStack {
             }
             return true;
         });
+        android.widget.LinearLayout.LayoutParams lp = new android.widget.LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, AndroidUtilities.dp(32));
+        lp.gravity = Gravity.CENTER_VERTICAL;
+        lp.rightMargin = AndroidUtilities.dp(2);
+        pill.setLayoutParams(lp);
         field.addAdditionalIcon(pill);
     }
 }
