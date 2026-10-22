@@ -57,6 +57,9 @@ public final class Hooks {
     /** Input: a message about to be drawn. Value: opacity of its bubble, 1 = normal. */
     public static final HookPoint<MessageObject, Float> MESSAGE_ALPHA = new HookPoint<>("message.alpha");
 
+    /** Input: unused. Value: true to ignore the "restrict saving content" flag of messages, chats and stories. */
+    public static final HookPoint<Void, Boolean> ALLOW_COPY = new HookPoint<>("content.allow_copy");
+
     /** Input: unused. Value: true to treat self-destructing photos and videos as ordinary media. */
     public static final HookPoint<Void, Boolean> KEEP_TTL_MEDIA = new HookPoint<>("media.keep_ttl");
 

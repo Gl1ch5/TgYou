@@ -20,6 +20,7 @@ public final class BuiltinPlugins {
                 new MessageFilterPlugin(),
                 new SavedChatsPlugin(),
                 new TtlMediaPlugin(),
+                new AllowCopyPlugin(),
                 new ScreenshotNoticePlugin(),
                 new ExtraPrivacyPlugin(),
                 new ExactTimePlugin(),

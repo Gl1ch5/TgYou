@@ -90,6 +90,12 @@ public final class TgYouHooks {
         return host == null || message == null ? 1f : host.dispatch(Hooks.MESSAGE_ALPHA, message, 1f);
     }
 
+    /** @return true when the "restrict saving content" flag must be ignored */
+    public static boolean allowCopy() {
+        PluginHost host = PluginHost.get();
+        return host != null && host.dispatch(Hooks.ALLOW_COPY, null, false);
+    }
+
     public static boolean keepTtlMedia() {
         PluginHost host = PluginHost.get();
         return host != null && host.dispatch(Hooks.KEEP_TTL_MEDIA, null, false);
