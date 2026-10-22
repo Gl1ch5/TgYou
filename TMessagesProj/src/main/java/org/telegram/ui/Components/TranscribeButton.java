@@ -684,6 +684,9 @@ public class TranscribeButton {
                     NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.voiceTranscriptionUpdate, messageObject, null, null, (Boolean) true, (Boolean) true);
                 });
             } else {
+                if (com.tgyou.core.TgYouHooks.transcribeRequest(messageObject)) {
+                    return;
+                }
                 if (BuildVars.LOGS_ENABLED) {
                     FileLog.d("sending Transcription request, msg_id=" + messageId + " dialog_id=" + dialogId);
                 }
@@ -836,6 +839,9 @@ public class TranscribeButton {
     public static boolean isFreeTranscribeInChat(MessageObject messageObject) {
         if (messageObject == null || messageObject.messageOwner == null) {
             return false;
+        }
+        if (com.tgyou.core.TgYouHooks.transcribeAvailable(messageObject)) {
+            return true;
         }
         MessagesController mc = MessagesController.getInstance(messageObject.currentAccount);
         TLRPC.Chat chat = mc.getChat(messageObject.getChatId());
