@@ -44,6 +44,10 @@
 ## Статус функций
 Готово и проверено на телефоне: локальный Premium; распознавание голосовых через Whisper на Groq (свой ключ); экран «TgYou» с переключателями и полями.
 
+Написано, но НЕ проверено на устройстве (в CI проходит только компиляция): вкладки TgYou (`TgYouSettingsActivity` → `TgYouSectionActivity`), режим призрака (`GhostModePlugin`, хук `ConnectionsManager`), сохранение удалённых/правок (`AntiRecallPlugin`, `TgYouDb`, хуки в `MessagesController`, `ChatMessageCell`, меню `ChatActivity`), блок рекламы (`AdBlockPlugin`), скриншоты/стример (`ScreenPrivacyPlugin`, хук `FlagSecureReason`), иконки TgYou + экран выбора (`TgYouIconsActivity`, `LauncherIconController`, алиасы в `AndroidManifest.xml`, ресурсы `icon_tgyou*`, `ic_tgyou*`). Иконка по умолчанию — TgYou, оригинальная Telegram доступна как `TelegramIcon`.
+
+Хуки в файлах Telegram (однострочные): `ConnectionsManager.sendRequestInternal` → `interceptRequest`; `FlagSecureReason.invalidate` → `flagSecure`; `MessagesController` (удаления ×2 → `filterDeleted`, правка → `messageEdited`); `ChatMessageCell` → `messageTime`; `ChatActivity` меню → `extendMessageMenu`/`menuOption`.
+
 План (задачи в порядке приоритета):
 1. Каркас вкладок TgYou: главный экран = список разделов (как в AyuGram: Приватность, Сообщения, Фильтры, Интерфейс, ИИ, Плагины, Маркетплейс, О приложении), каждый раздел — отдельный экран. Плагин объявляет свой раздел и типизированные поля (переключатель/текст/секрет).
 2. Ghost mode: единый хук в `ConnectionsManager.sendRequestInternal` (блок исходящих запросов по типу: `messages.readHistory`, `channels.readHistory`, `messages.setTyping`, `account.updateStatus`, чтение историй/контента); блокированный запрос получает ответ-ошибку `TGYOU_BLOCKED` в `stageQueue`.
@@ -60,7 +64,7 @@ exteraGram: много настроек, переработанный плеер
 
 ## Сборка и CI
 - Полная сборка: `./gradlew :TMessagesProj_App:assembleAfatRelease` (нужны переменные `TG_API_ID`, `TG_API_HASH`). Переменные окружения-переключатели: `TG_ABIS` (по умолчанию все 4 ABI; CI ставит `arm64-v8a`), `TG_FAST=1` (без R8), `TG_PREBUILT_JNI=<dir>` (готовые `<abi>/libtmessages.49.so`, пропускает C++), `TG_CCACHE=1`.
-- `build-beta.yml`: нативная библиотека кэшируется (`actions/cache`, ключ — хэш `git ls-tree` для `TMessagesProj/jni`). **Холодная** сборка ~1 час, **с кэшем** должна занимать минуты (оценка, замерить!). Не пушить в ветку, пока идёт холодная сборка: пуш в ту же ветку отменяет её (concurrency) и кэш не сохранится. Релизные запуски (`release_tag`) имеют отдельную группу и не отменяются пушами.
+- `build-beta.yml`: нативная библиотека кэшируется (`actions/cache`, ключ — хэш `git ls-tree` для `TMessagesProj/jni`). **Холодная** сборка ~1 час, **с кэшем** должна занимать минуты (оценка, замерить!). Новые пуши не отменяют идущую сборку (`cancel-in-progress: false`), а встают в очередь; релизные запуски (`release_tag`) имеют отдельную группу.
 - Релиз: тег пушить с этой среды **нельзя** (прокси даёт 403), поэтому релиз делается запуском workflow вручную с входом `release_tag` (например `v0.1.0-beta1`) через `actions_run_trigger run_workflow`. Релиз `v0.1.0-beta1` ещё не опубликован (первый запуск был отменён моим же пушем).
 - APK скачивать из артефакта запуска `telegram-you-beta` (Actions → запуск → Artifacts).
 - Локальная проверка Java (быстрая петля): Android SDK ставится в `/home/user/android-sdk` (cmdline-tools → `platforms;android-36`, `build-tools;36.0.0`), подмодули: `git submodule update --init TMessagesProj_Modules/media TMessagesProj/lib/jlatexmath`, затем `ANDROID_HOME=… TG_API_ID=1 TG_API_HASH=x TG_PREBUILT_JNI=/nonexistent TG_FAST=1 ./gradlew :TMessagesProj_App:compileAfatReleaseJavaWithJavac`. Maven Central через прокси иногда отвечает 429 — повторять с паузой (`/home/user/dl/compile.sh`). Среда эфемерная: SDK пропадёт, если контейнер пересоздан.

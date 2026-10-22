@@ -15,6 +15,11 @@ public interface Plugin {
 
     String description();
 
+    /** The settings tab the plugin appears in. */
+    default Section section() {
+        return Section.MISC;
+    }
+
     /** Whether the plugin is on before the user touches its switch. */
     default boolean enabledByDefault() {
         return false;

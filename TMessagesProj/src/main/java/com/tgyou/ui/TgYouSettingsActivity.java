@@ -1,10 +1,8 @@
 package com.tgyou.ui;
 
 import android.content.Context;
-import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -13,18 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tgyou.core.Plugin;
 import com.tgyou.core.PluginHost;
-import com.tgyou.core.PluginSettings;
-import com.tgyou.core.SettingField;
+import com.tgyou.core.Section;
 
-import org.telegram.messenger.AndroidUtilities;
-import org.telegram.messenger.LocaleController;
+import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.ActionBar;
-import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.HeaderCell;
-import org.telegram.ui.Cells.TextCheckCell;
 import org.telegram.ui.Cells.TextInfoPrivacyCell;
 import org.telegram.ui.Cells.TextSettingsCell;
 import org.telegram.ui.Components.LayoutHelper;
@@ -33,28 +27,34 @@ import org.telegram.ui.Components.RecyclerListView;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Lists every plugin with its switch and settings fields. */
+/** Main TgYou screen: a list of tabs, each opening {@link TgYouSectionActivity}. */
 public class TgYouSettingsActivity extends BaseFragment {
 
     private static final int TYPE_HEADER = 0;
-    private static final int TYPE_CHECK = 1;
-    private static final int TYPE_VALUE = 2;
-    private static final int TYPE_INFO = 3;
+    private static final int TYPE_ITEM = 1;
+    private static final int TYPE_INFO = 2;
+
+    private static final int ACTION_SECTION = 0;
+    private static final int ACTION_ALL_PLUGINS = 1;
+    private static final int ACTION_ICONS = 2;
 
     private static final class Row {
         final int type;
-        final Plugin plugin;
-        final SettingField field;
+        final Section section;
+        final String title;
+        final String value;
+        final int action;
 
-        Row(int type, Plugin plugin, SettingField field) {
+        Row(int type, Section section, String title, String value, int action) {
             this.type = type;
-            this.plugin = plugin;
-            this.field = field;
+            this.section = section;
+            this.title = title;
+            this.value = value;
+            this.action = action;
         }
     }
 
     private final List<Row> rows = new ArrayList<>();
-    private ListAdapter adapter;
 
     @Override
     public View createView(Context context) {
@@ -70,8 +70,6 @@ public class TgYouSettingsActivity extends BaseFragment {
             }
         });
 
-        buildRows();
-
         FrameLayout frameLayout = new FrameLayout(context);
         frameLayout.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundGray));
         fragmentView = frameLayout;
@@ -81,9 +79,11 @@ public class TgYouSettingsActivity extends BaseFragment {
         actionBar.setAdaptiveBackground(listView);
         listView.setLayoutManager(new LinearLayoutManager(context));
         listView.setVerticalScrollBarEnabled(false);
-        listView.setAdapter(adapter = new ListAdapter(context));
-        listView.setOnItemClickListener((view, position) -> onRowClicked(position));
+        listView.setAdapter(new ListAdapter(context));
+        listView.setOnItemClickListener((view, position) -> onRowClicked(rows.get(position)));
         frameLayout.addView(listView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
+
+        buildRows();
         return fragmentView;
     }
 
@@ -93,61 +93,50 @@ public class TgYouSettingsActivity extends BaseFragment {
         if (host == null) {
             return;
         }
-        for (Plugin plugin : host.plugins()) {
-            rows.add(new Row(TYPE_HEADER, plugin, null));
-            rows.add(new Row(TYPE_CHECK, plugin, null));
-            for (SettingField field : plugin.fields()) {
-                rows.add(new Row(TYPE_VALUE, plugin, field));
+        rows.add(new Row(TYPE_HEADER, null, "Разделы", null, ACTION_SECTION));
+        for (Section section : Section.values()) {
+            int total = 0;
+            int enabled = 0;
+            for (Plugin plugin : host.plugins()) {
+                if (plugin.section() == section) {
+                    total++;
+                    if (host.isEnabled(plugin)) {
+                        enabled++;
+                    }
+                }
             }
-            rows.add(new Row(TYPE_INFO, plugin, null));
+            if (total > 0) {
+                rows.add(new Row(TYPE_ITEM, section, section.title, enabled + " из " + total, ACTION_SECTION));
+            }
         }
+        rows.add(new Row(TYPE_HEADER, null, "Управление", null, ACTION_SECTION));
+        rows.add(new Row(TYPE_ITEM, null, "Иконка приложения", "", ACTION_ICONS));
+        rows.add(new Row(TYPE_ITEM, null, "Все плагины", String.valueOf(host.plugins().size()), ACTION_ALL_PLUGINS));
+        rows.add(new Row(TYPE_INFO, null, "Telegram You " + BuildVars.BUILD_VERSION_STRING
+                + "\nВсе функции работают как плагины: их можно включать и выключать по отдельности.", null, ACTION_SECTION));
     }
 
-    private void onRowClicked(int position) {
-        Row row = rows.get(position);
-        PluginHost host = PluginHost.get();
-        if (host == null) {
+    private void onRowClicked(Row row) {
+        if (row.type != TYPE_ITEM) {
             return;
         }
-        if (row.type == TYPE_CHECK) {
-            host.setEnabled(row.plugin, !host.isEnabled(row.plugin));
-            adapter.notifyDataSetChanged();
-        } else if (row.type == TYPE_VALUE) {
-            showEditDialog(host.settingsOf(row.plugin), row.field);
+        if (row.action == ACTION_ICONS) {
+            presentFragment(new TgYouIconsActivity());
+        } else {
+            presentFragment(new TgYouSectionActivity(row.action == ACTION_ALL_PLUGINS ? null : row.section));
         }
     }
 
-    private void showEditDialog(PluginSettings settings, SettingField field) {
-        if (getParentActivity() == null) {
-            return;
+    @Override
+    public void onResume() {
+        super.onResume();
+        buildRows();
+        if (fragmentView != null) {
+            RecyclerListView list = (RecyclerListView) ((FrameLayout) fragmentView).getChildAt(0);
+            if (list.getAdapter() != null) {
+                list.getAdapter().notifyDataSetChanged();
+            }
         }
-        EditText input = new EditText(getParentActivity());
-        input.setSingleLine(true);
-        input.setText(settings.getString(field.key, field.defaultValue));
-        if (field.secret) {
-            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        }
-        input.setTextColor(Theme.getColor(Theme.key_dialogTextBlack));
-        input.setPadding(AndroidUtilities.dp(24), AndroidUtilities.dp(8), AndroidUtilities.dp(24), AndroidUtilities.dp(8));
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
-        builder.setTitle(field.title);
-        builder.setView(input);
-        builder.setPositiveButton(LocaleController.getString(R.string.OK), (dialog, which) -> {
-            settings.putString(field.key, input.getText().toString().trim());
-            adapter.notifyDataSetChanged();
-        });
-        builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
-        showDialog(builder.create());
-    }
-
-    private String valueLabel(Row row) {
-        PluginHost host = PluginHost.get();
-        String value = host == null ? "" : host.settingsOf(row.plugin).getString(row.field.key, row.field.defaultValue);
-        if (value.isEmpty()) {
-            return "не задано";
-        }
-        return row.field.secret ? "••••••••" : value;
     }
 
     private class ListAdapter extends RecyclerListView.SelectionAdapter {
@@ -164,8 +153,7 @@ public class TgYouSettingsActivity extends BaseFragment {
 
         @Override
         public boolean isEnabled(RecyclerView.ViewHolder holder) {
-            int type = holder.getItemViewType();
-            return type == TYPE_CHECK || type == TYPE_VALUE;
+            return holder.getItemViewType() == TYPE_ITEM;
         }
 
         @NonNull
@@ -174,9 +162,7 @@ public class TgYouSettingsActivity extends BaseFragment {
             View view;
             if (viewType == TYPE_HEADER) {
                 view = new HeaderCell(context);
-            } else if (viewType == TYPE_CHECK) {
-                view = new TextCheckCell(context);
-            } else if (viewType == TYPE_VALUE) {
+            } else if (viewType == TYPE_ITEM) {
                 view = new TextSettingsCell(context);
             } else {
                 view = new TextInfoPrivacyCell(context);
@@ -188,15 +174,12 @@ public class TgYouSettingsActivity extends BaseFragment {
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             Row row = rows.get(position);
-            PluginHost host = PluginHost.get();
             if (row.type == TYPE_HEADER) {
-                ((HeaderCell) holder.itemView).setText(row.plugin.name());
-            } else if (row.type == TYPE_CHECK) {
-                ((TextCheckCell) holder.itemView).setTextAndCheck("Включено", host != null && host.isEnabled(row.plugin), false);
-            } else if (row.type == TYPE_VALUE) {
-                ((TextSettingsCell) holder.itemView).setTextAndValue(row.field.title, valueLabel(row), false);
+                ((HeaderCell) holder.itemView).setText(row.title);
+            } else if (row.type == TYPE_ITEM) {
+                ((TextSettingsCell) holder.itemView).setTextAndValue(row.title, row.value, false);
             } else {
-                ((TextInfoPrivacyCell) holder.itemView).setText(row.plugin.description());
+                ((TextInfoPrivacyCell) holder.itemView).setText(row.title);
             }
         }
 

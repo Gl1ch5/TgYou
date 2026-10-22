@@ -1,12 +1,27 @@
 package com.tgyou.core;
 
+import android.util.SparseArray;
+
 import org.telegram.messenger.MessageObject;
+import org.telegram.messenger.Utilities;
+import org.telegram.tgnet.RequestDelegate;
+import org.telegram.tgnet.RequestDelegateTimestamp;
+import org.telegram.tgnet.TLObject;
+import org.telegram.tgnet.TLRPC;
+import org.telegram.ui.ActionBar.BaseFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The only entry points the Telegram sources call. Every call site is a single line, so
  * upstream merges stay cheap.
  */
 public final class TgYouHooks {
+
+    /** Option ids at or above this belong to plugin menu entries. */
+    private static final int MENU_OPTION_BASE = 1000;
+    private static final SparseArray<Runnable> menuActions = new SparseArray<>();
 
     private TgYouHooks() {
     }
@@ -25,5 +40,88 @@ public final class TgYouHooks {
     public static boolean transcribeRequest(MessageObject message) {
         PluginHost host = PluginHost.get();
         return host != null && host.dispatch(Hooks.TRANSCRIBE_REQUEST, message, false);
+    }
+
+    /**
+     * @return true when a plugin dropped the request; it never reaches the network and the caller
+     * gets a "TGYOU_BLOCKED" error asynchronously, like any failed request
+     */
+    public static boolean interceptRequest(TLObject request, RequestDelegate onComplete, RequestDelegateTimestamp onCompleteTimestamp) {
+        PluginHost host = PluginHost.get();
+        if (host == null || !host.dispatch(Hooks.OUTGOING_REQUEST, request, false)) {
+            return false;
+        }
+        if (onComplete != null || onCompleteTimestamp != null) {
+            final TLRPC.TL_error error = new TLRPC.TL_error();
+            error.code = 400;
+            error.text = "TGYOU_BLOCKED";
+            Utilities.stageQueue.postRunnable(() -> {
+                if (onComplete != null) {
+                    onComplete.run(null, error);
+                } else {
+                    onCompleteTimestamp.run(null, error, 0);
+                }
+            });
+        }
+        return true;
+    }
+
+    public static boolean flagSecure(boolean real) {
+        PluginHost host = PluginHost.get();
+        return host == null ? real : host.dispatch(Hooks.FLAG_SECURE, null, real);
+    }
+
+    /** @return the ids that must really be deleted locally; the rest are kept */
+    public static List<Integer> filterDeleted(int account, long dialogKey, List<Integer> ids) {
+        PluginHost host = PluginHost.get();
+        if (host == null) {
+            return ids;
+        }
+        return host.dispatch(Hooks.MESSAGES_DELETED, new Hooks.DeletedMessages(account, dialogKey, ids), ids);
+    }
+
+    public static void messageEdited(int account, TLRPC.Message message) {
+        PluginHost host = PluginHost.get();
+        if (host != null) {
+            host.dispatch(Hooks.MESSAGE_EDITED, new Hooks.EditedMessage(account, message), null);
+        }
+    }
+
+    public static CharSequence messageTime(MessageObject message, CharSequence time) {
+        PluginHost host = PluginHost.get();
+        return host == null ? time : host.dispatch(Hooks.MESSAGE_TIME, message, time);
+    }
+
+    /** Lets plugins add entries to a message's long-press menu (parallel lists of the stock menu). */
+    public static void extendMessageMenu(BaseFragment fragment, MessageObject message,
+                                         List<CharSequence> items, List<Integer> options, List<Integer> icons) {
+        menuActions.clear();
+        PluginHost host = PluginHost.get();
+        if (host == null || message == null) {
+            return;
+        }
+        MessageMenu menu = new MessageMenu(fragment, message);
+        host.dispatch(Hooks.MESSAGE_MENU, menu, null);
+        int id = MENU_OPTION_BASE;
+        for (MessageMenu.Entry entry : new ArrayList<>(menu.entries)) {
+            items.add(entry.title);
+            options.add(id);
+            icons.add(entry.icon);
+            menuActions.put(id++, entry.action);
+        }
+    }
+
+    /** @return true when the chosen option was a plugin menu entry and has been run */
+    public static boolean menuOption(int option) {
+        Runnable action = menuActions.get(option);
+        if (action == null) {
+            return false;
+        }
+        try {
+            action.run();
+        } catch (Throwable t) {
+            org.telegram.messenger.FileLog.e("tgyou: menu action failed", t);
+        }
+        return true;
     }
 }

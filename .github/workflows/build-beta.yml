@@ -14,10 +14,11 @@ on:
 permissions:
   contents: write
 
-# Release runs get their own group so a push never cancels them.
+# A new push waits for the running build instead of cancelling it, so a cold native build
+# can finish and save its cache. Release runs have their own group.
 concurrency:
   group: build-beta-${{ github.ref }}-${{ inputs.release_tag || 'ci' }}
-  cancel-in-progress: ${{ inputs.release_tag == '' }}
+  cancel-in-progress: false
 
 jobs:
   build:

@@ -18844,7 +18844,7 @@ public class MessagesController extends BaseController implements NotificationCe
                     arrayList = new ArrayList<>();
                     deletedMessages.put(0, arrayList);
                 }
-                arrayList.addAll(update.messages);
+                arrayList.addAll(com.tgyou.core.TgYouHooks.filterDeleted(currentAccount, 0, update.messages));
             } else if (baseUpdate instanceof TL_update.TL_updateDeleteQuickReplyMessages) {
                 TL_update.TL_updateDeleteQuickReplyMessages update = (TL_update.TL_updateDeleteQuickReplyMessages) baseUpdate;
                 if (deletedQuickReplyMessages == null) {
@@ -19370,7 +19370,7 @@ public class MessagesController extends BaseController implements NotificationCe
                     arrayList = new ArrayList<>();
                     deletedMessages.put(dialogId, arrayList);
                 }
-                arrayList.addAll(update.messages);
+                arrayList.addAll(com.tgyou.core.TgYouHooks.filterDeleted(currentAccount, dialogId, update.messages));
             } else if (baseUpdate instanceof TL_update.TL_updateChannel) {
                 if (BuildVars.LOGS_ENABLED) {
                     TL_update.TL_updateChannel update = (TL_update.TL_updateChannel) baseUpdate;
@@ -19491,6 +19491,7 @@ public class MessagesController extends BaseController implements NotificationCe
                 }
 
                 MessageObject.getDialogId(message);
+                com.tgyou.core.TgYouHooks.messageEdited(currentAccount, message);
 
                 ConcurrentHashMap<Long, Integer> read_max = message.out ? dialogs_read_outbox_max : dialogs_read_inbox_max;
                 Integer value = read_max.get(message.dialog_id);

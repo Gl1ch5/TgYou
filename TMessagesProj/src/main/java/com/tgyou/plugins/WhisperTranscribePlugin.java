@@ -6,6 +6,7 @@ import com.tgyou.core.Hooks;
 import com.tgyou.core.Plugin;
 import com.tgyou.core.PluginContext;
 import com.tgyou.core.PluginSettings;
+import com.tgyou.core.Section;
 import com.tgyou.core.SettingField;
 
 import org.json.JSONObject;
@@ -64,11 +65,16 @@ public final class WhisperTranscribePlugin implements Plugin {
     }
 
     @Override
+    public Section section() {
+        return Section.AI;
+    }
+
+    @Override
     public List<SettingField> fields() {
         return Arrays.asList(
-                new SettingField(KEY_API, "API-ключ Groq", "", true),
-                new SettingField(KEY_MODEL, "Модель", "whisper-large-v3-turbo", false),
-                new SettingField(KEY_LANGUAGE, "Язык (ru, en…, пусто — авто)", "", false)
+                SettingField.secret(KEY_API, "API-ключ Groq"),
+                SettingField.text(KEY_MODEL, "Модель", "whisper-large-v3-turbo"),
+                SettingField.text(KEY_LANGUAGE, "Язык (ru, en…, пусто — авто)", "")
         );
     }
 

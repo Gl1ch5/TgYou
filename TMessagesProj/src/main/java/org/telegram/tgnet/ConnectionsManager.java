@@ -399,6 +399,9 @@ public class ConnectionsManager extends BaseController {
         if (BuildVars.LOGS_ENABLED) {
             FileLog.d("send request " + object + " with token = " + requestToken);
         }
+        if (com.tgyou.core.TgYouHooks.interceptRequest(object, onComplete, onCompleteTimestamp)) {
+            return;
+        }
         try {
             NativeByteBuffer buffer = new NativeByteBuffer(object.getObjectSize());
             object.serializeToStream(buffer);

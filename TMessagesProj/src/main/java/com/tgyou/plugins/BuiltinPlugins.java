@@ -12,6 +12,10 @@ public final class BuiltinPlugins {
 
     public static List<Plugin> create() {
         return Arrays.asList(
+                new GhostModePlugin(),
+                new ScreenPrivacyPlugin(),
+                new AntiRecallPlugin(),
+                new AdBlockPlugin(),
                 new LocalPremiumPlugin(),
                 new WhisperTranscribePlugin()
         );

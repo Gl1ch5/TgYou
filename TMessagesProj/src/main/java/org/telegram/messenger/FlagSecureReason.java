@@ -21,7 +21,7 @@ public class FlagSecureReason {
     private boolean value = false;
 
     public void invalidate() {
-        boolean newValue = attached && condition != null && condition.run();
+        boolean newValue = attached && condition != null && com.tgyou.core.TgYouHooks.flagSecure(condition.run());
         if (newValue != value) {
             update((value = newValue) ? +1 : -1);
         }

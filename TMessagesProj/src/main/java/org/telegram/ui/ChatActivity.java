@@ -31928,6 +31928,7 @@ public class ChatActivity extends BaseFragment implements
                         popupLayout.addView(new ActionBarPopupWindow.GapView(contentView.getContext(), themeDelegate), LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 8));
                     }
                 }
+                com.tgyou.core.TgYouHooks.extendMessageMenu(this, selectedObject, items, options, icons);
                 scrimPopupWindowItems = new ActionBarMenuSubItem[items.size()];
                 for (int a = 0, N = items.size(); a < N; a++) {
                     final Integer option = options.get(a);
@@ -33421,6 +33422,9 @@ public class ChatActivity extends BaseFragment implements
 
     private void processSelectedOption(int option) {
         if (selectedObject == null || getParentActivity() == null) {
+            return;
+        }
+        if (com.tgyou.core.TgYouHooks.menuOption(option)) {
             return;
         }
         boolean preserveDim = false;
