@@ -247,6 +247,16 @@ public abstract class TgYouScreen extends BaseFragment {
         return r;
     }
 
+    /** Row with a plain outline icon and a blue value on the right (AyuGram style). */
+    protected Row item(int icon, String title, String value, Runnable action) {
+        Row r = add(T_LINK);
+        r.icon = icon;
+        r.title = title;
+        r.sub = value;
+        r.action = action;
+        return r;
+    }
+
     protected Row button(String title, boolean red, Runnable action) {
         Row r = add(T_BUTTON);
         r.title = title;
@@ -595,7 +605,11 @@ public abstract class TgYouScreen extends BaseFragment {
                 }
                 case T_LINK: {
                     TextCell cell = (TextCell) view;
-                    cell.setTextAndValueAndColorfulIcon(row.title, row.sub, false, row.icon, row.color, row.color2, divider);
+                    if (row.color == 0 && row.color2 == 0) {
+                        cell.setTextAndValueAndIcon(row.title, row.sub, row.icon, divider);
+                    } else {
+                        cell.setTextAndValueAndColorfulIcon(row.title, row.sub, false, row.icon, row.color, row.color2, divider);
+                    }
                     break;
                 }
                 case T_BUTTON: {
