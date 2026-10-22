@@ -20,6 +20,7 @@ public final class BuiltinPlugins {
                 new SavedChatsPlugin(),
                 new TtlMediaPlugin(),
                 new ScreenshotNoticePlugin(),
+                new ExtraPrivacyPlugin(),
                 new ExactTimePlugin(),
                 new MessageInfoPlugin(),
                 new LocalPremiumPlugin(),
