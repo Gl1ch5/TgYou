@@ -73,6 +73,32 @@ public final class ModStore {
         }
     }
 
+    /** Installs an exteraGram .plugin (one Python file) by wrapping it into an ordinary mod. */
+    public ModManifest installPlugin(byte[] source) throws Exception {
+        File tmp = new File(root, ".import-" + System.nanoTime() + ".py");
+        try {
+            java.nio.file.Files.write(tmp.toPath(), source);
+            com.chaquo.python.Python py = com.chaquo.python.Python.getInstance();
+            String manifest = py.getModule("tgyou_extera").callAttr("describe", tmp.getAbsolutePath()).toString();
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            try (java.util.zip.ZipOutputStream zip = new java.util.zip.ZipOutputStream(bos)) {
+                put(zip, "manifest.json", manifest.getBytes("UTF-8"));
+                put(zip, "plugin.py", source);
+                put(zip, "main.py", ("import os\nfrom tgyou_extera import load\n\n\ndef on_load(api):\n"
+                        + "    load(api, os.path.join(os.path.dirname(__file__), \"plugin.py\"))\n").getBytes("UTF-8"));
+            }
+            return install(bos.toByteArray(), null);
+        } finally {
+            tmp.delete();
+        }
+    }
+
+    private static void put(java.util.zip.ZipOutputStream zip, String name, byte[] data) throws Exception {
+        zip.putNextEntry(new ZipEntry(name));
+        zip.write(data);
+        zip.closeEntry();
+    }
+
     public void remove(String id) {
         deleteRecursively(dirOf(id));
     }

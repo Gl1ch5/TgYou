@@ -66,6 +66,12 @@ public final class TgYouHooks {
         return true;
     }
 
+    /** @return true when a plugin cancelled the outgoing message */
+    public static boolean beforeSend(org.telegram.messenger.SendMessagesHelper.SendMessageParams params) {
+        PluginHost host = PluginHost.get();
+        return host != null && params != null && host.dispatch(Hooks.SEND_MESSAGE, params, false);
+    }
+
     /** @return the messages that may be shown; the same list when nothing is hidden */
     public static java.util.ArrayList<MessageObject> filterMessages(java.util.ArrayList<MessageObject> messages) {
         PluginHost host = PluginHost.get();

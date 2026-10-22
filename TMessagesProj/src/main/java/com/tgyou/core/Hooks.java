@@ -25,6 +25,8 @@ public final class Hooks {
      * Input: a request about to be sent to Telegram. Value: true to drop it; the caller then
      * gets a "TGYOU_BLOCKED" error instead of a server response.
      */
+    /** Before a message leaves: plugins may edit the params in place; true cancels the send. */
+    public static final HookPoint<org.telegram.messenger.SendMessagesHelper.SendMessageParams, Boolean> SEND_MESSAGE = new HookPoint<>("message.send");
     public static final HookPoint<TLObject, Boolean> OUTGOING_REQUEST = new HookPoint<>("request.outgoing");
 
     /** Input: unused. Value: whether the window must be hidden from screenshots and screen capture. */

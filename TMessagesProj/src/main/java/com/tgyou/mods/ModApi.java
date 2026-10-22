@@ -57,6 +57,12 @@ public final class ModApi {
                     return blocked || truthy(r);
                 });
                 break;
+            case "message.send":
+                context.on(Hooks.SEND_MESSAGE, (params, cancelled) -> {
+                    PyObject r = fn.call(org.telegram.messenger.UserConfig.selectedAccount, params);
+                    return cancelled || truthy(r);
+                });
+                break;
             case "message.time":
                 context.on(Hooks.MESSAGE_TIME, (message, time) -> {
                     PyObject r = fn.call(message, time == null ? "" : time.toString());

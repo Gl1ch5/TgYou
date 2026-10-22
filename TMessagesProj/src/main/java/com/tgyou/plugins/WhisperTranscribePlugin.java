@@ -93,6 +93,28 @@ public final class WhisperTranscribePlugin implements Plugin {
         });
     }
 
+    /** Own voice messages live under attachPath until they are re-downloaded; incoming ones in the cache. */
+    private static File localFile(MessageObject message) {
+        String attach = message.messageOwner.attachPath;
+        if (attach != null && !attach.isEmpty()) {
+            File f = new File(attach);
+            if (f.exists() && f.length() > 0) {
+                return f;
+            }
+        }
+        File f = FileLoader.getInstance(message.currentAccount).getPathToMessage(message.messageOwner);
+        if (f != null && f.exists() && f.length() > 0) {
+            return f;
+        }
+        if (message.getDocument() != null) {
+            f = FileLoader.getInstance(message.currentAccount).getPathToAttach(message.getDocument());
+            if (f != null && f.exists() && f.length() > 0) {
+                return f;
+            }
+        }
+        return null;
+    }
+
     private void start(MessageObject message) {
         String apiKey = settings.getString(KEY_API, "").trim();
         if (apiKey.isEmpty()) {
@@ -100,8 +122,8 @@ public final class WhisperTranscribePlugin implements Plugin {
             fail(message);
             return;
         }
-        File file = FileLoader.getInstance(message.currentAccount).getPathToMessage(message.messageOwner);
-        if (file == null || !file.exists()) {
+        File file = localFile(message);
+        if (file == null) {
             toast("Голосовое ещё не загружено, нажмите на него и повторите");
             fail(message);
             return;

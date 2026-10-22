@@ -118,6 +118,10 @@ def prebuiltJni = System.getenv("TG_PREBUILT_JNI")
 chaquopy {
     defaultConfig {
         version = "3.13"
+        pip {
+            // exteraGram plugins import requests
+            install "requests"
+        }
     }
 }
 

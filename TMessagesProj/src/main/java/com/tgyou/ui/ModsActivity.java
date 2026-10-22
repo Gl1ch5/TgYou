@@ -341,9 +341,9 @@ public class ModsActivity extends BaseFragment {
 
     private void pickZip() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("application/zip");
+        intent.setType("*/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        startActivityForResult(Intent.createChooser(intent, "Мод (.zip)"), REQUEST_PICK_ZIP);
+        startActivityForResult(Intent.createChooser(intent, "Мод (.zip) или плагин exteraGram (.plugin)"), REQUEST_PICK_ZIP);
     }
 
     @Override
@@ -357,7 +357,10 @@ public class ModsActivity extends BaseFragment {
             String error = null;
             ModManifest manifest = null;
             try (InputStream in = context.getContentResolver().openInputStream(uri)) {
-                manifest = ModRuntime.store(context).install(com.tgyou.mods.ModStore.readAll(in), null);
+                byte[] bytes = com.tgyou.mods.ModStore.readAll(in);
+                ModRuntime.ensurePython(context);
+                boolean zip = bytes.length > 3 && bytes[0] == 'P' && bytes[1] == 'K';
+                manifest = zip ? ModRuntime.store(context).install(bytes, null) : ModRuntime.store(context).installPlugin(bytes);
                 ModRuntime.activate(context, manifest);
             } catch (Throwable t) {
                 error = t.getMessage() != null ? t.getMessage() : t.toString();
