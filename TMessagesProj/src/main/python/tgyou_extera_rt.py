@@ -369,3 +369,12 @@ def change_action(plugin, item):
         except Exception as e:
             log(plugin, "on_change " + str(item.key) + ": " + repr(e))
     return run
+
+
+def add_drawer_item(plugin, item):
+    api = plugin._api
+
+    def run():
+        if item.on_click is not None:
+            item.on_click({"account": _account()})
+    api.addMenuAction(str(item.text), run)

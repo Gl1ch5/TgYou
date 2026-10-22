@@ -36,10 +36,11 @@
 | `Custom`, `SimpleSettingFactory` | принимаются, **не отображаются** |
 | Модули `plugins_manager`, `settings`; `MethodReplacement`, `HookFilter`, `client_utils.log/show_*_bulletin/download_file`, `android_utils.dp/get_string` | заглушки/простая реализация, чтобы плагины импортировались |
 | Журнал мода | кнопка «Журнал» на карточке мода: последние 200 строк `log` и ошибок, можно скопировать |
-| Меню чата/профиля/шторки (`CHAT_ACTION_MENU`, `PROFILE_ACTION_MENU`, `DRAWER_MENU`) | пока нет |
-| Intents, файловые хуки, `hook_method` (Xposed), `extera_utils.classes` (`java_subclass`) | **не поддерживаются**: вызов пишется в лог |
+| `CHAT_ACTION_MENU`, `PROFILE_ACTION_MENU` | есть (хук `menu.item`, трёхточечное меню чата и профиля; на устройстве не проверено) |
+| `DRAWER_MENU`, `MAIN_MENU` | в Telegram 13 бокового меню нет: пункты показываются на главном экране TgYou в группе «Расширения» |
+| `hook_method`, `hook_all_methods`, `hook_all_constructors`, `unhook_method`, `MethodHook`, `MethodReplacement`, `XposedHook` | реализованы на Pine (`top.canyie.pine:core:0.3.0`, `PineHooks.java`): before/after/replace, `param.args/thisObject/setResult/getResult`. Pine заявляет поддержку до Android 14–15, на Android 16 **не проверено**; при сбое инициализации хук возвращает None и пишет причину в «Журнал» мода |
+| Intents, файловые хуки, `extera_utils.classes` (`java_subclass`) | **не поддерживаются**: вызов пишется в лог (в 81 проверенном плагине не встречаются) |
 | `__requirements__` (pip), `.eaf` (ElyxBuilder) | нет |
-| Собственные экраны плагина (`create_sub_fragment`) | нет |
 
 Неподдержанный метод API не роняет плагин: вызов записывается в лог и игнорируется.
 

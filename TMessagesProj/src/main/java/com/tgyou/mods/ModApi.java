@@ -160,6 +160,26 @@ public final class ModApi {
         ModActions.register(modId, key, fn);
     }
 
+    /** Xposed-style hook; before/after/replace are Python callables taking one Param (or None). Returns a handle or null. */
+    public Object hookMethod(Object member, PyObject before, PyObject after, PyObject replace) {
+        return PineHooks.hook(modId, context, (java.lang.reflect.Member) member, before, after, replace);
+    }
+
+    public void unhookMethod(Object handle) {
+        PineHooks.unhook(handle);
+    }
+
+    /** An entry for the drawer/main menu of exteraGram plugins; it appears on the TgYou screen. */
+    public void addMenuAction(String title, PyObject fn) {
+        ModPages.addAction(modId, title, () -> {
+            try {
+                fn.call();
+            } catch (Throwable t) {
+                ModLog.add(modId, "menu " + title + ": " + t);
+            }
+        });
+    }
+
     public void add_page(String title, PyObject fn) {
         addPage(title, fn);
     }

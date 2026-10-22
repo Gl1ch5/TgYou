@@ -84,7 +84,50 @@ class HookFilter:
 
 
 class XposedHook(MethodHook):
-    pass
+    def __init__(self, before=None, after=None, replace=None, **kw):
+        self._before = before
+        self._after = after
+        self._replace = replace
+
+    def before_hooked_method(self, param):
+        if self._before is not None:
+            self._before(param)
+
+    def after_hooked_method(self, param):
+        if self._after is not None:
+            self._after(param)
+
+    def replace_hooked_method(self, param):
+        return self._replace(param) if self._replace is not None else None
+
+
+class _Unhook:
+    def __init__(self, plugin, handle):
+        self._plugin = plugin
+        self._handle = handle
+
+    def unhook(self):
+        if self._handle is not None and self._plugin._api is not None:
+            self._plugin._api.unhookMethod(self._handle)
+        self._handle = None
+
+    def __call__(self):
+        self.unhook()
+
+    def __bool__(self):
+        return self._handle is not None
+
+
+def _members(clazz, kind):
+    """Declared methods/constructors of a class given as a Java Class, a Chaquopy class proxy or a name."""
+    from java import jclass
+    if isinstance(clazz, str):
+        clazz = jclass("java.lang.Class").forName(clazz)
+    get = "getDeclared" + kind
+    try:
+        return list(getattr(clazz, get)())
+    except Exception:
+        return list(getattr(clazz.getClass(), get)())
 
 
 class BasePlugin:
@@ -100,6 +143,7 @@ class BasePlugin:
         self._menu_items = []
         self._menu_installed = False
         self._app_installed = False
+        self._xposed = []
 
     # --- settings -------------------------------------------------------
     def get_setting(self, key, default=None):
@@ -132,6 +176,8 @@ class BasePlugin:
     def add_menu_item(self, item):
         self._menu_items.append(item)
         rt.install_menu(self)
+        if getattr(item, "menu_type", None) in ("drawer_menu", "main_menu") and self._api is not None:
+            rt.add_drawer_item(self, item)
 
     def remove_menu_item(self, item_id):
         before = len(self._menu_items)
@@ -173,18 +219,72 @@ class BasePlugin:
     def remove_file_hook(self, ext, secret):
         pass
 
-    def hook_method(self, *args, **kwargs):
-        rt.log(self, "hook_method (Xposed) не поддерживается в TgYou")
-        return None
+    def hook_method(self, method, hook=None, priority=0, **kwargs):
+        """Xposed-style hook of a java.lang.reflect.Method/Constructor (Pine). Returns an unhook handle or None."""
+        if self._api is None or method is None:
+            return None
+        if hook is None:
+            hook = XposedHook(**kwargs)
+        elif callable(hook) and not isinstance(hook, MethodHook):
+            hook = XposedHook(replace=hook, before=kwargs.get("before"), after=kwargs.get("after"))
+        elif kwargs.get("before") is not None or kwargs.get("after") is not None:
+            hook = XposedHook(before=kwargs.get("before"), after=kwargs.get("after"), replace=getattr(hook, "replace_hooked_method", None))
+        before = getattr(hook, "before_hooked_method", None)
+        after = getattr(hook, "after_hooked_method", None)
+        if isinstance(hook, XposedHook):
+            replace = hook.replace_hooked_method if hook._replace is not None else None
+        elif isinstance(hook, MethodReplacement) or "replace_hooked_method" in dir(type(hook)) and type(hook).replace_hooked_method is not MethodHook.__dict__.get("replace_hooked_method"):
+            replace = hook.replace_hooked_method
+        else:
+            replace = None
+        try:
+            handle = self._api.hookMethod(method, before, after, replace)
+        except Exception as e:
+            rt.log(self, "hook_method: " + repr(e))
+            return None
+        if handle is None:
+            return None
+        unhook = _Unhook(self, handle)
+        self._xposed.append(unhook)
+        return unhook
 
-    hook_all_methods = hook_method
-    hook_all_constructors = hook_method
+    def hook_all_methods(self, clazz, name, hook, priority=0, **kwargs):
+        result = []
+        for m in _members(clazz, "Methods"):
+            try:
+                if str(m.getName()) == str(name):
+                    m.setAccessible(True)
+                    u = self.hook_method(m, hook, priority, **kwargs)
+                    if u is not None:
+                        result.append(u)
+            except Exception as e:
+                rt.log(self, "hook_all_methods " + str(name) + ": " + repr(e))
+        return result
+
+    def hook_all_constructors(self, clazz, hook, priority=0, **kwargs):
+        result = []
+        for c in _members(clazz, "Constructors"):
+            try:
+                c.setAccessible(True)
+                u = self.hook_method(c, hook, priority, **kwargs)
+                if u is not None:
+                    result.append(u)
+            except Exception as e:
+                rt.log(self, "hook_all_constructors: " + repr(e))
+        return result
 
     def unhook_method(self, unhook):
-        pass
+        if unhook is None:
+            return
+        for u in unhook if isinstance(unhook, (list, tuple)) else [unhook]:
+            try:
+                u.unhook()
+            except Exception as e:
+                rt.log(self, "unhook: " + repr(e))
 
     def unhook_objects(self, *args, **kwargs):
-        pass
+        for u in args:
+            self.unhook_method(u)
 
     def hook_filters(self, *args, **kwargs):
         rt.log(self, "hook_filters (Xposed) не поддерживается в TgYou")

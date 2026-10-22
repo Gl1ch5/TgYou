@@ -17,6 +17,10 @@ public final class PluginContext {
         return settings;
     }
 
+    public boolean isEnabled() {
+        return host.isEnabled(plugin);
+    }
+
     public <I, O> void on(HookPoint<I, O> point, HookHandler<I, O> handler) {
         host.addHandler(plugin, point, handler);
     }

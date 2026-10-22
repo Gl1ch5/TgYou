@@ -33,7 +33,24 @@ final class PackResources extends Resources {
         return swap(id, super.getDrawableForDensity(id, density, theme));
     }
 
-    private Drawable swap(int id, Drawable original) {
+    @Override
+    public java.io.InputStream openRawResource(int id) throws NotFoundException {
+        return openRawResource(id, null);
+    }
+
+    @Override
+    public java.io.InputStream openRawResource(int id, android.util.TypedValue value) throws NotFoundException {
+        String name = nameOf(id);
+        if (!name.isEmpty() && IconPacks.has(name)) {
+            java.io.InputStream replaced = IconPacks.rawStream(name);
+            if (replaced != null) {
+                return replaced;
+            }
+        }
+        return value == null ? super.openRawResource(id) : super.openRawResource(id, value);
+    }
+
+    private String nameOf(int id) {
         String name = names.get(id);
         if (name == null) {
             try {
@@ -44,6 +61,11 @@ final class PackResources extends Resources {
             }
             names.put(id, name);
         }
+        return name;
+    }
+
+    private Drawable swap(int id, Drawable original) {
+        String name = nameOf(id);
         if (name == NONE || name.isEmpty() || !IconPacks.has(name)) {
             return original;
         }

@@ -160,7 +160,9 @@ public class IconPacksActivity extends BaseFragment {
         });
         AlertDialog.Builder b = new AlertDialog.Builder(context);
         b.setTitle(pack.name);
-        b.setMessage((pack.author.isEmpty() ? "" : pack.author + " · ") + pack.icons + " иконок" + (pack.version.isEmpty() ? "" : " · v" + pack.version));
+        int[] cov = IconPacks.coverage(context, pack.id);
+        b.setMessage((pack.author.isEmpty() ? "" : pack.author + " · ") + pack.icons + " иконок" + (pack.version.isEmpty() ? "" : " · v" + pack.version)
+                + "\nПрименится: " + cov[0] + " из " + cov[1] + " (остальных нет в этом приложении)");
         b.setView(box);
         b.setPositiveButton(selected ? "Выключить" : "Применить", (d, w) -> {
             IconPacks.activate(context, selected ? "" : pack.id);

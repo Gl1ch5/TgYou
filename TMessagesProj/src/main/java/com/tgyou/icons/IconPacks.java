@@ -158,6 +158,43 @@ public final class IconPacks {
         return p;
     }
 
+    /** {matching, total}: icons of the pack that exist as drawables in this app (the rest has nothing to replace). */
+    public static int[] coverage(Context context, String id) {
+        int matching = 0;
+        int total = 0;
+        try {
+            File dir = new File(root(context), id);
+            JSONObject icons = new JSONObject(new String(readAll(new FileInputStream(new File(dir, "metadata.json"))), "UTF-8")).getJSONObject("icons");
+            Resources res = context.getApplicationContext().getResources();
+            String pkg = context.getPackageName();
+            java.util.Iterator<String> it = icons.keys();
+            while (it.hasNext()) {
+                String name = it.next();
+                total++;
+                if (res.getIdentifier(name, "drawable", pkg) != 0 || res.getIdentifier(name, "mipmap", pkg) != 0) {
+                    matching++;
+                }
+            }
+        } catch (Throwable t) {
+            FileLog.e("tgyou: coverage", t);
+        }
+        return new int[]{matching, total};
+    }
+
+    /** Stream of the pack's PNG for drawable {@code name}, or null (SVG and unknown names go through getDrawable). */
+    static java.io.InputStream rawStream(String name) {
+        String file = activeMap.get(name);
+        File dir = activeDir;
+        if (file == null || dir == null || !file.toLowerCase().endsWith(".png")) {
+            return null;
+        }
+        try {
+            return new FileInputStream(new File(dir, file));
+        } catch (Throwable t) {
+            return null;
+        }
+    }
+
     public static List<Pack> list(Context context) {
         List<Pack> result = new ArrayList<>();
         File[] dirs = root(context).listFiles();

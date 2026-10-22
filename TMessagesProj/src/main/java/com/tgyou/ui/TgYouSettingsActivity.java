@@ -152,6 +152,10 @@ public class TgYouSettingsActivity extends BaseFragment {
             addWide(context, R.drawable.settings_calls, IconBackgroundColors.GREEN, page.title, "страница мода", animate ? index++ : -1, () -> presentFragment(new ModPageActivity(page)));
         }
 
+        for (com.tgyou.mods.ModPages.Action action : com.tgyou.mods.ModPages.actions()) {
+            addWide(context, R.drawable.settings_features, IconBackgroundColors.ORANGE_DEEP, action.title, "действие мода", animate ? index++ : -1, () -> org.telegram.messenger.AndroidUtilities.runOnUIThread(action.run));
+        }
+
         group(context, "Приложение");
         addWide(context, R.drawable.settings_ask, IconBackgroundColors.BLUE, "Обновления", "новые версии из релизов GitHub", animate ? index++ : -1, () -> presentFragment(new TgYouUpdateActivity()));
         addWide(context, R.drawable.settings_faq, IconBackgroundColors.GRAY, "Все функции", host.plugins().size() + " плагинов и модов", animate ? index++ : -1, () -> presentFragment(new TgYouSectionActivity((Section) null)));
