@@ -23,7 +23,7 @@ dependencies {
 
 // TG_FAST skips R8 and resource shrinking for quick branch builds
 def tgyouFast = System.getenv("TG_FAST") ? true : false
-def tgyouAbis = (System.getenv("TG_ABIS") ?: "armeabi-v7a,arm64-v8a,x86,x86_64").split(",") as List
+def tgyouAbis = (System.getenv("TG_ABIS") ?: "arm64-v8a,x86_64").split(",") as List
 
 android {
     compileSdkVersion 36
@@ -170,7 +170,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion 36
         versionName APP_VERSION_NAME
         ndkVersion "27.2.12479018"

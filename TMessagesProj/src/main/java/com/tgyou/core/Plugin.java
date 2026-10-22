@@ -20,6 +20,11 @@ public interface Plugin {
         return Section.MISC;
     }
 
+    /** True for Python mods installed by the user; they live in the Mods window, not in the settings tabs. */
+    default boolean isMod() {
+        return false;
+    }
+
     /** Whether the plugin is on before the user touches its switch. */
     default boolean enabledByDefault() {
         return false;

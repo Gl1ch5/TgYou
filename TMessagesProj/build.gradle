@@ -2,6 +2,7 @@ import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 
 apply plugin: 'com.android.library'
 apply plugin: 'org.telegram.build-plugin'
+apply plugin: 'com.chaquo.python'
 apply plugin: 'idea'
 
 idea {
@@ -113,6 +114,13 @@ dependencies {
 // which skips the native build entirely.
 def prebuiltJni = System.getenv("TG_PREBUILT_JNI")
 
+// Python runtime for TgYou mods (see docs/MODS.md)
+chaquopy {
+    defaultConfig {
+        version = "3.13"
+    }
+}
+
 android {
     compileSdkVersion 36
     buildToolsVersion '36.0.0'
@@ -142,7 +150,11 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 23
+        minSdkVersion 24
+        // Chaquopy 17 with Python 3.13 ships arm64-v8a and x86_64 only
+        ndk {
+            abiFilters.addAll((System.getenv("TG_ABIS") ?: "arm64-v8a,x86_64").split(",") as List)
+        }
         targetSdkVersion 36
 
         vectorDrawables.generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi']

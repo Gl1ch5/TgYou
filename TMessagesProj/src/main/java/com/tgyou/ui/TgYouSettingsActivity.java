@@ -38,6 +38,8 @@ public class TgYouSettingsActivity extends BaseFragment {
     private static final int ACTION_ALL_PLUGINS = 1;
     private static final int ACTION_ICONS = 2;
     private static final int ACTION_UPDATES = 3;
+    private static final int ACTION_MODS = 4;
+    private static final int ACTION_MOD_PAGE = 5;
 
     private static final class Row {
         final int type;
@@ -45,6 +47,7 @@ public class TgYouSettingsActivity extends BaseFragment {
         final String title;
         final String value;
         final int action;
+        com.tgyou.mods.ModPages.Page page;
 
         Row(int type, Section section, String title, String value, int action) {
             this.type = type;
@@ -99,7 +102,7 @@ public class TgYouSettingsActivity extends BaseFragment {
             int total = 0;
             int enabled = 0;
             for (Plugin plugin : host.plugins()) {
-                if (plugin.section() == section) {
+                if (!plugin.isMod() && plugin.section() == section) {
                     total++;
                     if (host.isEnabled(plugin)) {
                         enabled++;
@@ -110,10 +113,17 @@ public class TgYouSettingsActivity extends BaseFragment {
                 rows.add(new Row(TYPE_ITEM, section, section.title, enabled + " из " + total, ACTION_SECTION));
             }
         }
+        rows.add(new Row(TYPE_HEADER, null, "Моды", null, ACTION_SECTION));
+        rows.add(new Row(TYPE_ITEM, null, "Моды", "маркетплейс и свои", ACTION_MODS));
+        for (com.tgyou.mods.ModPages.Page page : com.tgyou.mods.ModPages.all()) {
+            Row row = new Row(TYPE_ITEM, null, page.title, "мод", ACTION_MOD_PAGE);
+            row.page = page;
+            rows.add(row);
+        }
         rows.add(new Row(TYPE_HEADER, null, "Управление", null, ACTION_SECTION));
         rows.add(new Row(TYPE_ITEM, null, "Обновления", "GitHub", ACTION_UPDATES));
         rows.add(new Row(TYPE_ITEM, null, "Иконка приложения", "", ACTION_ICONS));
-        rows.add(new Row(TYPE_ITEM, null, "Все плагины", String.valueOf(host.plugins().size()), ACTION_ALL_PLUGINS));
+        rows.add(new Row(TYPE_ITEM, null, "Все функции", String.valueOf(host.plugins().size()), ACTION_ALL_PLUGINS));
         rows.add(new Row(TYPE_INFO, null, "Telegram You " + BuildVars.BUILD_VERSION_STRING
                 + "\nВсе функции работают как плагины: их можно включать и выключать по отдельности.", null, ACTION_SECTION));
     }
@@ -122,7 +132,11 @@ public class TgYouSettingsActivity extends BaseFragment {
         if (row.type != TYPE_ITEM) {
             return;
         }
-        if (row.action == ACTION_UPDATES) {
+        if (row.action == ACTION_MODS) {
+            presentFragment(new ModsActivity());
+        } else if (row.action == ACTION_MOD_PAGE) {
+            presentFragment(new ModPageActivity(row.page));
+        } else if (row.action == ACTION_UPDATES) {
             presentFragment(new TgYouUpdateActivity());
         } else if (row.action == ACTION_ICONS) {
             presentFragment(new TgYouIconsActivity());

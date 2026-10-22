@@ -58,18 +58,26 @@ public class TgYouSectionActivity extends BaseFragment {
     }
 
     private final Section section;
+    private final Plugin single;
     private final List<Row> rows = new ArrayList<>();
     private RecyclerListView.SelectionAdapter adapter;
 
     public TgYouSectionActivity(Section section) {
         this.section = section;
+        this.single = null;
+    }
+
+    /** Settings of one plugin or mod. */
+    public TgYouSectionActivity(Plugin single) {
+        this.section = null;
+        this.single = single;
     }
 
     @Override
     public View createView(Context context) {
         actionBar.setBackButtonImage(R.drawable.ic_ab_back);
         actionBar.setAllowOverlayTitle(true);
-        actionBar.setTitle(section == null ? "Все плагины" : section.title);
+        actionBar.setTitle(single != null ? single.name() : section == null ? "Все функции" : section.title);
         actionBar.setActionBarMenuOnItemClick(new ActionBar.ActionBarMenuOnItemClick() {
             @Override
             public void onItemClick(int id) {
@@ -103,12 +111,12 @@ public class TgYouSectionActivity extends BaseFragment {
             return;
         }
         for (Plugin plugin : host.plugins()) {
-            if (section != null && plugin.section() != section) {
+            if (single != null ? plugin != single : (plugin.isMod() || section != null && plugin.section() != section)) {
                 continue;
             }
             rows.add(new Row(TYPE_HEADER, plugin, null));
             rows.add(new Row(TYPE_SWITCH, plugin, null));
-            if (section != null) {
+            if (section != null || single != null) {
                 for (SettingField field : plugin.fields()) {
                     rows.add(new Row(field.kind == SettingField.Kind.TOGGLE ? TYPE_SWITCH : TYPE_VALUE, plugin, field));
                 }

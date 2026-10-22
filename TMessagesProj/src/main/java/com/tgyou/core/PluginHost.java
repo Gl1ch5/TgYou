@@ -28,7 +28,7 @@ public final class PluginHost {
     private final SharedPreferences prefs;
     private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
     private final Map<String, Boolean> enabled = new HashMap<>();
-    private final Map<String, PluginSettings> settings = new HashMap<>();
+    private final Map<String, PluginSettings> settings = new java.util.concurrent.ConcurrentHashMap<>();
     private final Map<HookPoint<?, ?>, List<Registration<?, ?>>> handlers = new HashMap<>();
 
     private static final class Registration<I, O> {
@@ -62,9 +62,42 @@ public final class PluginHost {
                     host.register(plugin);
                 }
                 instance = host;
+                com.tgyou.mods.ModRuntime.loadAll(host, context);
             }
             return instance;
         }
+    }
+
+    /** Adds a plugin after startup (an installed mod). Replaces a plugin with the same id. */
+    public void registerMod(Plugin plugin) {
+        unregister(plugin.id());
+        register(plugin);
+    }
+
+    public void unregister(String id) {
+        Plugin old = find(id);
+        if (old == null) {
+            return;
+        }
+        plugins.remove(old);
+        synchronized (handlers) {
+            for (List<Registration<?, ?>> list : handlers.values()) {
+                for (Registration<?, ?> r : list) {
+                    if (r.plugin == old) {
+                        list.remove(r);
+                    }
+                }
+            }
+        }
+    }
+
+    public Plugin find(String id) {
+        for (Plugin plugin : plugins) {
+            if (plugin.id().equals(id)) {
+                return plugin;
+            }
+        }
+        return null;
     }
 
     private void register(Plugin plugin) {
