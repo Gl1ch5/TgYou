@@ -3951,7 +3951,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                     if (nextPressed || timeText != null && timeText.getVisibility() != View.GONE || isResendingCode) {
                         return;
                     }
-                    boolean email = nextType == 0;
+                    boolean email = nextType == 0 && !com.tgyou.ui.TgYouLoginHint.forceResend(currentType);
                     if (!email) {
                         if (radialProgressView.getTag() != null) {
                             return;

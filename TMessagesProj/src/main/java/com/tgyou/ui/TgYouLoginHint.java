@@ -13,9 +13,14 @@ public final class TgYouLoginHint {
         result.append("\n\nКод отправлен: ").append(name(type));
         result.append(next == 0 ? ". Других способов Telegram не предлагает." : ". Дальше можно: " + name(next) + ".");
         if (type == 1) {
-            result.append(" Код приходит в Telegram на другое устройство, где вы уже вошли (в том числе на удалённую установку).");
+            result.append(" Код приходит в Telegram на другое устройство, где вы уже вошли (в том числе на удалённую установку). Нажмите «Не получили код?»: приложение запросит у Telegram другой способ, например почту.");
         }
         return result;
+    }
+
+    /** Code went to a Telegram session and no next method is listed: ask the server for another one anyway (email, SMS). */
+    public static boolean forceResend(int type) {
+        return type == 1;
     }
 
     private static String name(int type) {
