@@ -23,9 +23,42 @@ def _plugin_class(module):
     return None
 
 
+def _flatten(items, depth=0):
+    """Settings in display order. Text items with create_sub_fragment are expanded under their own header."""
+    out = []
+    for it in items or []:
+        k = getattr(it, "kind", None)
+        sub = getattr(it, "create_sub_fragment", None)
+        if k == "text" and callable(sub) and depth < 2:
+            out.append(_Header(str(getattr(it, "text", ""))))
+            try:
+                out.extend(_flatten(sub(), depth + 1))
+            except Exception as e:
+                rt.log(None, "create_sub_fragment: " + repr(e))
+            continue
+        out.append(it)
+    return out
+
+
+class _Header:
+    kind = "header"
+    key = None
+
+    def __init__(self, text):
+        self.text = text
+
+
+def _name_buttons(items):
+    n = 0
+    for it in items:
+        if getattr(it, "kind", None) == "text" and callable(getattr(it, "on_click", None)):
+            it._tg_key = "_btn%d" % n
+            n += 1
+
+
 def _schema(items):
     schema = {}
-    for it in items or []:
+    for it in _flatten(items):
         if getattr(it, "kind", None) in ("switch", "selector", "input") and it.key:
             schema[it.key] = (it.kind, getattr(it, "text", it.key), getattr(it, "default", None), [str(x) for x in (getattr(it, "items", None) or [])])
     return schema
@@ -62,9 +95,15 @@ def describe(path):
     raw_id = getattr(module, "__id__", None) or "plugin"
     settings = []
     cls = _plugin_class(module)
-    for it in _items(cls) if cls else []:
+    items = _flatten(_items(cls) if cls else [])
+    _name_buttons(items)
+    for it in items:
         k = getattr(it, "kind", None)
-        if k == "switch" and it.key:
+        if k == "header" and getattr(it, "text", ""):
+            settings.append({"type": "header", "title": str(it.text)})
+        elif k == "text" and getattr(it, "_tg_key", None):
+            settings.append({"key": it._tg_key, "title": str(getattr(it, "text", "")), "type": "button", "default": str(getattr(it, "subtext", "") or "")})
+        elif k == "switch" and it.key:
             settings.append({"key": it.key, "title": str(getattr(it, "text", it.key)), "type": "toggle", "default": bool(getattr(it, "default", False))})
         elif k == "selector" and it.key and getattr(it, "items", None):
             opts = [str(x) for x in it.items]
@@ -93,6 +132,18 @@ def load(api, path):
         raise RuntimeError("в файле нет класса, наследующего BasePlugin")
     plugin = cls()
     plugin._api = api
-    plugin._schema = _schema(_items(cls))
+    items = _flatten(_items(cls))
+    plugin._schema = _schema(items)
+    _name_buttons(items)
+    _register_actions(api, plugin, items)
     plugin._install_app_events()
     plugin.on_plugin_load()
+
+
+def _register_actions(api, plugin, items):
+    for it in items:
+        k = getattr(it, "kind", None)
+        if k == "text" and getattr(it, "_tg_key", None):
+            api.action(it._tg_key, rt.button_action(plugin, it))
+        elif k in ("switch", "selector", "input") and it.key and callable(getattr(it, "on_change", None)):
+            api.action("change:" + it.key, rt.change_action(plugin, it))

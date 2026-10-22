@@ -51,10 +51,17 @@ public final class ModManifest {
         JSONArray array = o.optJSONArray("settings");
         for (int i = 0; array != null && i < array.length(); i++) {
             JSONObject f = array.getJSONObject(i);
-            String key = f.getString("key");
+            String type = f.optString("type", "text");
+            String key = f.optString("key", "");
             String title = f.getString("title");
             String def = f.optString("default", "");
-            switch (f.optString("type", "text")) {
+            switch (type) {
+                case "header":
+                    fields.add(SettingField.header(title));
+                    break;
+                case "button":
+                    fields.add(SettingField.button(key, title, def));
+                    break;
                 case "toggle":
                     fields.add(SettingField.toggle(key, title, f.optBoolean("default", false)));
                     break;

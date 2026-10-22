@@ -155,6 +155,11 @@ public final class ModApi {
         on(name, fn);
     }
 
+    /** Callback of a settings button ("key") or of a changed value ("change:key"); fn(value_as_text). */
+    public void action(String key, PyObject fn) {
+        ModActions.register(modId, key, fn);
+    }
+
     public void add_page(String title, PyObject fn) {
         addPage(title, fn);
     }
@@ -190,6 +195,7 @@ public final class ModApi {
 
     public void log(String text) {
         FileLog.d("tgyou mod " + modId + ": " + text);
+        ModLog.add(modId, text);
     }
 
     /** Resource id of a menu icon by short name, e.g. "info" -> R.drawable.msg_info; 0 if unknown. */

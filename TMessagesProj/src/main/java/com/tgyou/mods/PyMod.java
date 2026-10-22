@@ -78,6 +78,7 @@ public final class PyMod implements Plugin {
 
     private void run(PluginContext context) {
         ModPages.removeAll(manifest.id);
+        ModActions.clear(manifest.id);
         try {
             Python py = Python.getInstance();
             PyObject sys = py.getModule("sys");
@@ -91,6 +92,7 @@ public final class PyMod implements Plugin {
         } catch (Throwable t) {
             error = String.valueOf(t.getMessage());
             FileLog.e("tgyou: mod " + manifest.id + " failed", t);
+            ModLog.add(manifest.id, "не загрузился: " + t);
         }
     }
 }

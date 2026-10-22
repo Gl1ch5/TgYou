@@ -257,6 +257,7 @@ public class ModsActivity extends BaseFragment {
                 if (!mod.manifest.settings.isEmpty()) {
                     buttons.add(new ModCell.Button("Настройки", ModCell.Style.SECONDARY, () -> presentFragment(new TgYouSectionActivity(mod))));
                 }
+                buttons.add(new ModCell.Button("Журнал", ModCell.Style.SECONDARY, () -> showLog(mod)));
                 buttons.add(new ModCell.Button("Поделиться", ModCell.Style.SECONDARY, () -> shareMod(mod)));
                 buttons.add(new ModCell.Button("Удалить", ModCell.Style.DANGER, () -> confirmRemove(mod)));
                 Row r = new Row();
@@ -407,6 +408,26 @@ public class ModsActivity extends BaseFragment {
     }
 
     /** Packs an installed mod into a .mod file and offers it to the share sheet. */
+    private void showLog(PyMod mod) {
+        if (getParentActivity() == null) {
+            return;
+        }
+        String text = com.tgyou.mods.ModLog.text(mod.id());
+        if (mod.error() != null) {
+            text = "Ошибка: " + mod.error() + "\n" + text;
+        }
+        final String shown = text.isEmpty() ? "Журнал пуст" : text;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
+        builder.setTitle("Журнал: " + mod.name());
+        builder.setMessage(shown);
+        builder.setPositiveButton("Копировать", (d, w) -> {
+            android.content.ClipboardManager cm = (android.content.ClipboardManager) getParentActivity().getSystemService(android.content.Context.CLIPBOARD_SERVICE);
+            cm.setPrimaryClip(android.content.ClipData.newPlainText("log", shown));
+        });
+        builder.setNegativeButton("Закрыть", null);
+        showDialog(builder.create());
+    }
+
     private void shareMod(PyMod mod) {
         Context context = getParentActivity();
         org.telegram.messenger.Utilities.globalQueue.postRunnable(() -> {

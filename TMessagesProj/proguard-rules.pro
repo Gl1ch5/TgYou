@@ -60,3 +60,6 @@
 #-dontobfuscate
 # TgYou: plugins and mods are reached through reflection and from Python (Chaquopy)
 -keep class com.tgyou.** { *; }
+# exteraGram plugins (Python, via Chaquopy) reach Telegram classes and members by their real names.
+-keep class org.telegram.** { *; }
+-keep class org.telegram.**$* { *; }

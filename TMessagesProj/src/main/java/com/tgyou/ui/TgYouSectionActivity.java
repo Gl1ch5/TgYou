@@ -44,6 +44,7 @@ public class TgYouSectionActivity extends BaseFragment {
     private static final int TYPE_SWITCH = 1;
     private static final int TYPE_VALUE = 2;
     private static final int TYPE_INFO = 3;
+    private static final int TYPE_FIELD_HEADER = 4;
 
     private static final class Row {
         final int type;
@@ -118,7 +119,9 @@ public class TgYouSectionActivity extends BaseFragment {
             rows.add(new Row(TYPE_SWITCH, plugin, null));
             if (section != null || single != null) {
                 for (SettingField field : plugin.fields()) {
-                    rows.add(new Row(field.kind == SettingField.Kind.TOGGLE ? TYPE_SWITCH : TYPE_VALUE, plugin, field));
+                    int type = field.kind == SettingField.Kind.TOGGLE ? TYPE_SWITCH
+                            : field.kind == SettingField.Kind.HEADER ? TYPE_FIELD_HEADER : TYPE_VALUE;
+                    rows.add(new Row(type, plugin, field));
                 }
             }
             rows.add(new Row(TYPE_INFO, plugin, null));
@@ -136,20 +139,24 @@ public class TgYouSectionActivity extends BaseFragment {
                 host.setEnabled(row.plugin, !host.isEnabled(row.plugin));
             } else {
                 PluginSettings settings = host.settingsOf(row.plugin);
-                settings.putBoolean(row.field.key, !settings.getBoolean(row.field.key, Boolean.parseBoolean(row.field.defaultValue)));
+                boolean now = !settings.getBoolean(row.field.key, Boolean.parseBoolean(row.field.defaultValue));
+                settings.putBoolean(row.field.key, now);
+                com.tgyou.mods.ModActions.fire(row.plugin.id(), "change:" + row.field.key, String.valueOf(now));
             }
             adapter.notifyDataSetChanged();
         } else if (row.type == TYPE_VALUE) {
             PluginSettings settings = host.settingsOf(row.plugin);
-            if (row.field.kind == SettingField.Kind.CHOICE) {
-                showChoiceDialog(settings, row.field);
+            if (row.field.kind == SettingField.Kind.BUTTON) {
+                com.tgyou.mods.ModActions.fire(row.plugin.id(), row.field.key, "");
+            } else if (row.field.kind == SettingField.Kind.CHOICE) {
+                showChoiceDialog(row.plugin, settings, row.field);
             } else {
-                showEditDialog(settings, row.field);
+                showEditDialog(row.plugin, settings, row.field);
             }
         }
     }
 
-    private void showChoiceDialog(PluginSettings settings, SettingField field) {
+    private void showChoiceDialog(Plugin plugin, PluginSettings settings, SettingField field) {
         if (getParentActivity() == null) {
             return;
         }
@@ -157,12 +164,13 @@ public class TgYouSectionActivity extends BaseFragment {
         builder.setTitle(field.title);
         builder.setItems(field.options, (dialog, which) -> {
             settings.putString(field.key, field.options[which]);
+            com.tgyou.mods.ModActions.fire(plugin.id(), "change:" + field.key, field.options[which]);
             adapter.notifyDataSetChanged();
         });
         showDialog(builder.create());
     }
 
-    private void showEditDialog(PluginSettings settings, SettingField field) {
+    private void showEditDialog(Plugin plugin, PluginSettings settings, SettingField field) {
         if (getParentActivity() == null) {
             return;
         }
@@ -180,6 +188,7 @@ public class TgYouSectionActivity extends BaseFragment {
         builder.setView(input);
         builder.setPositiveButton(LocaleController.getString(R.string.OK), (dialog, which) -> {
             settings.putString(field.key, input.getText().toString().trim());
+            com.tgyou.mods.ModActions.fire(plugin.id(), "change:" + field.key, input.getText().toString().trim());
             adapter.notifyDataSetChanged();
         });
         builder.setNegativeButton(LocaleController.getString(R.string.Cancel), null);
@@ -188,6 +197,9 @@ public class TgYouSectionActivity extends BaseFragment {
 
     private String valueLabel(Row row) {
         PluginHost host = PluginHost.get();
+        if (row.field.kind == SettingField.Kind.BUTTON) {
+            return row.field.defaultValue;
+        }
         String value = host == null ? "" : host.settingsOf(row.plugin).getString(row.field.key, row.field.defaultValue);
         if (value.isEmpty()) {
             return "не задано";
@@ -217,7 +229,7 @@ public class TgYouSectionActivity extends BaseFragment {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view;
-            if (viewType == TYPE_HEADER) {
+            if (viewType == TYPE_HEADER || viewType == TYPE_FIELD_HEADER) {
                 view = new HeaderCell(context);
             } else if (viewType == TYPE_SWITCH) {
                 view = new TextCheckCell(context);
@@ -234,7 +246,9 @@ public class TgYouSectionActivity extends BaseFragment {
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             Row row = rows.get(position);
             PluginHost host = PluginHost.get();
-            if (row.type == TYPE_HEADER) {
+            if (row.type == TYPE_FIELD_HEADER) {
+                ((HeaderCell) holder.itemView).setText(row.field.title);
+            } else if (row.type == TYPE_HEADER) {
                 ((HeaderCell) holder.itemView).setText(row.plugin.name());
             } else if (row.type == TYPE_SWITCH) {
                 boolean checked;

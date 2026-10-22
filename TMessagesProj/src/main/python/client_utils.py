@@ -329,3 +329,38 @@ def get_user(user_id):
 
 def get_chat(chat_id):
     return get_messages_controller().getChat(int(chat_id))
+
+
+def log(message=""):
+    import tgyou_extera_rt as rt
+    if rt.current_api is not None:
+        rt.current_api.log(str(message))
+
+
+def show_error_bulletin(message, fragment=None):
+    from ui.bulletin import BulletinHelper
+    BulletinHelper.show_error(message, fragment)
+
+
+def show_info_bulletin(message, fragment=None):
+    from ui.bulletin import BulletinHelper
+    BulletinHelper.show_info(message, fragment)
+
+
+def show_success_bulletin(message, fragment=None):
+    from ui.bulletin import BulletinHelper
+    BulletinHelper.show_success(message, fragment)
+
+
+def download_file(url, path=None, callback=None):
+    """Blocking download; returns the local path (or bytes when path is None)."""
+    import urllib.request
+    with urllib.request.urlopen(url, timeout=60) as r:
+        data = r.read()
+    if path is None:
+        return data
+    with open(path, "wb") as f:
+        f.write(data)
+    if callback is not None:
+        callback(path)
+    return path

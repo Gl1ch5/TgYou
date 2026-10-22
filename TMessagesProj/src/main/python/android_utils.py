@@ -35,3 +35,18 @@ def OnLongClickListener(fn):
         def onLongClick(self, view):
             return bool(fn(view))
     return L()
+
+
+def dp(value):
+    from java import jclass
+    return int(jclass("org.telegram.messenger.AndroidUtilities").dp(float(value)))
+
+
+def get_string(name, default=""):
+    try:
+        from java import jclass
+        app = jclass("org.telegram.messenger.ApplicationLoader").applicationContext
+        rid = app.getResources().getIdentifier(str(name), "string", app.getPackageName())
+        return str(app.getString(rid)) if rid else default
+    except Exception:
+        return default

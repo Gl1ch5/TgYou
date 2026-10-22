@@ -344,3 +344,28 @@ def dispatch_app_event(plugin, event):
         handler(event)
     except Exception as e:
         log(plugin, "on_app_event: " + repr(e))
+
+
+def button_action(plugin, item):
+    def run(_value):
+        try:
+            item.on_click(None)
+        except TypeError:
+            item.on_click()
+        except Exception as e:
+            log(plugin, "on_click: " + repr(e))
+    return run
+
+
+def change_action(plugin, item):
+    def run(value):
+        try:
+            if item.kind == "switch":
+                value = value == "true"
+            elif item.kind == "selector":
+                opts = [str(x) for x in (getattr(item, "items", None) or [])]
+                value = opts.index(value) if value in opts else value
+            item.on_change(value)
+        except Exception as e:
+            log(plugin, "on_change " + str(item.key) + ": " + repr(e))
+    return run

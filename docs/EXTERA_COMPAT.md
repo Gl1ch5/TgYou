@@ -15,7 +15,8 @@
 | `add_on_send_message_hook` / `on_send_message_hook` (CANCEL, MODIFY) | есть |
 | `get_setting` / `set_setting` | есть, значения общие с экраном настроек TgYou |
 | `Switch`, `Selector`, `Input` | показываются в настройках мода |
-| `Header`, `Divider`, `Text` | принимаются, не показываются |
+| `Header`, `Text(on_click)` | заголовок и строка-кнопка в настройках мода; клик вызывает `on_click` на UI-потоке (компилируется, на устройстве не проверено) |
+| `Divider` | принимается, не показывается |
 | `client_utils.send_message` (текст и фото), `run_on_queue`, `run_on_ui_thread`, `get_*` контроллеры | есть |
 | `BulletinHelper`, `AlertDialogBuilder` | упрощённо: показываются как всплывающий текст |
 | `android_utils`, `hook_utils` (поля через рефлексию) | базово |
@@ -30,7 +31,11 @@
 | `file_utils`, `android_utils` (`R`, `OnClickListener`, `copy_to_clipboard`), `hook_utils` (static-поля) | есть |
 | `BasePlugin.client()`, `export_settings`/`import_settings`, `add_hook("send_message_hook")` | есть |
 | `AlertDialogBuilder` | настоящий диалог Telegram (заголовок, текст, кнопки); остальные методы цепочки принимаются без эффекта |
-| `Custom`, `SimpleSettingFactory`, `Text.create_sub_fragment`, `on_change` | принимаются, **не отображаются** и не вызываются |
+| `on_change` у `Switch/Selector/Input` | вызывается после смены значения (switch → bool, selector → индекс, input → строка) |
+| `Text.create_sub_fragment` | подпункты разворачиваются в тот же экран под заголовком (вызов один раз при установке) |
+| `Custom`, `SimpleSettingFactory` | принимаются, **не отображаются** |
+| Модули `plugins_manager`, `settings`; `MethodReplacement`, `HookFilter`, `client_utils.log/show_*_bulletin/download_file`, `android_utils.dp/get_string` | заглушки/простая реализация, чтобы плагины импортировались |
+| Журнал мода | кнопка «Журнал» на карточке мода: последние 200 строк `log` и ошибок, можно скопировать |
 | Меню чата/профиля/шторки (`CHAT_ACTION_MENU`, `PROFILE_ACTION_MENU`, `DRAWER_MENU`) | пока нет |
 | Intents, файловые хуки, `hook_method` (Xposed), `extera_utils.classes` (`java_subclass`) | **не поддерживаются**: вызов пишется в лог |
 | `__requirements__` (pip), `.eaf` (ElyxBuilder) | нет |
@@ -39,4 +44,6 @@
 Неподдержанный метод API не роняет плагин: вызов записывается в лог и игнорируется.
 
 ## Проверка
+Статический проверщик `python3 -I tools/extera_check.py *.plugin` (ничего не запускает) разбирает плагины как AST: импорты, имена API, вызовы `add_/hook_*`. На 81 реальном плагине с GitHub: 25 не проходили, после этого шага — 13 (остаются `hook_method`/Xposed, `audioop`, `zwylib`, `hook_*_ref`). Запуск плагинов на устройстве не проверен.
+
 Новые хуки (запросы, ответы, апдейты, меню) только компилируются, в работе не проверены. Слой проверен только на синтетическом плагине: разбор метаданных и настроек (`describe`). Java компилируется. Установка и работа на устройстве, а также реальные плагины (например Google Search с командами `.g` и `.gi`) пока **не проверены**. «Полная» совместимость недостижима одним шагом: API exteraGram большой, поддержка будет расширяться по реальным плагинам.

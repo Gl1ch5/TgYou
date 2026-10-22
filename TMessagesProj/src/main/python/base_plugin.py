@@ -70,6 +70,23 @@ class MethodHook:
         pass
 
 
+class MethodReplacement(MethodHook):
+    """Xposed-style hook that replaces the method; the Xposed layer is not available in TgYou."""
+
+    def replace_hooked_method(self, param):
+        return None
+
+
+class HookFilter:
+    def __init__(self, *args, **kw):
+        self.args = args
+        self.__dict__.update(kw)
+
+
+class XposedHook(MethodHook):
+    pass
+
+
 class BasePlugin:
     id = None
     name = None
@@ -165,6 +182,17 @@ class BasePlugin:
 
     def unhook_method(self, unhook):
         pass
+
+    def unhook_objects(self, *args, **kwargs):
+        pass
+
+    def hook_filters(self, *args, **kwargs):
+        rt.log(self, "hook_filters (Xposed) не поддерживается в TgYou")
+        return None
+
+    def add_source(self, *args, **kwargs):
+        rt.log(self, "add_source не поддерживается в TgYou")
+        return None
 
     def log(self, message):
         rt.log(self, message)

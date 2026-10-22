@@ -60,3 +60,8 @@ def get_private_field_of_class(clazz, name, obj):
         except Exception:
             cls = cls.getSuperclass()
     return None
+
+
+def jarray(java_type, items):
+    from java import jarray as _jarray
+    return _jarray(java_type)(items)
