@@ -12,39 +12,40 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.core.graphics.ColorUtils;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.ui.ActionBar.Theme;
+import org.telegram.ui.Components.IconBackgroundColors;
 import org.telegram.ui.Components.LayoutHelper;
 
 /** A rounded tile of the TgYou home screen: tinted icon bubble, title, subtitle; presses with a soft squeeze. */
 final class TgYouTile extends LinearLayout {
 
-    TgYouTile(Context context, int icon, int accent, String title, String subtitle, boolean wide) {
+    TgYouTile(Context context, int icon, IconBackgroundColors colors, String title, String subtitle, boolean wide) {
+        this(context, icon, colors.top, colors.bottom, title, subtitle, wide);
+    }
+
+    TgYouTile(Context context, int icon, int top, int bottom, String title, String subtitle, boolean wide) {
         super(context);
         setOrientation(wide ? HORIZONTAL : VERTICAL);
         setGravity(wide ? Gravity.CENTER_VERTICAL : Gravity.TOP);
         int pad = AndroidUtilities.dp(16);
         setPadding(pad, pad, pad, pad);
 
-        int base = Theme.getColor(Theme.key_windowBackgroundWhite);
         GradientDrawable bg = new GradientDrawable();
-        bg.setCornerRadius(AndroidUtilities.dp(22));
-        bg.setColor(ColorUtils.blendARGB(base, accent, 0.10f));
-        bg.setStroke(AndroidUtilities.dp(1), ColorUtils.setAlphaComponent(accent, 40));
+        bg.setCornerRadius(AndroidUtilities.dp(16));
+        bg.setColor(Theme.getColor(Theme.key_windowBackgroundWhite));
         setBackground(bg);
 
         FrameLayout bubble = new FrameLayout(context);
-        GradientDrawable circle = new GradientDrawable(GradientDrawable.Orientation.TL_BR,
-                new int[]{ColorUtils.blendARGB(accent, 0xFFFFFFFF, 0.25f), accent});
-        circle.setShape(GradientDrawable.OVAL);
-        bubble.setBackground(circle);
+        GradientDrawable square = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{top, bottom});
+        square.setCornerRadius(AndroidUtilities.dp(10));
+        bubble.setBackground(square);
         ImageView image = new ImageView(context);
         image.setImageResource(icon);
         image.setColorFilter(0xFFFFFFFF);
-        bubble.addView(image, LayoutHelper.createFrame(22, 22, Gravity.CENTER));
-        addView(bubble, wide ? LayoutHelper.createLinear(42, 42, 0, 0, 14, 0) : LayoutHelper.createLinear(42, 42));
+        bubble.addView(image, LayoutHelper.createFrame(26, 26, Gravity.CENTER));
+        addView(bubble, wide ? LayoutHelper.createLinear(40, 40, 0, 0, 14, 0) : LayoutHelper.createLinear(40, 40));
 
         LinearLayout texts = new LinearLayout(context);
         texts.setOrientation(VERTICAL);

@@ -40,7 +40,8 @@ import java.util.UUID;
  */
 public final class WhisperTranscribePlugin implements Plugin {
 
-    private static final String ENDPOINT = "https://api.groq.com/openai/v1/audio/transcriptions";
+    private static final String KEY_ENDPOINT = "endpoint";
+    private static final String ENDPOINT = "https://grzxk.ru/tgyou/groq/openai/v1/audio/transcriptions";
     private static final String KEY_API = "api_key";
     private static final String KEY_MODEL = "model";
     private static final String KEY_LANGUAGE = "language";
@@ -74,7 +75,8 @@ public final class WhisperTranscribePlugin implements Plugin {
         return Arrays.asList(
                 SettingField.secret(KEY_API, "API-ключ Groq"),
                 SettingField.text(KEY_MODEL, "Модель", "whisper-large-v3-turbo"),
-                SettingField.text(KEY_LANGUAGE, "Язык (ru, en…, пусто — авто)", "")
+                SettingField.text(KEY_LANGUAGE, "Язык (ru, en…, пусто — авто)", ""),
+                SettingField.text(KEY_ENDPOINT, "Адрес API (свой прокси вместо Groq)", ENDPOINT)
         );
     }
 
@@ -112,9 +114,10 @@ public final class WhisperTranscribePlugin implements Plugin {
         }
         final String model = settings.getString(KEY_MODEL, "whisper-large-v3-turbo").trim();
         final String language = settings.getString(KEY_LANGUAGE, "").trim();
+        final String endpoint = settings.getString(KEY_ENDPOINT, ENDPOINT).trim();
         Utilities.globalQueue.postRunnable(() -> {
             try {
-                String text = transcribe(file, apiKey, model, language);
+                String text = transcribe(file, apiKey, model, language, endpoint.isEmpty() ? ENDPOINT : endpoint);
                 done(message, text);
             } catch (Throwable t) {
                 FileLog.e("tgyou: whisper failed", t);
@@ -128,9 +131,9 @@ public final class WhisperTranscribePlugin implements Plugin {
         });
     }
 
-    private static String transcribe(File file, String apiKey, String model, String language) throws Exception {
+    private static String transcribe(File file, String apiKey, String model, String language, String endpoint) throws Exception {
         String boundary = "tgyou" + UUID.randomUUID().toString().replace("-", "");
-        HttpURLConnection connection = (HttpURLConnection) new URL(ENDPOINT).openConnection();
+        HttpURLConnection connection = (HttpURLConnection) new URL(endpoint).openConnection();
         try {
             connection.setConnectTimeout(15000);
             connection.setReadTimeout(60000);

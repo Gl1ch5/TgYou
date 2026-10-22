@@ -2,10 +2,10 @@ package com.tgyou.ui;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
 import android.graphics.drawable.GradientDrawable;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -16,12 +16,16 @@ import com.tgyou.core.Plugin;
 import com.tgyou.core.PluginHost;
 import com.tgyou.core.Section;
 
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.ActionBar;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.Theme;
+import org.telegram.ui.Components.IconBackgroundColors;
 import org.telegram.ui.Components.LayoutHelper;
 
 
@@ -57,84 +61,52 @@ public class TgYouSettingsActivity extends BaseFragment {
         scroll.addView(content, new ScrollView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         frame.addView(scroll, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
-        build(context);
+        build(context, true);
         return fragmentView;
     }
 
     private static int iconFor(Section section) {
         switch (section) {
             case PRIVACY:
-                return R.drawable.msg_secret;
+                return R.drawable.settings_privacy;
             case MESSAGES:
-                return R.drawable.msg_discussion;
+                return R.drawable.settings_chat;
             case FILTERS:
-                return R.drawable.msg_block;
+                return R.drawable.settings_folders;
             case INTERFACE:
-                return R.drawable.msg_theme;
+                return R.drawable.settings_devices;
             case AI:
-                return R.drawable.msg_voicechat;
+                return R.drawable.settings_features;
             default:
-                return R.drawable.msg_settings;
+                return R.drawable.settings_data;
         }
     }
 
-    private static int accentFor(Section section) {
+    private static IconBackgroundColors colorsFor(Section section) {
         switch (section) {
             case PRIVACY:
-                return 0xFF7C5CFF;
+                return IconBackgroundColors.GREEN;
             case MESSAGES:
-                return 0xFF2FA4E7;
+                return IconBackgroundColors.ORANGE;
             case FILTERS:
-                return 0xFFE8883A;
+                return IconBackgroundColors.BLUE_ALT;
             case INTERFACE:
-                return 0xFFE05A9B;
+                return IconBackgroundColors.CYAN;
             case AI:
-                return 0xFF3DBE8B;
+                return IconBackgroundColors.PURPLE;
             default:
-                return 0xFF8E9AA8;
+                return IconBackgroundColors.GRAY;
         }
     }
 
-    private void build(Context context) {
+    private void build(Context context, boolean animate) {
         content.removeAllViews();
         PluginHost host = PluginHost.get();
         if (host == null) {
             return;
         }
         int index = 0;
-
-        LinearLayout hero = new LinearLayout(context);
-        hero.setOrientation(LinearLayout.VERTICAL);
-        int hp = AndroidUtilities.dp(22);
-        hero.setPadding(hp, hp, hp, hp);
-        GradientDrawable heroBg = new GradientDrawable(GradientDrawable.Orientation.TL_BR, new int[]{0xFF7C5CFF, 0xFF3B8BFF});
-        heroBg.setCornerRadius(AndroidUtilities.dp(28));
-        hero.setBackground(heroBg);
-        TextView name = new TextView(context);
-        name.setText("Telegram You");
-        name.setTextSize(TypedValue.COMPLEX_UNIT_SP, 26);
-        name.setTypeface(AndroidUtilities.bold());
-        name.setTextColor(0xFFFFFFFF);
-        hero.addView(name, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
-        int enabledAll = 0;
-        int modsOn = 0;
-        for (Plugin plugin : host.plugins()) {
-            if (host.isEnabled(plugin)) {
-                if (plugin.isMod()) {
-                    modsOn++;
-                } else {
-                    enabledAll++;
-                }
-            }
-        }
-        TextView sub = new TextView(context);
-        sub.setText(BuildVars.BUILD_VERSION_STRING + "  ·  функций включено: " + enabledAll + "  ·  модов: " + modsOn);
-        sub.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
-        sub.setTextColor(0xCCFFFFFF);
-        hero.addView(sub, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 0, 6, 0, 0));
-        content.addView(hero, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 0, 4, 0, 14));
-        hero.setAlpha(0f);
-        hero.animate().alpha(1f).setDuration(350).start();
+        addBanners(context);
 
         LinearLayout rowLayout = null;
         int inRow = 0;
@@ -156,9 +128,11 @@ public class TgYouSettingsActivity extends BaseFragment {
                 rowLayout = new LinearLayout(context);
                 content.addView(rowLayout, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 0, 0, 0, 10));
             }
-            TgYouTile tile = new TgYouTile(context, iconFor(section), accentFor(section), section.title, enabled + " из " + total + " включено", false);
+            TgYouTile tile = new TgYouTile(context, iconFor(section), colorsFor(section), section.title, enabled + " из " + total + " включено", false);
             tile.setOnClickListener(v -> presentFragment(new TgYouSectionActivity(section)));
-            tile.enter(index++);
+            if (animate) {
+                tile.enter(index++);
+            }
             rowLayout.addView(tile, LayoutHelper.createLinear(0, LayoutHelper.WRAP_CONTENT, 1f, inRow == 0 ? 0 : 5, 0, inRow == 0 ? 5 : 0, 0));
             inRow = (inRow + 1) % 2;
         }
@@ -166,27 +140,150 @@ public class TgYouSettingsActivity extends BaseFragment {
             rowLayout.addView(new View(context), LayoutHelper.createLinear(0, 1, 1f, 5, 0, 0, 0));
         }
 
-        addWide(context, R.drawable.msg_customize, 0xFF9B59E8, "Моды", "маркетплейс, установленные, создать мод", index++, () -> presentFragment(new ModsActivity()));
+        addWide(context, R.drawable.settings_features, IconBackgroundColors.ORANGE_DEEP, "Моды", "маркетплейс, установленные, создать мод", animate ? index++ : -1, () -> presentFragment(new ModsActivity()));
         for (com.tgyou.mods.ModPages.Page page : com.tgyou.mods.ModPages.all()) {
-            addWide(context, R.drawable.msg_stats, 0xFF3DBE8B, page.title, "страница мода", index++, () -> presentFragment(new ModPageActivity(page)));
+            addWide(context, R.drawable.settings_calls, IconBackgroundColors.GREEN, page.title, "страница мода", animate ? index++ : -1, () -> presentFragment(new ModPageActivity(page)));
         }
-        addWide(context, R.drawable.msg_download, 0xFF2FA4E7, "Обновления", "новые версии из релизов GitHub", index++, () -> presentFragment(new TgYouUpdateActivity()));
-        addWide(context, R.drawable.msg_photos, 0xFFE05A9B, "Иконка приложения", "TgYou, Telegram и другие", index++, () -> presentFragment(new TgYouIconsActivity()));
-        addWide(context, R.drawable.msg_list, 0xFF8E9AA8, "Все функции", host.plugins().size() + " плагинов и модов", index++, () -> presentFragment(new TgYouSectionActivity((Section) null)));
+        addWide(context, R.drawable.settings_ask, IconBackgroundColors.BLUE, "Обновления", "новые версии из релизов GitHub", animate ? index++ : -1, () -> presentFragment(new TgYouUpdateActivity()));
+        addWide(context, R.drawable.settings_gift, IconBackgroundColors.RED, "Иконка приложения", "TgYou, Telegram и другие", animate ? index++ : -1, () -> presentFragment(new TgYouIconsActivity()));
+        addWide(context, R.drawable.settings_faq, IconBackgroundColors.GRAY, "Все функции", host.plugins().size() + " плагинов и модов", animate ? index++ : -1, () -> presentFragment(new TgYouSectionActivity((Section) null)));
     }
 
-    private void addWide(Context context, int icon, int accent, String title, String subtitle, int index, Runnable action) {
+    private static final String[][] BANNERS = {
+            {"Telegram You", null, "0xFF1CA5ED", "0xFF7C5CFF"},
+            {"Что нового", null, "0xFF55CA47", "0xFF1D9CC6"},
+            {"Моды", "Каталог на сервере: ставьте в одно нажатие, пишите свои на Python. Полная свобода, без песочницы.", "0xFFF28B31", "0xFFE0455F"},
+            {"Приватность", "Режим призрака, скрытые просмотры, сохранение удалённых сообщений, скрытые скриншоты.", "0xFFC46EF4", "0xFF4F85F6"},
+    };
+
+    private ViewPager pager;
+    private final Runnable rotate = new Runnable() {
+        @Override
+        public void run() {
+            if (pager != null && pager.getAdapter() != null && pager.getAdapter().getCount() > 1) {
+                pager.setCurrentItem((pager.getCurrentItem() + 1) % pager.getAdapter().getCount(), true);
+            }
+            AndroidUtilities.runOnUIThread(this, 5000);
+        }
+    };
+
+    private String bannerText(int i) {
+        if (i == 0) {
+            return BuildVars.BUILD_VERSION_STRING + ". Плагины, моды и обновления прямо в приложении.";
+        }
+        if (i == 1) {
+            com.tgyou.update.Updater.Release r = com.tgyou.update.UpdateManager.release();
+            String notes = r != null && r.notes != null ? r.notes.replace("**", "").trim() : "";
+            return notes.isEmpty() ? "Автообновление раз в минуту, карточка сверху и кружок загрузки у поиска. Новые функции: тихая отправка, пересылка без автора, инструменты сообщения." : notes;
+        }
+        return BANNERS[i][1];
+    }
+
+    private void addBanners(Context context) {
+        pager = new ViewPager(context);
+        pager.setAdapter(new PagerAdapter() {
+            @Override
+            public int getCount() {
+                return BANNERS.length;
+            }
+
+            @Override
+            public boolean isViewFromObject(View view, Object object) {
+                return view == object;
+            }
+
+            @Override
+            public Object instantiateItem(ViewGroup container, int position) {
+                String[] b = BANNERS[position];
+                LinearLayout page = new LinearLayout(context);
+                page.setOrientation(LinearLayout.VERTICAL);
+                page.setGravity(Gravity.CENTER_VERTICAL);
+                int p = AndroidUtilities.dp(20);
+                page.setPadding(p, p, p, p);
+                GradientDrawable bg = new GradientDrawable(GradientDrawable.Orientation.TL_BR,
+                        new int[]{(int) Long.decode(b[2]).longValue(), (int) Long.decode(b[3]).longValue()});
+                bg.setCornerRadius(AndroidUtilities.dp(16));
+                page.setBackground(bg);
+                TextView title = new TextView(context);
+                title.setText(b[0]);
+                title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+                title.setTypeface(AndroidUtilities.bold());
+                title.setTextColor(0xFFFFFFFF);
+                page.addView(title);
+                TextView text = new TextView(context);
+                text.setText(bannerText(position));
+                text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                text.setTextColor(0xEEFFFFFF);
+                text.setMaxLines(4);
+                text.setEllipsize(android.text.TextUtils.TruncateAt.END);
+                page.addView(text, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 0, 6, 0, 0));
+                FrameLayout wrap = new FrameLayout(context);
+                wrap.addView(page, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.NO_GRAVITY, 0, 0, 8, 0));
+                container.addView(wrap);
+                return wrap;
+            }
+
+            @Override
+            public void destroyItem(ViewGroup container, int position, Object object) {
+                container.removeView((View) object);
+            }
+        });
+        pager.setPageMargin(0);
+        content.addView(pager, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 140, 0, 4, 0, 6));
+
+        LinearLayout dots = new LinearLayout(context);
+        dots.setGravity(Gravity.CENTER);
+        View[] dot = new View[BANNERS.length];
+        for (int i = 0; i < dot.length; i++) {
+            dot[i] = new View(context);
+            dots.addView(dot[i], LayoutHelper.createLinear(6, 6, 3, 0, 3, 0));
+        }
+        Runnable paint = () -> {
+            for (int i = 0; i < dot.length; i++) {
+                GradientDrawable d = new GradientDrawable();
+                d.setShape(GradientDrawable.OVAL);
+                d.setColor(i == pager.getCurrentItem() ? 0xFF1CA5ED : 0x55999999);
+                dot[i].setBackground(d);
+            }
+        };
+        paint.run();
+        pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                paint.run();
+            }
+        });
+        content.addView(dots, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 0, 0, 0, 10));
+        AndroidUtilities.cancelRunOnUIThread(rotate);
+        AndroidUtilities.runOnUIThread(rotate, 5000);
+    }
+
+    private void addWide(Context context, int icon, IconBackgroundColors accent, String title, String subtitle, int index, Runnable action) {
         TgYouTile tile = new TgYouTile(context, icon, accent, title, subtitle, true);
         tile.setOnClickListener(v -> action.run());
-        tile.enter(index);
+        if (index >= 0) {
+            tile.enter(index);
+        }
         content.addView(tile, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 0, 0, 0, 10));
     }
+
+    private boolean firstResume = true;
 
     @Override
     public void onResume() {
         super.onResume();
-        if (content != null && getParentActivity() != null) {
-            build(getParentActivity());
+        if (firstResume) {
+            firstResume = false;
+            return;
         }
+        if (content != null && getParentActivity() != null) {
+            build(getParentActivity(), false);
+        }
+    }
+
+    @Override
+    public void onFragmentDestroy() {
+        super.onFragmentDestroy();
+        AndroidUtilities.cancelRunOnUIThread(rotate);
     }
 }

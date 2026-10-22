@@ -73,3 +73,12 @@
 
 ## extra_privacy («Скрытые просмотры»)
 Раздел «Приватность». Снимает флаг `increment` у `messages.getMessagesViews` (просмотры постов каналов не растут) и отбрасывает `stories.incrementStoryViews`. Настройки: «Не считать просмотры постов», «Не считать просмотры историй» (по умолчанию включены). Статус: скомпилировано, на устройстве не проверено.
+
+## Переключатели отправки и приватности (Tweaks)
+Каждый — отдельный плагин с одним выключателем, правит исходящий запрос через `OUTGOING_REQUEST` (`plugins/Tweaks.java`): `no_link_preview`, `no_telemetry` (по умолчанию вкл.), `protect_sent`, `no_read_mentions`, `silent_send`, `no_webpage_send`, `forward_no_author`, `forward_no_caption`, `keep_draft`, `keep_sticker_order`, `big_reactions`, `keep_recent_reactions`, `silent_pin`. Плюс `message_tools` (меню сообщения: Google, поделиться, цитата, ссылка). Статус: скомпилировано, на устройстве не проверено.
+
+## Whisper через прокси
+Groq отвечает «Access denied» с части сетей. По умолчанию запрос идёт через `https://grzxk.ru/tgyou/groq/` (nginx на сервере проксирует на api.groq.com, ключ передаётся в заголовке и не хранится). Адрес меняется в настройках плагина.
+
+## Главный экран TgYou
+Верх — карусель баннеров (ViewPager, автопрокрутка 5 с), ниже плитки в стиле настроек Telegram (скруглённые квадраты с градиентом и значки `settings_*`). Заголовок списка чатов — «Telegram U».

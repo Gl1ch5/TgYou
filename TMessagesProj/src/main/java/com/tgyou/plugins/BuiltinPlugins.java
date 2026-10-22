@@ -2,6 +2,7 @@ package com.tgyou.plugins;
 
 import com.tgyou.core.Plugin;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public final class BuiltinPlugins {
     }
 
     public static List<Plugin> create() {
-        return Arrays.asList(
+        List<Plugin> all = new ArrayList<>(Arrays.asList(
                 new GhostModePlugin(),
                 new ScreenPrivacyPlugin(),
                 new AntiRecallPlugin(),
@@ -24,7 +25,10 @@ public final class BuiltinPlugins {
                 new ExactTimePlugin(),
                 new MessageInfoPlugin(),
                 new LocalPremiumPlugin(),
-                new WhisperTranscribePlugin()
-        );
+                new WhisperTranscribePlugin(),
+                new MessageToolsPlugin()
+        ));
+        all.addAll(Tweaks.create());
+        return all;
     }
 }
