@@ -106,6 +106,22 @@ final class Tweaks {
                     }
                     return false;
                 }),
+                new Tweak("no_cloud_drafts", "Черновики только на устройстве",
+                        "Недописанный текст не отправляется на сервер Telegram и не появляется на других устройствах.",
+                        Section.PRIVACY, false, r -> r instanceof TLRPC.TL_messages_saveDraft),
+                new Tweak("no_top_peers", "Не копить «частые контакты»",
+                        "Не сообщает серверу, кому вы пишете чаще всего, поэтому список недавних не меняется.",
+                        Section.PRIVACY, false, r -> r instanceof TLRPC.TL_contacts_resetTopPeerRating),
+                new Tweak("invert_media", "Медиа над текстом",
+                        "Подпись отправляется под вложением: ссылки показывают превью над текстом.",
+                        Section.MESSAGES, false, r -> {
+                    if (r instanceof TLRPC.TL_messages_sendMessage) {
+                        ((TLRPC.TL_messages_sendMessage) r).invert_media = true;
+                    } else if (r instanceof TLRPC.TL_messages_sendMedia) {
+                        ((TLRPC.TL_messages_sendMedia) r).invert_media = true;
+                    }
+                    return false;
+                }),
                 new Tweak("silent_pin", "Закреплять без уведомления",
                         "Закрепление сообщения не будит участников чата.",
                         Section.MESSAGES, false, r -> {
