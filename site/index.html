@@ -117,30 +117,6 @@ header{position:sticky;top:0;z-index:10;background:rgba(14,22,33,.92);backdrop-f
 
 
 .shot{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
-.app{background:#161616;color:#eee}
-.atop{display:flex;align-items:center;gap:10px;padding:16px 14px 10px;background:#1c1c1c}
-.atop img{width:28px;height:28px;border-radius:50%}
-.atop b{font-size:18px;font-weight:500;flex:1;white-space:nowrap}
-.atop svg{width:20px;height:20px;stroke:#e6e6e6;fill:none;stroke-width:2;stroke-linecap:round;margin-left:4px}
-.afold{display:flex;gap:4px;margin:6px 10px 6px;background:#202020;border-radius:20px;padding:4px;white-space:nowrap;overflow:hidden;color:#9a9a9a;font-size:12.5px}
-.afold span{padding:6px 10px;border-radius:16px}
-.afold .on{background:#22384d;color:#6ab8f2}
-.afold i{font-style:normal;background:#2aabee;color:#06121c;border-radius:9px;padding:0 6px;margin-left:5px;font-size:10.5px;font-weight:600}
-.afold i.g,.adl i.g{background:#3a3a3a;color:#ddd}
-.adl{display:flex;gap:11px;padding:8px 12px;align-items:center}
-.adl .av{width:48px;height:48px}
-.adl .av.arc{background:#333}
-.adl .av.arc svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2;stroke-linejoin:round}
-.adl .t{min-width:0;flex:1}
-.adl .t b{display:flex;justify-content:space-between;font-size:14.5px;font-weight:500;color:#f2f2f2}
-.adl .t b small{font-weight:400;color:#8a8a8a;font-size:11px}
-.adl .t span{display:flex;justify-content:space-between;gap:6px;color:#8a8a8a;font-size:12.5px;margin-top:1px}
-.adl .t span q{quotes:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.adl .t span i{font-style:normal;flex:none;background:#2aabee;color:#06121c;border-radius:10px;min-width:20px;text-align:center;font-size:11px;padding:1px 7px;font-weight:600}
-.anav{position:absolute;left:10px;right:10px;bottom:10px;height:52px;border-radius:26px;background:#242424;display:flex;justify-content:space-around;align-items:center;font-size:10px;color:#aaa;box-shadow:0 8px 20px rgba(0,0,0,.5)}
-.anav span{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 10px;border-radius:18px}
-.anav .on{background:#22384d;color:#6ab8f2}
-.anav svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linejoin:round;stroke-linecap:round}
 .shots{display:flex;gap:28px;justify-content:center;flex-wrap:wrap}
 .shots figure{width:272px}
 .shots .ph{position:static}
@@ -253,18 +229,7 @@ footer .w{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   </div>
 
   <div class="stage">
-    <div class="ph p1"><div class="scr app" data-chatlist>
-      <div class="atop"><img src="/logo.png" alt=""><b>Telegram You</b><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="19" r="1.4"/></svg></div>
-      <div class="afold"><span class="on">Все<i>39</i></span><span>Личные</span><span>Новые<i class="g">117</i></span><span>Работа</span></div>
-      <div class="adl"><div class="av arc"><svg viewBox="0 0 24 24"><path d="M4 7h16v3H4zM5 10h14v9H5zM12 12v4m0 0l-2-2m2 2l2-2"/></svg></div><div class="t"><b>Архив чатов</b><span><q>Обсуждения рынка, Курилка</q><i class="g">36</i></span></div></div>
-      <div class="adl"><div class="av" style="background:#6a8cf0">AI</div><div class="t"><b>Ассистент<small>12:08</small></b><span><q>Шагов: 11. Докладываю о ситуации</q></span></div></div>
-      <div class="adl"><div class="av" style="background:#e8964a">А</div><div class="t"><b>Анна<small>11:52</small></b><span><q>Скинь фото, когда будешь</q><i>2</i></span></div></div>
-      <div class="adl"><div class="av" style="background:#4fae4e">Д</div><div class="t"><b>Дизайн-чат<small>11:30</small></b><span><q>Макс: новые иконки готовы</q><i class="g">12</i></span></div></div>
-      <div class="adl"><div class="av" style="background:#c8638a">Р</div><div class="t"><b>Рабочий чат<small>10:14</small></b><span><q>Сообщение удалено · сохранено</q><i class="g">840</i></span></div></div>
-      <div class="adl"><div class="av" style="background:#8a6ad8">Н</div><div class="t"><b>Новости техники<small>вчера</small></b><span><q>Вышло обновление 0.1.0</q></span></div></div>
-      <div class="adl"><div class="av" style="background:#3aa8a0">М</div><div class="t"><b>Мама<small>вчера</small></b><span><q>Позвони, как освободишься</q></span></div></div>
-      <div class="anav"><span class="on"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>Чаты</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.4"/><path d="M5 20c1-4 4-5 7-5s6 1 7 5"/></svg>Контакты</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>Настройки</span></div>
-    </div></div>
+    <div class="ph p1"><div class="scr"><img class="shot" src="shots/chats.jpg" alt="Список чатов в Telegram You"></div></div>
 
     <div class="ph p2"><div class="scr"><img class="shot" src="shots/privacy.jpg" alt="Экран «Приватность» в Telegram You"></div></div>
   </div>
@@ -296,7 +261,7 @@ footer .w{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
     <p class="lead">Настоящие экраны Telegram You на Android: список чатов, главная страница настроек и раздел «Приватность».</p>
   </div>
   <div class="shots">
-    <figure><div class="ph"><div class="scr app" id="gal-chat"></div></div><figcaption><b>Список чатов</b>Папки со счётчиками, архив, плавающая навигация</figcaption></figure>
+    <figure><div class="ph"><div class="scr"><img class="shot" src="shots/chats.jpg" alt="Список чатов"></div></div><figcaption><b>Список чатов</b>Папки со счётчиками, архив, нижняя панель навигации</figcaption></figure>
     <figure><div class="ph"><div class="scr"><img class="shot" src="shots/home.jpg" alt="Главная страница настроек Telegram You"></div></div><figcaption><b>Настройки Telegram You</b>Функции по разделам и оформление</figcaption></figure>
     <figure><div class="ph"><div class="scr"><img class="shot" src="shots/privacy.jpg" alt="Экран Приватность"></div></div><figcaption><b>Приватность</b>Режим призрака, скриншоты, режим стримера</figcaption></figure>
   </div>
@@ -423,7 +388,6 @@ footer .w{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 
 <script>
 (function(){
-  var src=document.querySelector('[data-chatlist]'),dst=document.getElementById('gal-chat');if(src&&dst){dst.innerHTML=src.innerHTML}
   var opts=[].slice.call(document.querySelectorAll('[data-g]')),m=document.getElementById('gm'),c=document.getElementById('gc');
   function upd(){var n=opts.filter(function(o){return o.classList.contains('on')}).length;c.textContent=n+'/5';m.classList.toggle('on',n>0)}
   opts.forEach(function(o){o.addEventListener('click',function(){o.classList.toggle('on');upd()})});
