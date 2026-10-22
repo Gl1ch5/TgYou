@@ -24,7 +24,8 @@
 - `TMessagesProj/`, `TMessagesProj_App/`, … — исходники Telegram (апстрим). Пакеты `org.telegram.*` **не переименованы** (иначе ломается нативный код).
 - `TMessagesProj/src/main/java/com/tgyou/` — **наш код**:
   - `core/` — ядро плагинов: `Plugin`, `PluginHost` (реестр + шина хуков), `PluginContext`, `PluginSettings`, `SettingField`, `Hooks` (каталог хуков), `TgYouHooks` (единственная точка входа для кода Telegram).
-  - `plugins/` — встроенные плагины (`BuiltinPlugins.create()` — список): `LocalPremiumPlugin`, `WhisperTranscribePlugin`.
+  - `plugins/` — встроенные плагины (`BuiltinPlugins.create()` — полный список в `docs/BUILTIN_PLUGINS.md`).
+  - `ui/` — экраны: `TgYouSettingsActivity`, `TgYouSectionActivity`, `TgYouScreen` (каркас новых экранов), `ModsActivity`/`ModCell`, иконки, обновления; `mods/`, `icons/`, `update/` — рантайм модов, иконпаки, обновление.
   - `ui/TgYouSettingsActivity` — экран настроек «TgYou» (пункт в `SettingsActivity`, row id 100).
 - `backend/` — бэкенд маркетплейса (FastAPI + SQLite), см. `backend/README.md`.
 - `.github/workflows/` — `build-beta.yml` (полная сборка + релиз), `compile-check.yml` (только javac, ~4 мин).
@@ -45,6 +46,27 @@
 Готово и проверено на телефоне: локальный Premium; распознавание голосовых через Whisper на Groq (свой ключ); экран «TgYou» с переключателями и полями.
 
 Написано, но НЕ проверено на устройстве (в CI проходит только компиляция): вкладки TgYou (`TgYouSettingsActivity` → `TgYouSectionActivity`), режим призрака (`GhostModePlugin`, хук `ConnectionsManager`), сохранение удалённых/правок (`AntiRecallPlugin`, `TgYouDb`, хуки в `MessagesController`, `ChatMessageCell`, меню `ChatActivity`), блок рекламы (`AdBlockPlugin`), скриншоты/стример (`ScreenPrivacyPlugin`, хук `FlagSecureReason`), иконки TgYou + экран выбора (`TgYouIconsActivity`, `LauncherIconController`, алиасы в `AndroidManifest.xml`, ресурсы `icon_tgyou*`, `ic_tgyou*`). Иконка по умолчанию — TgYou, оригинальная Telegram доступна как `TelegramIcon`.
+
+### Состояние на v0.1.0-beta31 (актуально)
+Реализовано (подробности и честный статус каждой функции — `docs/SETTINGS_SCREENS.md`, `docs/BUILTIN_PLUGINS.md`, `docs/MODS.md`, `docs/EXTERA_COMPAT.md`, `docs/ICON_PACKS.md`):
+- Экраны настроек на каркасе `ui/TgYouScreen` + `core/TgYouPrefs`: Режим Призрака, Фильтры, Шпион, Основные, Чаты, Внешний вид (+ Pill Stack), Кастомизация, Жесты — по скриншотам AyuGram владельца.
+- Pill Stack (`core/TgYouPillStack`): таблетка внутри поля поиска справа, адаптивная ширина (до 45% поля), светлая/тёмная тема; таблетки: время, дата, заряд, память, **погода** (ipwho.is + Open-Meteo, без ключей, кэш 30 мин), прокси, **пинг прокси**, призрак.
+- Внешний вид: MD3, размытие, темы в чатах, липкий аватар, мини-аватарки (`TgYouMiniAvatars`), папки (`TgYouFolders`), заголовок по центру, поиск без отступа, шрифты, Liquid Glass.
+- Чаты: ответы, широкие посты, ИИ-функции (Groq), быстрые админ-действия, свайп, вычисления, жесты двойного касания.
+- Шпион: удалённые/правки, дата чтения, последний онлайн, сохранение вложений, бэкап БД. Работа в фоне (`TgYouBackground`).
+- Моды `.mod`, совместимость с exteraGram (`.plugin`, Pine-хуки, меню), иконпаки `.icons`, маркетплейс, автообновление из GitHub, установка по тапу.
+- Сайт проекта `site/` (см. «Сайт» ниже). README переписан с перечнем всех функций и скриншотами (`site/shots/*.jpg`, чаты размыты).
+
+Из последней отладки (по скриншотам владельца): значения настроек плагина обрезаются в `TgYouSectionActivity.valueLabel` (длинный URL налезал на заголовок); кнопки карточки мода переносятся (`ModCell.Flow`).
+
+**Проверка на устройстве:** по-прежнему только компиляция (локальные `c59…c66`, workflow `Compile check`). Больше всего риска: скрытие «Все чаты» (ширина вкладки 0), мини-аватарки, тональные цвета MD3, центрированный заголовок, «отложка», вибрация, Pine на Android 16, «Отключить жест Вернуть» (сопоставлен со свайпом назад наугад), «Сводки в Instant View» (пункт меню + Groq), широкие посты только для новых сообщений, системные шрифты после перезапуска.
+
+Номера бет: бету делает запуск `Build beta` вручную с `release_tag` (v0.1.0-betaN); пуш-сборки в очередь и релизов не создают. Беты 27–31 — сборки после экранов AyuGram; перед следующей бетой проверь, что нужные коммиты уже в ветке (запуск берёт head ветки на момент старта).
+
+### Сайт
+`site/index.html` (стиль Telegram: тёмная тема, реальные скриншоты, живая панель призрака, FAQ, скачивание). Скриншоты `site/shots/` — только настоящие скриншоты владельца, чаты размыты; рисованные макеты владелец запретил. Раздача: сервер, каталог `/var/www/telegram-you.ru` (файлы `index.html`, `shots/`, `logo.png`), превью http://64.188.66.249:8090 (vhost `server_name _`); деплой — на сервере `curl -fsSL https://raw.githubusercontent.com/Gl1ch5/TgYou/<SHA>/site/index.html -o …`. Домен `telegram-you.ru`: A-записи добавлены владельцем; после появления DNS — certbot (webroot) и редирект на HTTPS. Инструмент `mcp__Server__run_root`/`run_command` принимает параметр `cmd`. Незамазанная версия `chats.jpg` осталась в истории коммита eb12cb4 (владельцу сообщено, предложено переписать историю — ответа нет).
+
+Открытые вопросы к владельцу: оставить ли старый mtg-прокси на порту 2083; переписывать ли историю git; создавать ли `main`/PR; свой ключ подписи.
 
 Хуки в файлах Telegram (однострочные): `ConnectionsManager.sendRequestInternal` → `interceptRequest`; `FlagSecureReason.invalidate` → `flagSecure`; `MessagesController` (удаления ×2 → `filterDeleted`, правка → `messageEdited`); `ChatMessageCell` → `messageTime`; `ChatActivity` меню → `extendMessageMenu`/`menuOption`.
 
