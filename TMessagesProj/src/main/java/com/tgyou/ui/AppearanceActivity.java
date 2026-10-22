@@ -103,7 +103,7 @@ public class AppearanceActivity extends BaseFragment {
         SharedConfig.fontSize = size;
         SharedConfig.fontSizeIsDefault = false;
         SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Context.MODE_PRIVATE);
-        preferences.edit().putInt("fons_size", size).commit();
+        preferences.edit().putInt("fons_size", size).apply();
     }
 
     private interface IntSetter {

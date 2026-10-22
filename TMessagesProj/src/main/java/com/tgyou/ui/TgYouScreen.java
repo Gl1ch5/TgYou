@@ -482,7 +482,8 @@ public abstract class TgYouScreen extends BaseFragment {
         @Override
         public boolean isEnabled(RecyclerView.ViewHolder holder) {
             int type = holder.getItemViewType();
-            return type == T_TOGGLE || type == T_VALUE || type == T_MASTER || type == T_LINK || type == T_BUTTON || type == T_OPTION;
+            return type == T_TOGGLE || type == T_VALUE || type == T_LINK || type == T_BUTTON
+                    || type == T_TOGGLE + 100 + T_MASTER || type == T_TOGGLE + 100 + T_OPTION;
         }
 
         @Override

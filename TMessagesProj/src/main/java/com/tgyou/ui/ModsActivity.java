@@ -434,7 +434,9 @@ public class ModsActivity extends BaseFragment {
             try {
                 File out = new File(new File(context.getFilesDir(), "cache"), mod.manifest.id + ".mod");
                 out.getParentFile().mkdirs();
-                java.nio.file.Files.write(out.toPath(), ModRuntime.store(context).pack(mod.manifest.id));
+                try (java.io.FileOutputStream fos = new java.io.FileOutputStream(out)) {
+                    fos.write(ModRuntime.store(context).pack(mod.manifest.id));
+                }
                 Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", out);
                 AndroidUtilities.runOnUIThread(() -> {
                     Intent send = new Intent(Intent.ACTION_SEND);
