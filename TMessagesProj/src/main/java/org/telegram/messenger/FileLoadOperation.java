@@ -308,6 +308,7 @@ public class FileLoadOperation {
             maxDownloadRequests = 4;
             maxDownloadRequestsBig = 4;
         }
+        maxDownloadRequests = com.tgyou.core.TgYouHooks.downloadRequests(maxDownloadRequests); maxDownloadRequestsBig = com.tgyou.core.TgYouHooks.downloadRequests(maxDownloadRequestsBig); downloadChunkSizeBig = com.tgyou.core.TgYouHooks.downloadChunk(downloadChunkSizeBig);
         maxCdnParts = (int) (FileLoader.DEFAULT_MAX_FILE_SIZE / downloadChunkSizeBig);
     }
 

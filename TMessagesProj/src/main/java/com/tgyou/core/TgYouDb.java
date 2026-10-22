@@ -11,6 +11,7 @@ import org.telegram.messenger.FileLog;
 import org.telegram.messenger.MessageObject;
 import org.telegram.tgnet.TLRPC;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,7 +53,7 @@ public final class TgYouDb extends SQLiteOpenHelper {
     }
 
     private TgYouDb(Context context) {
-        super(context, "tgyou.db", null, 1);
+        super(context, "tgyou.db", null, 2);
     }
 
     @Override
@@ -60,10 +61,18 @@ public final class TgYouDb extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE deleted (account INTEGER, dialog INTEGER, msg INTEGER, date INTEGER, PRIMARY KEY (account, dialog, msg))");
         db.execSQL("CREATE TABLE edits (account INTEGER, dialog INTEGER, msg INTEGER, version INTEGER, text TEXT, date INTEGER,"
                 + " PRIMARY KEY (account, dialog, msg, version))");
+        createReads(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 2) {
+            createReads(db);
+        }
+    }
+
+    private static void createReads(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE IF NOT EXISTS reads (account INTEGER, dialog INTEGER, max_id INTEGER, date INTEGER)");
     }
 
     private void loadCaches() {
@@ -167,5 +176,93 @@ public final class TgYouDb extends SQLiteOpenHelper {
             FileLog.e("tgyou: edits failed", t);
         }
         return result;
+    }
+
+    // ---- read dates (kept locally in case Telegram does not give one) ----------------------
+
+    /** Remembers that the other side has read everything up to {@code maxId} of the dialog just now. */
+    public synchronized void addRead(int account, long dialogId, int maxId, int date) {
+        try {
+            ContentValues values = new ContentValues();
+            values.put("account", account);
+            values.put("dialog", dialogId);
+            values.put("max_id", maxId);
+            values.put("date", date);
+            getWritableDatabase().insert("reads", null, values);
+        } catch (Throwable t) {
+            FileLog.e("tgyou: addRead failed", t);
+        }
+    }
+
+    /** @return the earliest recorded moment when the message was known to be read, or 0 */
+    public synchronized int readDate(int account, long dialogId, int msg) {
+        try (Cursor c = getReadableDatabase().rawQuery(
+                "SELECT MIN(date) FROM reads WHERE account = ? AND dialog = ? AND max_id >= ?",
+                new String[]{String.valueOf(account), String.valueOf(dialogId), String.valueOf(msg)})) {
+            if (c.moveToFirst()) {
+                return c.getInt(0);
+            }
+        } catch (Throwable t) {
+            FileLog.e("tgyou: readDate failed", t);
+        }
+        return 0;
+    }
+
+    // ---- maintenance ---------------------------------------------------------------------
+
+    public static File file(Context context) {
+        return context.getDatabasePath("tgyou.db");
+    }
+
+    /** Removes every saved deleted message, edit and read date. */
+    public synchronized void clearAll() {
+        try {
+            SQLiteDatabase db = getWritableDatabase();
+            db.delete("deleted", null, null);
+            db.delete("edits", null, null);
+            db.delete("reads", null, null);
+            deleted.clear();
+            editCounts.clear();
+        } catch (Throwable t) {
+            FileLog.e("tgyou: clearAll failed", t);
+        }
+    }
+
+    /** Copies the database file to {@code target}. */
+    public synchronized void exportTo(File target) throws java.io.IOException {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("PRAGMA wal_checkpoint(FULL)");
+        try (java.io.InputStream in = new java.io.FileInputStream(file(ApplicationLoader.applicationContext));
+             java.io.OutputStream out = new java.io.FileOutputStream(target)) {
+            byte[] buffer = new byte[16 * 1024];
+            int n;
+            while ((n = in.read(buffer)) > 0) {
+                out.write(buffer, 0, n);
+            }
+        }
+    }
+
+    /** Replaces the database with the file read from {@code in}; the next {@link #get()} reopens it. */
+    public static synchronized void importFrom(java.io.InputStream in) throws java.io.IOException {
+        Context context = ApplicationLoader.applicationContext;
+        if (instance != null) {
+            instance.close();
+            instance = null;
+        }
+        File db = file(context);
+        File tmp = new File(db.getPath() + ".import");
+        try (java.io.OutputStream out = new java.io.FileOutputStream(tmp)) {
+            byte[] buffer = new byte[16 * 1024];
+            int n;
+            while ((n = in.read(buffer)) > 0) {
+                out.write(buffer, 0, n);
+            }
+        }
+        new File(db.getPath() + "-wal").delete();
+        new File(db.getPath() + "-shm").delete();
+        new File(db.getPath() + "-journal").delete();
+        if (!tmp.renameTo(db)) {
+            throw new java.io.IOException("не удалось заменить базу");
+        }
     }
 }

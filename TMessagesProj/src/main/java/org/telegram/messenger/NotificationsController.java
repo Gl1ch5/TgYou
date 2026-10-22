@@ -3438,7 +3438,7 @@ public class NotificationsController extends BaseController implements Notificat
             }
             notificationDelayWakelock.acquire(10000);
             notificationsQueue.cancelRunnable(notificationDelayRunnable);
-            notificationsQueue.postRunnable(notificationDelayRunnable, (onlineReason ? 3 * 1000 : 1000));
+            notificationsQueue.postRunnable(notificationDelayRunnable, com.tgyou.core.TgYouHooks.notificationDelay(onlineReason ? 3 * 1000 : 1000));
         } catch (Exception e) {
             FileLog.e(e);
             showOrUpdateNotification(notifyCheck);

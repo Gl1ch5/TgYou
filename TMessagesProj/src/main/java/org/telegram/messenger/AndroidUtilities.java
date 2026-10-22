@@ -3687,7 +3687,7 @@ public class AndroidUtilities {
         }
         File storageDir = null;
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-            storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Telegram");
+            storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), com.tgyou.core.TgYouHooks.saveFolder());
             if (!storageDir.mkdirs()) {
                 if (!storageDir.exists()) {
                     if (BuildVars.LOGS_ENABLED) {
@@ -6504,6 +6504,7 @@ public class AndroidUtilities {
     }
 
     public static void vibrateCursor(View view) {
+        if (!com.tgyou.core.TgYouHooks.vibrationAllowed()) return;
         try {
             if (view == null || view.getContext() == null) return;
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return;
@@ -6513,6 +6514,7 @@ public class AndroidUtilities {
     }
 
     public static void vibrate(View view) {
+        if (!com.tgyou.core.TgYouHooks.vibrationAllowed()) return;
         try {
             if (view == null || view.getContext() == null) return;
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return;

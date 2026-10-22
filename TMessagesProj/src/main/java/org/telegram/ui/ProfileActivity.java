@@ -10725,7 +10725,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 if (user != null && username != null) {
                     usernameRow = rowCount++;
                 }
-                if (user != null) {
+                if (user != null && com.tgyou.core.TgYouHooks.showId() != 0) {
                     tgyouIdRow = rowCount++;
                 }
                 if (userInfo != null) {
@@ -11435,7 +11435,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     nameTextView[a].setRightDrawable2(titleTextView.getRightDrawable2());
                 } else if (a == 0 && user.id != getUserConfig().getClientUserId() && !MessagesController.isSupportUser(user) && user.phone != null && user.phone.length() != 0 && getContactsController().contactsDict.get(user.id) == null &&
                         (getContactsController().contactsDict.size() != 0 || !getContactsController().isLoadingContacts())) {
-                    nameTextView[a].setText(PhoneFormat.getInstance().format("+" + user.phone));
+                    nameTextView[a].setText(com.tgyou.core.TgYouHooks.phone(PhoneFormat.getInstance().format("+" + user.phone)));
                 } else {
                     nameTextView[a].setText(newString);
                 }
@@ -13514,7 +13514,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                             text = PhoneFormat.getInstance().format("+" + vcardPhone);
                             phoneNumber = vcardPhone;
                         } else if (user != null && !TextUtils.isEmpty(user.phone)) {
-                            text = PhoneFormat.getInstance().format("+" + user.phone);
+                            text = com.tgyou.core.TgYouHooks.phone(PhoneFormat.getInstance().format("+" + user.phone));
                             phoneNumber = user.phone;
                         } else {
                             text = LocaleController.getString(R.string.PhoneHidden);
@@ -13613,7 +13613,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         TLRPC.User user = UserConfig.getInstance(currentAccount).getCurrentUser();
                         String value;
                         if (user != null && user.phone != null && user.phone.length() != 0) {
-                            value = PhoneFormat.getInstance().format("+" + user.phone);
+                            value = com.tgyou.core.TgYouHooks.phone(PhoneFormat.getInstance().format("+" + user.phone));
                         } else {
                             value = LocaleController.getString(R.string.NumberUnknown);
                         }

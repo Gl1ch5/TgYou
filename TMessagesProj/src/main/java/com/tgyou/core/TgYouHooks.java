@@ -244,4 +244,98 @@ public final class TgYouHooks {
         }
         return true;
     }
+
+    // ---- «Основные» ---------------------------------------------------------------------
+
+    public static boolean noRounding() {
+        return TgYouPrefs.bool(TgYouTweaks.NO_ROUND, false);
+    }
+
+    public static String fullNumber(int number, int[] rounded) {
+        return TgYouTweaks.fullNumber(number, rounded);
+    }
+
+    public static void userStatusUpdated(long userId, TLRPC.UserStatus status) {
+        TgYouTweaks.userStatusUpdated(userId, status);
+    }
+
+    /** @return a replacement for the stock last-seen line, or null */
+    public static String userStatus(int account, TLRPC.User user, boolean[] isOnline) {
+        return TgYouTweaks.userStatus(account, user, isOnline);
+    }
+
+    public static int notificationDelay(int ms) {
+        return TgYouTweaks.notificationDelay(ms);
+    }
+
+    public static int downloadRequests(int n) {
+        return TgYouTweaks.downloadRequests(n);
+    }
+
+    public static int downloadChunk(int size) {
+        return TgYouTweaks.downloadChunk(size);
+    }
+
+    public static int uploadRequests(int n, boolean slow) {
+        return TgYouTweaks.uploadRequests(n, slow);
+    }
+
+    public static CharSequence zalgo(CharSequence text) {
+        return TgYouTweaks.zalgo(text);
+    }
+
+    public static String zalgo(String text) {
+        return TgYouTweaks.zalgo(text);
+    }
+
+    public static String saveFolder() {
+        return TgYouTweaks.saveFolder();
+    }
+
+    public static boolean vibrationAllowed() {
+        return TgYouTweaks.vibrationAllowed();
+    }
+
+    public static void viewCreated(android.view.View view) {
+        TgYouTweaks.viewCreated(view);
+    }
+
+    // ---- список чатов -------------------------------------------------------------------
+
+    public static ArrayList<TLRPC.Dialog> dialogList(ArrayList<TLRPC.Dialog> dialogs, int folderId) {
+        return TgYouListTweaks.dialogList(dialogs, folderId);
+    }
+
+    public static void pullOpenArchive(org.telegram.ui.DialogsActivity fragment) {
+        TgYouListTweaks.pullOpenArchive(fragment);
+    }
+
+    public static boolean noSwipeBack() {
+        return TgYouListTweaks.noSwipeBack();
+    }
+
+    public static String dialogsTitle(String stock) {
+        return TgYouListTweaks.dialogsTitle(stock);
+    }
+
+    public static boolean hideStories() {
+        return TgYouListTweaks.hideStories();
+    }
+
+    public static boolean hideFab() {
+        return TgYouListTweaks.hideFab();
+    }
+
+    public static void searchField(android.view.View field, boolean onlySelect) {
+        TgYouListTweaks.searchField(field, onlySelect);
+    }
+
+    public static String phone(String formatted) {
+        return TgYouTweaks.phone(formatted);
+    }
+
+    /** 0 = hidden, 1 = Telegram API id, 2 = Bot API id. */
+    public static int showId() {
+        return TgYouPrefs.integer(TgYouTweaks.SHOW_ID, 1);
+    }
 }

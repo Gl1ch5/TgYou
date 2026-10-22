@@ -530,7 +530,7 @@ public class ProfileSearchCell extends BaseCell implements NotificationCenter.No
         nameString = AndroidUtilities.replaceNewLines(nameString);
         if (TextUtils.isEmpty(nameString)) {
             if (user != null && !TextUtils.isEmpty(user.phone)) {
-                nameString = PhoneFormat.getInstance().format("+" + user.phone);
+                nameString = com.tgyou.core.TgYouHooks.phone(PhoneFormat.getInstance().format("+" + user.phone));
             } else {
                 nameString = getString(R.string.HiddenName);
             }

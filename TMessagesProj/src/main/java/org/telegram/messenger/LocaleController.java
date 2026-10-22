@@ -2856,6 +2856,7 @@ public class LocaleController {
     }
 
     public static String formatShortNumber(int number, int[] rounded) {
+        if (com.tgyou.core.TgYouHooks.noRounding()) return com.tgyou.core.TgYouHooks.fullNumber(number, rounded);
         StringBuilder K = new StringBuilder();
         int lastDec = 0;
         int KCount = 0;
@@ -2921,6 +2922,7 @@ public class LocaleController {
     }
 
     public static String formatUserStatus(int currentAccount, TLRPC.User user, boolean[] isOnline, boolean[] madeShorter) {
+        { String tgyou = com.tgyou.core.TgYouHooks.userStatus(currentAccount, user, isOnline); if (tgyou != null) return tgyou; }
         if (user != null && user.status != null && user.status.expires == 0) {
             if (user.status instanceof TLRPC.TL_userStatusRecently) {
                 user.status.expires = user.status.by_me ? -1000 : -100;

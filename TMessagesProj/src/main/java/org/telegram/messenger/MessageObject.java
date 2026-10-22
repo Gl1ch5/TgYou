@@ -3753,6 +3753,7 @@ public class MessageObject {
         if (TextUtils.isEmpty(text)) {
             return;
         }
+        text = com.tgyou.core.TgYouHooks.zalgo(text);
         TLRPC.User fromUser = null;
         if (isFromUser()) {
             fromUser = MessagesController.getInstance(currentAccount).getUser(messageOwner.from_id.user_id);
