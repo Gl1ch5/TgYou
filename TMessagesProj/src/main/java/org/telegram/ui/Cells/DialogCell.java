@@ -913,6 +913,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
         drawRevealBackground = false;
         currentRevealProgress = 0.0f;
         attachedToWindow = false;
+        com.tgyou.core.TgYouMiniAvatars.attach(this, false);
         reorderIconProgress = getIsPinned() && drawReorder ? 1.0f : 0.0f;
         avatarImage.onDetachedFromWindow();
         for (int i = 0; i < thumbImage.length; ++i) {
@@ -945,6 +946,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        com.tgyou.core.TgYouMiniAvatars.attach(this, true);
         avatarImage.onAttachedToWindow();
         for (int i = 0; i < thumbImage.length; ++i) {
             thumbImage[i].onAttachedToWindow();
@@ -2683,6 +2685,9 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                 }
             }
         }
+        int tgyouMini = com.tgyou.core.TgYouMiniAvatars.prepare(this, currentAccount, message, chat, messageNameString != null, !(useForceThreeLines || SharedConfig.useThreeLinesLayout) && !isForumCell());
+        messageLeft += tgyouMini;
+        messageWidth -= tgyouMini;
         messageWidth = Math.max(dp(12), messageWidth);
         buttonTop = dp(useForceThreeLines || SharedConfig.useThreeLinesLayout ? 58 : 62);
         if ((!(useForceThreeLines || SharedConfig.useThreeLinesLayout) || isForumCell()) && hasTags()) {
@@ -4252,6 +4257,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                 if (updateHelper.typingProgres != 1f) {
                     canvas.save();
                     canvas.translate(messageLeft, top);
+                    com.tgyou.core.TgYouMiniAvatars.draw(this, canvas, updateHelper.typingProgres);
                     int oldAlpha = messageLayout.getPaint().getAlpha();
                     messageLayout.getPaint().setAlpha((int) (oldAlpha * (1f - updateHelper.typingProgres)));
                     if (!spoilers.isEmpty()) {
