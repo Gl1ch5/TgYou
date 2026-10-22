@@ -109,15 +109,22 @@ dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
 }
 
+// CI sets TG_PREBUILT_JNI to a directory with ready <abi>/libtmessages.49.so,
+// which skips the native build entirely.
+def prebuiltJni = System.getenv("TG_PREBUILT_JNI")
+
 android {
     compileSdkVersion 36
     buildToolsVersion '36.0.0'
     ndkVersion "27.2.12479018"
 
-
-    externalNativeBuild {
-        cmake {
-            path 'jni/CMakeLists.txt'
+    if (prebuiltJni) {
+        sourceSets.main.jniLibs.srcDirs = [prebuiltJni]
+    } else {
+        externalNativeBuild {
+            cmake {
+                path 'jni/CMakeLists.txt'
+            }
         }
     }
 
@@ -145,13 +152,15 @@ android {
         buildConfigField "int", "TG_API_ID", (System.getenv("TG_API_ID") ?: "0")
         buildConfigField "String", "TG_API_HASH", "\"" + (System.getenv("TG_API_HASH") ?: "") + "\""
 
-        externalNativeBuild {
-            cmake {
-                version '3.22.1'
-                arguments '-DANDROID_STL=c++_static', '-DANDROID_PLATFORM=android-21' //, '-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON'
-                targets 'tmessages.49'
-                if (System.getenv("TG_CCACHE")) {
-                    arguments '-DCMAKE_C_COMPILER_LAUNCHER=ccache', '-DCMAKE_CXX_COMPILER_LAUNCHER=ccache'
+        if (!prebuiltJni) {
+            externalNativeBuild {
+                cmake {
+                    version '3.22.1'
+                    arguments '-DANDROID_STL=c++_static', '-DANDROID_PLATFORM=android-21' //, '-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON'
+                    targets 'tmessages.49'
+                    if (System.getenv("TG_CCACHE")) {
+                        arguments '-DCMAKE_C_COMPILER_LAUNCHER=ccache', '-DCMAKE_CXX_COMPILER_LAUNCHER=ccache'
+                    }
                 }
             }
         }

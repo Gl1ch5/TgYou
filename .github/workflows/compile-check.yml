@@ -12,8 +12,9 @@ jobs:
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
+
+      - name: Java submodules only
+        run: git submodule update --init TMessagesProj_Modules/media TMessagesProj/lib/jlatexmath
 
       - uses: actions/setup-java@v4
         with:
@@ -30,4 +31,5 @@ jobs:
         env:
           TG_API_ID: ${{ secrets.TG_API_ID }}
           TG_API_HASH: ${{ secrets.TG_API_HASH }}
+          TG_PREBUILT_JNI: ${{ github.workspace }}/native-libs
         run: ./gradlew :TMessagesProj_App:compileAfatReleaseJavaWithJavac --no-daemon --stacktrace

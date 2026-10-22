@@ -14,9 +14,10 @@ on:
 permissions:
   contents: write
 
+# Release runs get their own group so a push never cancels them.
 concurrency:
-  group: build-beta-${{ github.ref }}
-  cancel-in-progress: true
+  group: build-beta-${{ github.ref }}-${{ inputs.release_tag || 'ci' }}
+  cancel-in-progress: ${{ inputs.release_tag == '' }}
 
 jobs:
   build:
@@ -25,8 +26,6 @@ jobs:
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Check secrets
         env:
@@ -34,7 +33,28 @@ jobs:
           TG_API_HASH: ${{ secrets.TG_API_HASH }}
         run: |
           if [ -z "$TG_API_ID" ] || [ -z "$TG_API_HASH" ]; then
-            echo "::error::Add TG_API_ID and TG_API_HASH repository secrets"; exit 1
+            echo "::error::Add TG_API_ID and TG_API_HASH secrets"; exit 1
+          fi
+
+      # The C++ part only changes with the sources under jni/, so its output is cached.
+      - name: Native cache key
+        id: nkey
+        run: echo "hash=$(git ls-tree -r HEAD TMessagesProj/jni .gitmodules | sha256sum | cut -c1-20)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore prebuilt native libs
+        id: native
+        uses: actions/cache@v4
+        with:
+          path: native-libs
+          key: native-arm64-${{ steps.nkey.outputs.hash }}
+
+      - name: Submodules
+        run: |
+          # Java modules are always needed
+          git submodule update --init TMessagesProj_Modules/media TMessagesProj/lib/jlatexmath
+          # C++ sources only when the native libs have to be built
+          if [ "${{ steps.native.outputs.cache-hit }}" != "true" ]; then
+            git submodule update --init --recursive
           fi
 
       - uses: actions/setup-java@v4
@@ -49,6 +69,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
 
       - name: ccache
+        if: steps.native.outputs.cache-hit != 'true'
         uses: hendrikmuhs/ccache-action@v1.2.14
         with:
           key: ccache-arm64
@@ -58,14 +79,30 @@ jobs:
         env:
           TG_API_ID: ${{ secrets.TG_API_ID }}
           TG_API_HASH: ${{ secrets.TG_API_HASH }}
-          # betas are arm64 only; empty TG_ABIS would build all four ABIs
+          # betas are arm64 only
           TG_ABIS: arm64-v8a
+          # branch builds skip R8; release builds are minified
+          TG_FAST: ${{ (inputs.release_tag == '' && !startsWith(github.ref, 'refs/tags/')) && '1' || '' }}
+          TG_PREBUILT_JNI: ${{ steps.native.outputs.cache-hit == 'true' && format('{0}/native-libs', github.workspace) || '' }}
           TG_CCACHE: '1'
           CCACHE_BASEDIR: ${{ github.workspace }}
           CCACHE_NOHASHDIR: 'true'
           CCACHE_COMPILERCHECK: content
           CCACHE_SLOPPINESS: time_macros,pch_defines
-        run: ./gradlew :TMessagesProj_App:assembleAfatRelease --no-daemon --stacktrace
+        run: ./gradlew :TMessagesProj_App:assembleAfatRelease --no-daemon --build-cache --stacktrace
+
+      - name: Save native libs for the next runs
+        if: steps.native.outputs.cache-hit != 'true'
+        run: |
+          lib=$(find . -path '*stripped_native_libs*' -path '*lib/arm64-v8a/libtmessages.49.so' | head -1)
+          [ -n "$lib" ] || lib=$(find . -path '*/obj/arm64-v8a/libtmessages.49.so' | head -1)
+          if [ -z "$lib" ]; then
+            echo "::warning::libtmessages.49.so not found, native cache will not be saved"
+            exit 0
+          fi
+          mkdir -p native-libs/arm64-v8a
+          cp "$lib" native-libs/arm64-v8a/
+          ls -l native-libs/arm64-v8a
 
       - uses: actions/upload-artifact@v4
         with:
