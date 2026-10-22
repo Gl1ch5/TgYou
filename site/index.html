@@ -4,194 +4,327 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Telegram You — Telegram под ваши правила</title>
-<meta name="description" content="Клиент на базе официального Telegram для Android: режим призрака, сохранение удалённых сообщений, плагины на Python, совместимость с exteraGram.">
+<meta name="description" content="Клиент на базе официального Telegram для Android: режим призрака, сохранение удалённых сообщений, плагины на Python, наборы иконок, совместимость с exteraGram.">
 <link rel="icon" href="/logo.png">
 <style>
 :root{
-  --ground:#101114;
-  --tone:#181a1f;
-  --tone2:#20232a;
-  --ink:#f4f4f1;
-  --mut:#a4a9b3;
-  --acc:#52a8ff;
-  --pad:clamp(20px,5vw,64px);
+  --bg:#0e1621;
+  --bg2:#17212b;
+  --bg3:#1f2c3a;
+  --bg4:#263648;
+  --line:#101921;
+  --ink:#f5f8fb;
+  --mut:#8fa3b8;
+  --acc:#2aabee;
+  --acc2:#168acd;
+  --out:#2b5278;
+  --green:#4fae4e;
+  --pad:clamp(20px,5vw,56px);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{overflow-x:hidden;-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{background:var(--ground);color:var(--ink);font:17px/1.6 "Inter","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip}
+body{background:var(--bg);color:var(--ink);font:17px/1.6 "Roboto","Inter","Segoe UI",system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
-.w{max-width:1200px;margin:0 auto;padding:0 var(--pad)}
-.big{font-size:clamp(40px,7.2vw,96px);line-height:1.02;letter-spacing:-.035em;font-weight:700}
-.h2{font-size:clamp(30px,4.6vw,56px);line-height:1.08;letter-spacing:-.03em;font-weight:700}
-p.lead{font-size:clamp(18px,2vw,22px);color:var(--mut);max-width:34em}
-.btn{display:inline-block;padding:16px 28px;border-radius:12px;font-weight:600;font-size:16px;background:var(--ink);color:var(--ground);transition:background .15s}
-.btn:hover{background:var(--acc)}
-.btn.s{background:var(--tone2);color:var(--ink)}
-.btn.s:hover{background:#2b2f38}
-section{padding:clamp(80px,13vw,180px) 0}
+.w{max-width:1160px;margin:0 auto;padding:0 var(--pad)}
+.h1{font-size:clamp(34px,5vw,60px);line-height:1.05;letter-spacing:-.03em;font-weight:800}
+.h2{font-size:clamp(28px,4vw,46px);line-height:1.1;letter-spacing:-.025em;font-weight:800}
+.lead{font-size:clamp(17px,1.8vw,20px);color:var(--mut);max-width:36em}
+.eyebrow{color:var(--acc);font-weight:600;font-size:15px;margin-bottom:12px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:14px;font-weight:600;font-size:16px;background:var(--acc);color:#fff;transition:background .15s}
+.btn:hover{background:var(--acc2)}
+.btn.s{background:var(--bg3)}
+.btn.s:hover{background:var(--bg4)}
+.btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+section{padding:clamp(64px,10vw,128px) 0}
+.alt{background:var(--bg2)}
+.head{max-width:720px;margin-bottom:clamp(36px,5vw,64px)}
+.head .lead{margin-top:16px}
 
-header{position:sticky;top:0;z-index:10;background:var(--ground)}
-.nav{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
-.brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px}
-.brand img{width:32px;height:32px;border-radius:9px}
-.nav nav{display:flex;gap:30px;color:var(--mut);font-size:15px}
+header{position:sticky;top:0;z-index:10;background:rgba(14,22,33,.92);backdrop-filter:blur(10px)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:66px;gap:16px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:19px}
+.brand img{width:34px;height:34px;border-radius:10px}
+.nav nav{display:flex;gap:28px;color:var(--mut);font-size:15px}
 .nav nav a:hover{color:var(--ink)}
 .nav .btn{padding:10px 20px;font-size:15px}
 
-.hero{padding:clamp(48px,8vw,110px) 0 clamp(60px,10vw,140px)}
-.hero .w{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(32px,6vw,90px);align-items:center}
-.hero h1{margin-bottom:28px}
-.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:38px}
-.note{margin-top:22px;color:var(--mut);font-size:14px}
+/* hero */
+.hero{padding:clamp(40px,6vw,88px) 0 clamp(56px,8vw,110px);overflow:hidden}
+.hero .w{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,48px);align-items:center}
+.hero h1{margin-bottom:22px}
+.hero h1 span{color:var(--acc)}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px;color:var(--mut);font-size:14px}
+.chips span{background:var(--bg2);border-radius:99px;padding:6px 14px}
+.stage{position:relative;height:620px}
+.stage .ph{position:absolute}
+.stage .p1{left:0;top:30px;z-index:2}
+.stage .p2{right:0;top:0;z-index:1}
+@media(max-width:1100px){.hero .w{grid-template-columns:minmax(0,1fr)}.stage{max-width:520px;margin:0 auto;width:100%}}
 
-.phone{width:100%;max-width:330px;margin:0 auto;background:var(--tone);border-radius:44px;padding:14px}
-.scr{background:var(--ground);border-radius:32px;overflow:hidden;font-size:13px}
-.sbar{display:flex;justify-content:space-between;padding:12px 20px 4px;color:var(--mut);font-size:11px}
-.ttl{display:flex;align-items:center;gap:10px;padding:8px 16px}
-.ttl img{width:28px;height:28px;border-radius:8px}
-.ttl b{font-size:18px}
-.srch{margin:4px 14px 10px;height:38px;border-radius:19px;background:var(--tone);display:flex;align-items:center;padding:0 14px;color:#6c7280;justify-content:space-between}
-.srch em{font-style:normal;background:var(--tone2);color:var(--ink);padding:3px 11px;border-radius:12px;font-size:12px}
-.tabs{display:flex;gap:16px;padding:0 16px 10px;color:var(--mut);white-space:nowrap;overflow:hidden}
-.tabs .on{color:var(--acc);font-weight:600}
-.chat{display:flex;gap:12px;padding:10px 16px;align-items:center}
-.av{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#101114}
-.chat div:nth-child(2){min-width:0;flex:1}
-.chat b{display:block;font-size:14.5px}
-.chat span{display:block;color:var(--mut);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.chat small{color:var(--mut);font-size:11px}
+/* phone mock */
+.ph{width:272px;height:580px;background:#05090e;border-radius:40px;padding:9px;box-shadow:0 0 0 2px #2b3948,0 30px 60px -20px rgba(0,0,0,.8)}
+.scr{height:100%;background:var(--bg);border-radius:32px;overflow:hidden;position:relative;font-size:13px;line-height:1.35;display:flex;flex-direction:column}
+.sb{display:flex;justify-content:space-between;padding:9px 18px 3px;font-size:10.5px;color:#c4d0dc;background:var(--bg2)}
+.bar{display:flex;align-items:center;gap:10px;padding:8px 14px 10px;background:var(--bg2)}
+.bar img{width:26px;height:26px;border-radius:8px}
+.bar b{font-size:17px;font-weight:700}
+.bar .ico{margin-left:auto;width:20px;height:20px;stroke:#c4d0dc;fill:none;stroke-width:2;stroke-linecap:round}
+.bar .back{width:20px;height:20px;stroke:#c4d0dc;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.srch{margin:0;padding:0 12px 8px;background:var(--bg2)}
+.srch div{height:34px;border-radius:17px;background:var(--bg);display:flex;align-items:center;padding:0 14px;color:#6c8196;justify-content:space-between}
+.srch em{font-style:normal;background:var(--bg3);color:var(--ink);padding:2px 10px;border-radius:11px;font-size:11.5px}
+.ftabs{display:flex;gap:18px;padding:0 14px;background:var(--bg2);color:var(--mut);white-space:nowrap;overflow:hidden;font-weight:500;border-bottom:1px solid var(--line)}
+.ftabs span{padding:8px 0 9px}
+.ftabs .on{color:var(--acc);box-shadow:inset 0 -2px 0 var(--acc)}
+.ftabs i{font-style:normal;background:var(--acc);color:#fff;border-radius:9px;padding:0 6px;font-size:10.5px;margin-left:4px}
+.dlg{display:flex;gap:11px;padding:9px 14px;align-items:center}
+.av{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#fff;font-size:16px}
+.dlg .t{min-width:0;flex:1}
+.dlg .t b{display:flex;justify-content:space-between;font-size:14.5px;font-weight:600}
+.dlg .t b small{font-weight:400;color:var(--mut);font-size:11px}
+.dlg .t span{display:flex;justify-content:space-between;gap:6px;color:var(--mut);font-size:13px}
+.dlg .t span q{quotes:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dlg .t span i{font-style:normal;flex:none;background:var(--acc);color:#fff;border-radius:10px;min-width:20px;text-align:center;font-size:11px;padding:1px 6px}
+.dlg .t span i.q{background:#4a5b6d}
+.fab{position:absolute;right:14px;bottom:14px;width:52px;height:52px;border-radius:50%;background:var(--acc);display:grid;place-items:center;box-shadow:0 6px 14px rgba(0,0,0,.45)}
+.fab svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.set{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 16px}
+.set div{min-width:0}
+.set b{display:block;font-weight:500;font-size:14px}
+.set small{display:block;color:var(--mut);font-size:11.5px;line-height:1.3;margin-top:1px}
+.sec{padding:14px 16px 5px;color:var(--acc);font-weight:600;font-size:13px}
+.sw{flex:none;width:38px;height:22px;border-radius:11px;background:#3a4a5c;position:relative}
+.sw::after{content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#aab8c6}
+.sw.on{background:var(--acc)}
+.sw.on::after{left:19px;background:#fff}
+.gap{height:8px;background:var(--bg);flex:none}
+.cap{padding:8px 16px 10px;color:var(--mut);font-size:11.5px}
+.mast{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--bg3);font-weight:700;font-size:15px}
+.mast small{font-weight:500;color:var(--mut);margin-left:6px}
+.body{flex:1;background:var(--bg2);overflow:hidden}
+.chatbg{flex:1;padding:10px 10px;display:flex;flex-direction:column;gap:6px;background:#0b141d;overflow:hidden}
+.b{max-width:82%;padding:7px 10px 5px;border-radius:14px;font-size:13px;position:relative}
+.b.in{background:var(--bg2);align-self:flex-start;border-bottom-left-radius:4px}
+.b.out{background:var(--out);align-self:flex-end;border-bottom-right-radius:4px}
+.b.gone{opacity:.5}
+.b small{display:block;text-align:right;color:var(--mut);font-size:10px;margin-top:2px}
+.b.out small{color:#9fc2e4}
+.b em{display:block;font-style:normal;color:#e06c75;font-size:10.5px;margin-top:2px}
+.inp{display:flex;gap:8px;align-items:center;padding:8px 10px;background:var(--bg2);color:#6c8196}
+.inp div{flex:1;height:34px;border-radius:17px;background:var(--bg);display:flex;align-items:center;padding:0 14px}
 
-.ghost{background:var(--tone)}
-.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(36px,7vw,110px);align-items:center}
-.split .lead{margin-top:24px}
-.panel{background:var(--ground);border-radius:24px;overflow:hidden}
-.opt{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px;cursor:pointer;user-select:none;background:var(--ground);transition:background .15s}
-.opt+.opt{margin-top:2px}
-.opt:hover{background:#15171b}
-.opt b{font-weight:500;font-size:17px}
-.sw{flex:none;width:46px;height:26px;border-radius:13px;background:var(--tone2);position:relative;transition:background .2s}
-.sw::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#8b909b;transition:transform .2s,background .2s}
+/* ghost live */
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,90px);align-items:center}
+.split.top{align-items:start}
+.panel{background:var(--bg);border-radius:20px;overflow:hidden}
+.alt .panel{background:var(--bg);}
+.opt{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:17px 22px;cursor:pointer;user-select:none;border-top:1px solid var(--line);transition:background .15s}
+.opt:hover{background:#121c28}
+.opt b{font-weight:500;font-size:16px}
+.opt.master{background:var(--bg3);border:0;padding:22px;font-size:18px}
+.opt.master b{font-weight:700;font-size:18px}
+.opt .cnt{color:var(--mut);font-weight:500;margin-left:6px}
+.opt .sw{width:44px;height:26px;border-radius:13px}
+.opt .sw::after{width:20px;height:20px}
+.opt .sw.on::after{left:21px}
 .opt.on .sw{background:var(--acc)}
-.opt.on .sw::after{transform:translateX(20px);background:#fff}
-.opt.master{padding:26px 24px;background:var(--tone2)}
-.opt.master b{font-size:20px;font-weight:700}
-.cnt{color:var(--mut);font-weight:500;margin-left:8px}
-.cap{padding:16px 24px 22px;color:var(--mut);font-size:14px;background:var(--ground)}
+.opt.on .sw::after{left:21px;background:#fff}
+.pcap{padding:14px 22px 18px;color:var(--mut);font-size:14px;border-top:1px solid var(--line)}
+
+/* feature grid */
+.feats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.f{background:var(--bg2);border-radius:18px;padding:24px}
+.alt .f{background:var(--bg3)}
+.f h3{font-size:18px;margin-bottom:8px;letter-spacing:-.01em}
+.f p{color:var(--mut);font-size:15px;line-height:1.55}
+.f .tag{display:inline-block;background:rgba(42,171,238,.15);color:var(--acc);border-radius:8px;padding:2px 9px;font-size:12.5px;font-weight:600;margin-bottom:12px}
+
+.wide{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.wide .f{padding:30px}
+.list{display:grid;gap:22px;margin-top:30px}
+.list b{display:block;font-size:18px;margin-bottom:3px}
+.list p{color:var(--mut);font-size:16px}
+.chatbox{background:#0b141d;border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:8px}
+.chatbox .b{font-size:15px;padding:9px 13px 6px}
+
+pre{background:var(--bg);border-radius:18px;padding:24px 26px;font:14px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#d3dde8;overflow:auto;max-width:100%}
+pre i{color:#5cb8f2;font-style:normal}
+pre u{color:#6f8499;text-decoration:none}
+pre s{color:#8ccf7e;text-decoration:none}
+
+.sliders{background:var(--bg);border-radius:20px;padding:26px;display:grid;gap:24px}
+.sl label{display:flex;justify-content:space-between;font-size:15px;margin-bottom:10px}
+.sl label span{color:var(--mut)}
+.sl input{width:100%;accent-color:var(--acc)}
+.preview{display:flex;gap:14px;align-items:center;background:var(--bg2);border-radius:14px;padding:14px}
+.preview .av{width:48px;height:48px;transition:border-radius .1s}
+
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:40px}
+.steps .f p{font-size:15px}
+.steps .n{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;margin-bottom:14px}
+
+.faq{display:grid;gap:10px;max-width:820px}
+details{background:var(--bg2);border-radius:14px;padding:18px 22px}
+details summary{cursor:pointer;font-weight:600;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:14px}
+details summary::after{content:"+";color:var(--acc);font-size:22px;line-height:1}
+details[open] summary::after{content:"–"}
+details p{color:var(--mut);margin-top:12px;font-size:16px}
+
+.get{text-align:center}
+.get .lead{margin:16px auto 0}
+.get .cta{justify-content:center}
+.get .logo{width:96px;height:96px;border-radius:26px;margin:0 auto 26px}
+footer{padding:36px 0 52px;color:var(--mut);font-size:14px;background:var(--bg2)}
+footer .w{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 
-.deleted{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(36px,7vw,110px);align-items:end}
-.chatbox{background:var(--tone);border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:10px}
-.msg{max-width:82%;padding:12px 16px;border-radius:18px;font-size:16px;line-height:1.4}
-.msg.in{background:var(--tone2);align-self:flex-start;border-bottom-left-radius:6px}
-.msg.out{background:#2b6cb0;align-self:flex-end;border-bottom-right-radius:6px}
-.msg.gone{opacity:.45}
-.msg small{display:block;margin-top:4px;color:var(--mut);font-size:12px}
-.msg.out small{color:#c6d9f0}
-.list{margin-top:44px;display:grid;gap:26px;max-width:32em}
-.list p{color:var(--mut)}
-.list b{display:block;color:var(--ink);font-size:19px;margin-bottom:2px}
-
-.plug .split{align-items:start}
-pre{background:var(--tone);border-radius:20px;padding:26px 28px;font:14.5px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#d5d9e2;overflow:auto;max-width:100%}
-pre i{color:var(--acc);font-style:normal}
-pre u{color:#8d94a3;text-decoration:none}
-
-.compat{background:var(--tone)}
-.compat .head{max-width:760px}
-.facts{margin-top:64px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,5vw,72px)}
-.facts b{display:block;font-size:clamp(26px,3.4vw,40px);letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-.facts p{color:var(--mut)}
-
-.get .w{max-width:960px}
-.get h2{margin-bottom:26px}
-.get .cta{margin-top:44px}
-
-footer{padding:40px 0 56px;color:var(--mut);font-size:14px}
-footer .w{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
-
-@media(max-width:860px){
+@media(max-width:900px){
   .nav nav{display:none}
-  .hero .w,.split,.deleted{grid-template-columns:minmax(0,1fr)}
-  .facts{grid-template-columns:minmax(0,1fr)}
-  .deleted{align-items:start}
-  .phone{max-width:300px;margin:12px 0 0}
+  .hero .w,.split{grid-template-columns:minmax(0,1fr)}
+  .feats,.steps{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .wide{grid-template-columns:minmax(0,1fr)}
+  .stage{height:640px;margin:0 auto;width:100%;max-width:420px}
+  .stage .p1{left:0}.stage .p2{right:0}
 }
-@media(max-width:480px){
+@media(max-width:560px){
   body{font-size:16px}
-  .cta .btn{flex:1 1 100%;text-align:center}
-  .opt{padding:18px}
-  .chatbox{padding:18px}
-  pre{padding:18px;font-size:12.5px}
+  .feats,.steps{grid-template-columns:minmax(0,1fr)}
+  .cta .btn{flex:1 1 100%;justify-content:center}
+  .stage{height:600px;max-width:300px}
+  .stage .p2{display:none}
+  .stage .p1{left:50%;margin-left:-136px}
+  .opt{padding:15px 16px}
+  pre{padding:16px;font-size:12px}
+  .chatbox{padding:14px}
 }
 </style>
 </head>
 <body>
 <header><div class="w nav">
   <a class="brand" href="#"><img src="/logo.png" alt="">Telegram You</a>
-  <nav><a href="#ghost">Приватность</a><a href="#saved">Сообщения</a><a href="#plugins">Плагины</a><a href="#compat">exteraGram</a></nav>
+  <nav><a href="#features">Функции</a><a href="#ghost">Призрак</a><a href="#plugins">Плагины</a><a href="#look">Внешний вид</a><a href="#faq">Вопросы</a></nav>
   <a class="btn" href="#get">Скачать</a>
 </div></header>
 
 <main>
 <section class="hero"><div class="w">
   <div>
-    <h1 class="big">Telegram, настроенный под вас.</h1>
-    <p class="lead">Клиент на базе официального Telegram для Android. Режим призрака, сохранённые удалённые сообщения, плагины на Python — каждая функция включается отдельно.</p>
-    <div class="cta"><a class="btn" href="#get">Скачать APK</a><a class="btn s" href="#ghost">Посмотреть настройки</a></div>
-    <p class="note">Бета · Android · arm64</p>
+    <h1 class="h1">Telegram, который <span>настраивается под вас</span></h1>
+    <p class="lead">Клиент на базе официального Telegram для Android. Режим призрака, сохранённые удалённые сообщения, плагины на Python, наборы иконок и живое оформление. Всё включается в настройках по отдельности.</p>
+    <div class="cta">
+      <a class="btn" href="#get"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16"/></svg>Скачать APK</a>
+      <a class="btn s" href="#features">Что умеет</a>
+    </div>
+    <div class="chips"><span>Бета</span><span>Android · arm64</span><span>Совместим с exteraGram</span></div>
   </div>
-  <div class="phone"><div class="scr">
-    <div class="sbar"><span>22:11</span><span>LTE 87%</span></div>
-    <div class="ttl"><img src="/logo.png" alt=""><b>Telegram You</b></div>
-    <div class="srch"><span>Поиск</span><em>Прокси</em></div>
-    <div class="tabs"><span class="on">Все 26</span><span>Личные</span><span>Работа</span><span>Каналы</span></div>
-    <div class="chat"><div class="av" style="background:#52a8ff">TY</div><div><b>Telegram You</b><span>Режим призрака включён</span></div><small>12:08</small></div>
-    <div class="chat"><div class="av" style="background:#f2a65a">А</div><div><b>Анна</b><span>Скинь фото, когда будешь</span></div><small>11:52</small></div>
-    <div class="chat"><div class="av" style="background:#7ad0a0">Д</div><div><b>Дизайн-чат</b><span>Макс: новые иконки готовы</span></div><small>11:30</small></div>
-    <div class="chat"><div class="av" style="background:#e48fa8">К</div><div><b>Команда</b><span>Сообщение удалено · сохранено</span></div><small>10:14</small></div>
-    <div style="height:14px"></div>
-  </div></div>
+
+  <div class="stage">
+    <div class="ph p1"><div class="scr">
+      <div class="sb"><span>22:11</span><span>LTE · 87%</span></div>
+      <div class="bar"><img src="/logo.png" alt=""><b>Telegram You</b><svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></div>
+      <div class="srch"><div><span>Поиск</span><em>Прокси</em></div></div>
+      <div class="ftabs"><span class="on">Все<i>26</i></span><span>Личные</span><span>Работа<i>3</i></span><span>Каналы</span></div>
+      <div class="dlg"><div class="av" style="background:#2aabee">TY</div><div class="t"><b>Telegram You<small>12:08</small></b><span><q>Режим призрака включён</q><i>3</i></span></div></div>
+      <div class="dlg"><div class="av" style="background:#e8964a">А</div><div class="t"><b>Анна<small>11:52</small></b><span><q>Скинь фото, когда будешь</q><i>1</i></span></div></div>
+      <div class="dlg"><div class="av" style="background:#4fae4e">Д</div><div class="t"><b>Дизайн-чат<small>11:30</small></b><span><q>Макс: новые иконки готовы</q><i class="q">12</i></span></div></div>
+      <div class="dlg"><div class="av" style="background:#c8638a">К</div><div class="t"><b>Команда<small>10:14</small></b><span><q>Сообщение удалено · сохранено</q></span></div></div>
+      <div class="dlg"><div class="av" style="background:#8a6ad8">Н</div><div class="t"><b>Новости<small>вчера</small></b><span><q>Обновление 0.1.0 уже доступно</q></span></div></div>
+      <div class="dlg"><div class="av" style="background:#3aa8a0">М</div><div class="t"><b>Мама<small>вчера</small></b><span><q>Позвони, как освободишься</q></span></div></div>
+      <div class="fab"><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11a2 2 0 0 0-3-3L5 16l-1 4z"/></svg></div>
+    </div></div>
+
+    <div class="ph p2"><div class="scr">
+      <div class="sb"><span>22:12</span><span>LTE · 87%</span></div>
+      <div class="bar"><svg class="back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg><b>Режим призрака</b></div>
+      <div class="mast"><span>Режим призрака<small>3/5</small></span><span class="sw on"></span></div>
+      <div class="body">
+        <div class="set"><div><b>Не читать сообщения</b></div><span class="sw on"></span></div>
+        <div class="set"><div><b>Не читать истории</b></div><span class="sw on"></span></div>
+        <div class="set"><div><b>Не отправлять «онлайн»</b></div><span class="sw on"></span></div>
+        <div class="set"><div><b>Не отправлять «печатает»</b></div><span class="sw"></span></div>
+        <div class="set"><div><b>Автоматический «офлайн»</b></div><span class="sw"></span></div>
+        <div class="cap">Зажмите любую опцию, чтобы зафиксировать её значение.</div>
+        <div class="gap"></div>
+        <div class="set"><div><b>Читать при действиях</b><small>Читает сообщение при отправке нового или реакции.</small></div><span class="sw on"></span></div>
+        <div class="set"><div><b>Использовать отложку</b><small>Задержка отправки около 12 секунд.</small></div><span class="sw"></span></div>
+        <div class="set"><div><b>Отправлять без звука</b><small>Никогда</small></div></div>
+      </div>
+    </div></div>
+  </div>
 </div></section>
 
-<section class="ghost" id="ghost"><div class="w split">
-  <div>
-    <h2 class="h2">Собеседник ничего не узнает.</h2>
-    <p class="lead">Не читать сообщения, не отправлять «печатает», не светить «в сети». Нажмите на любую опцию, чтобы попробовать — в приложении это выглядит так же.</p>
+<section id="features" class="alt"><div class="w">
+  <div class="head">
+    <div class="eyebrow">Возможности</div>
+    <h2 class="h2">Всё, что хотелось в Telegram</h2>
+    <p class="lead">Каждая функция — отдельный плагин. Включается и настраивается независимо, ничего лишнего не работает, пока вы это не включили.</p>
   </div>
-  <div class="panel" id="gp">
+  <div class="feats">
+    <div class="f"><span class="tag">Приватность</span><h3>Режим призрака</h3><p>Не отправляет «прочитано», «печатает» и «в сети». Автоматический офлайн, отложенная отправка, отправка без звука.</p></div>
+    <div class="f"><span class="tag">Сообщения</span><h3>Удалённые и правки</h3><p>Сохраняет удалённые сообщения и историю правок, помечает их в чате. Вложения хранятся локально.</p></div>
+    <div class="f"><span class="tag">Python</span><h3>Плагины без песочницы</h3><p>Плагины на Python с полным доступом к приложению. Каталог и установка в одно нажатие.</p></div>
+    <div class="f"><span class="tag">Совместимость</span><h3>exteraGram</h3><p>Плагины .plugin и наборы иконок .icons запускаются без переделки.</p></div>
+    <div class="f"><span class="tag">Фильтры</span><h3>Фильтры и без рекламы</h3><p>Скрывает сообщения по словам и пользователям, отключает рекламные посты и спонсоров.</p></div>
+    <div class="f"><span class="tag">Premium</span><h3>Локальный Premium</h3><p>Значки, стикеры и премиум-оформление на вашем устройстве. Без обращения к серверу.</p></div>
+    <div class="f"><span class="tag">Чаты</span><h3>Точное время и инфо</h3><p>Время сообщений с секундами, подробная информация о сообщении, копирование из защищённых чатов.</p></div>
+    <div class="f"><span class="tag">Медиа</span><h3>Исчезающие медиа</h3><p>Сохраняет медиа с таймером удаления и чаты, из которых вас исключили.</p></div>
+    <div class="f"><span class="tag">Экран</span><h3>Скриншоты и запись</h3><p>Управляет защитой экрана в секретных чатах и сообщает о скриншотах.</p></div>
+  </div>
+</div></section>
+
+<section id="ghost"><div class="w split">
+  <div>
+    <div class="eyebrow">Приватность</div>
+    <h2 class="h2">Собеседник ничего не узнает</h2>
+    <p class="lead" style="margin-top:16px">Не читать сообщения, не отправлять «печатает», не светить «в сети». Попробуйте переключатели справа — в приложении настройки устроены так же.</p>
+    <div class="list">
+      <div><b>Мастер-переключатель</b><p>Включает или выключает все опции разом, кроме тех, что вы зафиксировали долгим нажатием.</p></div>
+      <div><b>Читать при действиях</b><p>Сообщение прочитается само, когда вы ответите или поставите реакцию.</p></div>
+    </div>
+  </div>
+  <div class="panel">
     <div class="opt master" id="gm"><b>Режим призрака<span class="cnt" id="gc">0/5</span></b><span class="sw"></span></div>
     <div class="opt" data-g><b>Не читать сообщения</b><span class="sw"></span></div>
     <div class="opt" data-g><b>Не читать истории</b><span class="sw"></span></div>
     <div class="opt" data-g><b>Не отправлять «онлайн»</b><span class="sw"></span></div>
     <div class="opt" data-g><b>Не отправлять «печатает»</b><span class="sw"></span></div>
     <div class="opt" data-g><b>Автоматический «офлайн»</b><span class="sw"></span></div>
-    <p class="cap">Зажмите любую опцию, чтобы зафиксировать её значение.</p>
+    <p class="pcap">Зажмите любую опцию, чтобы зафиксировать её значение.</p>
   </div>
 </div></section>
 
-<section id="saved"><div class="w deleted">
+<section class="alt"><div class="w split">
+  <div class="chatbox">
+    <div class="b in">Ой, я не то отправил, удали<small>12:01</small></div>
+    <div class="b in gone">Встречаемся в восемь у входа<em>удалено · сохранено у вас</em><small>12:02</small></div>
+    <div class="b out">Хорошо, до вечера<small>12:04 ✓✓</small></div>
+    <div class="b in">Ладно, тогда в семь<small>12:05 · изменено</small></div>
+  </div>
   <div>
-    <h2 class="h2">Удалённое остаётся у вас.</h2>
+    <div class="eyebrow">Сообщения</div>
+    <h2 class="h2">Удалённое остаётся у вас</h2>
     <div class="list">
-      <div><b>Удалённые сообщения</b><p>Сохраняются вместе с вложениями. В чате видна пометка и приглушённый цвет.</p></div>
-      <div><b>История правок</b><p>Каждая версия отредактированного сообщения доступна из меню.</p></div>
-      <div><b>Исключения</b><p>Выберите чаты, где ничего сохранять не нужно.</p></div>
+      <div><b>Удалённые сообщения</b><p>Сохраняются вместе с вложениями. В чате видна пометка и приглушённый цвет, как слева.</p></div>
+      <div><b>История правок</b><p>Каждая версия отредактированного сообщения доступна из меню сообщения.</p></div>
+      <div><b>Исключения</b><p>Выберите чаты, где ничего сохранять не нужно, и задайте лимит размера вложений.</p></div>
     </div>
   </div>
-  <div class="chatbox">
-    <div class="msg in">Ой, я не то отправил, удали</div>
-    <div class="msg in gone">Встречаемся в восемь у входа<small>удалено · сохранено у вас</small></div>
-    <div class="msg out">Хорошо, до вечера<small>12:04</small></div>
-  </div>
 </div></section>
 
-<section class="plug" id="plugins"><div class="w split">
+<section id="plugins"><div class="w split top">
   <div>
-    <h2 class="h2">Плагины на Python без песочницы.</h2>
-    <p class="lead">Перехватывайте запросы, добавляйте пункты меню, меняйте интерфейс. Плагин — один файл, ставится в одно нажатие.</p>
+    <div class="eyebrow">Плагины</div>
+    <h2 class="h2">Python без ограничений</h2>
+    <p class="lead" style="margin-top:16px">Перехватывайте запросы, добавляйте пункты меню, меняйте интерфейс. Плагин — один файл, ставится в одно нажатие. Доступно всё приложение через <b>java</b>-мост.</p>
+    <div class="list">
+      <div><b>Хуки</b><p>Отправка и приём сообщений, удаление, правки, обновления, меню сообщения.</p></div>
+      <div><b>Свои страницы</b><p>Плагин может добавить экран в настройки с переключателями и кнопками.</p></div>
+      <div><b>Xposed-хуки</b><p>Подмена методов приложения для продвинутых плагинов.</p></div>
+    </div>
   </div>
-<pre><u># пример плагина</u>
+<pre><u># плагин-подпись</u>
 <i>from</i> base_plugin <i>import</i> BasePlugin, HookResult, HookStrategy
 
 <i>class</i> Signature(BasePlugin):
@@ -199,25 +332,62 @@ footer .w{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
         self.add_on_send_message_hook()
 
     <i>def</i> on_send_message_hook(self, account, params):
-        params.message += <i>"\n— отправлено из Telegram You"</i>
+        params.message += <s>"\n— из Telegram You"</s>
         <i>return</i> HookResult(HookStrategy.MODIFY, params=params)</pre>
 </div></section>
 
-<section class="compat" id="compat"><div class="w">
-  <div class="head">
-    <h2 class="h2">Плагины и иконки exteraGram запускаются как есть.</h2>
+<section id="look" class="alt"><div class="w split">
+  <div>
+    <div class="eyebrow">Внешний вид</div>
+    <h2 class="h2">Оформление под вас</h2>
+    <p class="lead" style="margin-top:16px">Закругление аватарок, прозрачность, шрифты, иконка приложения и наборы иконок. Изменения видны сразу. Попробуйте ползунок справа.</p>
+    <div class="list">
+      <div><b>Наборы иконок</b><p>Устанавливайте .icons из exteraGram или собирайте свой набор.</p></div>
+      <div><b>Иконка приложения</b><p>Несколько вариантов значка на рабочем столе.</p></div>
+      <div><b>Шрифты и эмодзи</b><p>Свой шрифт интерфейса и системные эмодзи.</p></div>
+    </div>
   </div>
-  <div class="facts">
-    <div><b>.plugin</b><p>Файлы плагинов exteraGram устанавливаются без переделки.</p></div>
-    <div><b>.icons</b><p>Наборы иконок подменяют значки по всему приложению.</p></div>
-    <div><b>40+ функций</b><p>Фильтры, блокировка рекламы, локальный Premium, шрифты и многое другое.</p></div>
+  <div class="sliders">
+    <div class="preview"><div class="av" id="pv" style="background:#2aabee;border-radius:50%">TY</div><div><b>Telegram You</b><div style="color:var(--mut);font-size:14px">Так выглядит аватарка в списке чатов</div></div></div>
+    <div class="sl"><label>Закругление аватарок<span id="rv">Круг</span></label><input id="rs" type="range" min="0" max="24" value="24"></div>
+    <div class="sl"><label>Размер текста сообщений<span id="ts">16</span></label><input id="tr" type="range" min="12" max="24" value="16"></div>
+    <div class="chatbox" style="padding:16px"><div class="b out" id="tb" style="font-size:16px;align-self:flex-start">Пример текста сообщения</div></div>
   </div>
 </div></section>
 
-<section class="get" id="get"><div class="w">
-  <h2 class="big">Telegram You для Android.</h2>
-  <p class="lead">Бета-версия, arm64. Независимый клиент на основе открытого кода Telegram.</p>
-  <div class="cta"><a class="btn" href="https://github.com/Gl1ch5/TgYou/releases">Скачать с GitHub</a><a class="btn s" href="https://grzxk.ru/tgyou/">Зеркало</a></div>
+<section><div class="w">
+  <div class="head">
+    <div class="eyebrow">Прокси</div>
+    <h2 class="h2">Свой прокси в один тап</h2>
+    <p class="lead">Telegram You понимает ссылки на прокси, показывает быстрый переключатель «Прокси» в строке поиска и умеет автоматически выбирать рабочий.</p>
+  </div>
+  <div class="wide">
+    <div class="f"><h3>Переключатель в поиске</h3><p>Включайте и выключайте прокси, не заходя в настройки.</p></div>
+    <div class="f"><h3>Проверка скорости</h3><p>Задержка каждого прокси видна в списке, лучший выбирается автоматически.</p></div>
+  </div>
+</div></section>
+
+<section id="faq" class="alt"><div class="w">
+  <div class="head"><h2 class="h2">Вопросы</h2></div>
+  <div class="faq">
+    <details><summary>Это безопасно?</summary><p>Клиент основан на открытом коде Telegram для Android. Исходники проекта открыты на GitHub, сборки делаются публично в CI.</p></details>
+    <details><summary>Могут ли заблокировать аккаунт?</summary><p>Telegram разрешает сторонние клиенты на открытом API. Мы не отправляем ничего, что отличает клиент от официального, кроме настроенных вами функций.</p></details>
+    <details><summary>Работают ли плагины exteraGram?</summary><p>Да, файлы .plugin и наборы иконок .icons устанавливаются без переделки. Покрытие совместимости описано в документации проекта.</p></details>
+    <details><summary>Какие устройства поддерживаются?</summary><p>Android на процессоре arm64. Версия бета, поэтому возможны ошибки — сообщайте об этом на GitHub.</p></details>
+    <details><summary>Как обновляться?</summary><p>Встроенный экран «Обновления» проверяет новые версии на GitHub и скачивает APK.</p></details>
+  </div>
+</div></section>
+
+<section id="get" class="get"><div class="w">
+  <img class="logo" src="/logo.png" alt="">
+  <h2 class="h1">Telegram You</h2>
+  <p class="lead">Бета для Android (arm64). Независимый клиент на основе открытого кода Telegram.</p>
+  <div class="cta"><a class="btn" href="https://github.com/Gl1ch5/TgYou/releases"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16"/></svg>Скачать с GitHub</a><a class="btn s" href="https://grzxk.ru/tgyou/">Зеркало</a></div>
+  <div class="steps">
+    <div class="f" style="text-align:left"><div class="n">1</div><h3>Скачайте APK</h3><p>Возьмите последний релиз со страницы GitHub.</p></div>
+    <div class="f" style="text-align:left"><div class="n">2</div><h3>Разрешите установку</h3><p>Android спросит разрешение на установку из этого источника.</p></div>
+    <div class="f" style="text-align:left"><div class="n">3</div><h3>Войдите в аккаунт</h3><p>Войдите как в обычном Telegram и откройте «Настройки Telegram You».</p></div>
+  </div>
 </div></section>
 </main>
 
@@ -228,10 +398,11 @@ footer .w{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   var opts=[].slice.call(document.querySelectorAll('[data-g]')),m=document.getElementById('gm'),c=document.getElementById('gc');
   function upd(){var n=opts.filter(function(o){return o.classList.contains('on')}).length;c.textContent=n+'/5';m.classList.toggle('on',n>0)}
   opts.forEach(function(o){o.addEventListener('click',function(){o.classList.toggle('on');upd()})});
-  m.addEventListener('click',function(){
-    var any=opts.some(function(o){return o.classList.contains('on')});
-    opts.forEach(function(o){o.classList.toggle('on',!any)});upd();
-  });
+  m.addEventListener('click',function(){var any=opts.some(function(o){return o.classList.contains('on')});opts.forEach(function(o){o.classList.toggle('on',!any)});upd()});
+  var rs=document.getElementById('rs'),pv=document.getElementById('pv'),rv=document.getElementById('rv');
+  rs.addEventListener('input',function(){var v=+rs.value;pv.style.borderRadius=(v/24*50)+'%';rv.textContent=v>=24?'Круг':v<=0?'Квадрат':Math.round(v/24*100)+'%'});
+  var tr=document.getElementById('tr'),tb=document.getElementById('tb'),ts=document.getElementById('ts');
+  tr.addEventListener('input',function(){tb.style.fontSize=tr.value+'px';ts.textContent=tr.value});
 })();
 </script>
 </body>
