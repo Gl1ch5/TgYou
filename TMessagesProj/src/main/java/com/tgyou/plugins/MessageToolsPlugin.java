@@ -20,6 +20,7 @@ import org.telegram.messenger.MessagesController;
 import org.telegram.messenger.R;
 import org.telegram.messenger.UserConfig;
 import org.telegram.tgnet.TLRPC;
+import org.telegram.tgnet.tl.TL_keyboard;
 
 import java.util.Arrays;
 import java.util.List;
@@ -55,7 +56,9 @@ public final class MessageToolsPlugin implements Plugin {
                 SettingField.toggle("google", "Найти в Google", true),
                 SettingField.toggle("share", "Поделиться текстом", true),
                 SettingField.toggle("quote", "Копировать как цитату", true),
-                SettingField.toggle("link", "Копировать ссылку на сообщение", true)
+                SettingField.toggle("link", "Копировать ссылку на сообщение", true),
+                SettingField.toggle("ids", "Копировать ID сообщения и отправителя", true),
+                SettingField.toggle("buttons", "Данные inline-кнопок (callback)", true)
         );
     }
 
@@ -77,6 +80,31 @@ public final class MessageToolsPlugin implements Plugin {
             }
             if (hasText && settings.getBoolean("quote", true)) {
                 menu.add("Копировать как цитату", R.drawable.msg_copy, () -> copy("> " + text.replace("\n", "\n> ")));
+            }
+            if (settings.getBoolean("ids", true)) {
+                long from = m.getFromChatId();
+                menu.add("ID сообщения: " + m.getId(), R.drawable.msg_copy, () -> copy(String.valueOf(m.getId())));
+                if (from != 0) {
+                    menu.add("ID отправителя: " + from, R.drawable.msg_copy, () -> copy(String.valueOf(from)));
+                }
+            }
+            if (settings.getBoolean("buttons", true) && m.messageOwner.reply_markup instanceof TLRPC.TL_replyInlineMarkup) {
+                StringBuilder sb = new StringBuilder();
+                for (TL_keyboard.KeyboardInlineButtonRow row : ((TLRPC.TL_replyInlineMarkup) m.messageOwner.reply_markup).rows) {
+                    for (TL_keyboard.KeyboardInlineButton b : row.buttons) {
+                        sb.append(b.text);
+                        if (b.type instanceof TL_keyboard.TL_inlineButtonTypeCallback && ((TL_keyboard.TL_inlineButtonTypeCallback) b.type).data != null) {
+                            sb.append(" → ").append(new String(((TL_keyboard.TL_inlineButtonTypeCallback) b.type).data, java.nio.charset.StandardCharsets.UTF_8));
+                        } else if (b.type instanceof TL_keyboard.TL_inlineButtonTypeUrl) {
+                            sb.append(" → ").append(((TL_keyboard.TL_inlineButtonTypeUrl) b.type).url);
+                        }
+                        sb.append('\n');
+                    }
+                }
+                String dump = sb.toString().trim();
+                if (!dump.isEmpty()) {
+                    menu.add("Копировать данные кнопок", R.drawable.msg_copy, () -> copy(dump));
+                }
             }
             if (settings.getBoolean("link", true)) {
                 String link = link(m);
