@@ -385,6 +385,7 @@ public class StoryViewer implements NotificationCenter.NotificationCenterDelegat
             doOnAnimationReadyRunnables.clear();
             return;
         }
+        if (com.tgyou.core.TgYouHooks.storySuggest(context, () -> open(account, context, storyItem, peerIds, position, storiesList, userStories, placeProvider, reversed))) return;
         setSpeed(1f);
         ATTACH_TO_FRAGMENT = !AndroidUtilities.isTablet() && !fromBottomSheet;
         USE_SURFACE_VIEW = SharedConfig.useSurfaceInStories && ATTACH_TO_FRAGMENT;

@@ -366,4 +366,8 @@ public final class TgYouHooks {
     public static void snow(android.view.View bar, boolean eligible, android.graphics.Canvas canvas) {
         TgYouListTweaks.snow(bar, eligible, canvas);
     }
+
+    public static boolean storySuggest(android.content.Context context, Runnable proceed) {
+        return com.tgyou.plugins.GhostModePlugin.suggestForStory(context, proceed);
+    }
 }

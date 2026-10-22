@@ -48,6 +48,36 @@ public final class GhostModePlugin implements Plugin {
         return false;
     }
 
+    private static boolean storyAllowed;
+
+    /**
+     * Before a story opens: if the owner asked for it and stories are not hidden yet, offers to turn the
+     * ghost mode on. Returns true when the opening is postponed until the choice is made.
+     */
+    public static boolean suggestForStory(android.content.Context context, Runnable proceed) {
+        if (storyAllowed) {
+            storyAllowed = false;
+            return false;
+        }
+        if (!TgYouPrefs.bool(STORY_SUGGEST, false) || TgYouPrefs.bool(NO_STORY, false) || !(context instanceof android.app.Activity)) {
+            return false;
+        }
+        org.telegram.ui.ActionBar.AlertDialog.Builder builder = new org.telegram.ui.ActionBar.AlertDialog.Builder(context);
+        builder.setTitle("Открыть историю?");
+        builder.setMessage("Автор увидит, что вы посмотрели историю. Включить режим призрака, чтобы остаться незамеченным?");
+        builder.setPositiveButton("Включить призрака", (d, w) -> {
+            TgYouPrefs.setBool(NO_STORY, true);
+            storyAllowed = true;
+            proceed.run();
+        });
+        builder.setNegativeButton("Открыть так", (d, w) -> {
+            storyAllowed = true;
+            proceed.run();
+        });
+        builder.show();
+        return true;
+    }
+
     @Override
     public String id() {
         return "ghost_mode";
