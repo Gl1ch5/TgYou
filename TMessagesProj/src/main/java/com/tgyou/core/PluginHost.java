@@ -103,7 +103,9 @@ public final class PluginHost {
     private void register(Plugin plugin) {
         PluginSettings pluginSettings = new PluginSettings(prefs, plugin.id());
         settings.put(plugin.id(), pluginSettings);
-        enabled.put(plugin.id(), prefs.getBoolean(plugin.id() + ".enabled", plugin.enabledByDefault()));
+        synchronized (enabled) {
+            enabled.put(plugin.id(), prefs.getBoolean(plugin.id() + ".enabled", plugin.enabledByDefault()));
+        }
         plugins.add(plugin);
         try {
             plugin.onLoad(new PluginContext(this, plugin, pluginSettings));

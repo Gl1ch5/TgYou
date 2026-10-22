@@ -102,15 +102,15 @@ public final class TgYouCalc {
         }
 
         private double term() {
-            double v = power();
+            double v = unary();
             while (pos < s.length()) {
                 char c = s.charAt(pos);
                 if (c == '*') {
                     pos++;
-                    v *= power();
+                    v *= unary();
                 } else if (c == '/') {
                     pos++;
-                    v /= power();
+                    v /= unary();
                 } else {
                     break;
                 }
@@ -119,10 +119,10 @@ public final class TgYouCalc {
         }
 
         private double power() {
-            double base = unary();
+            double base = postfix();
             if (pos < s.length() && s.charAt(pos) == '^') {
                 pos++;
-                return Math.pow(base, power());
+                return Math.pow(base, unary());
             }
             return base;
         }
@@ -136,6 +136,10 @@ public final class TgYouCalc {
                 pos++;
                 return unary();
             }
+            return power();
+        }
+
+        private double postfix() {
             double v = atom();
             while (pos < s.length() && s.charAt(pos) == '%') {
                 pos++;

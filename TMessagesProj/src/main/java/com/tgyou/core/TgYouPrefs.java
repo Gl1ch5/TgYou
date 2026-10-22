@@ -114,7 +114,7 @@ public final class TgYouPrefs {
         setStr(key, array.toString());
     }
 
-    public static boolean listAdd(String key, String value) {
+    public static synchronized boolean listAdd(String key, String value) {
         List<String> list = list(key);
         if (list.contains(value)) {
             return false;
@@ -124,7 +124,7 @@ public final class TgYouPrefs {
         return true;
     }
 
-    public static void listRemove(String key, String value) {
+    public static synchronized void listRemove(String key, String value) {
         List<String> list = list(key);
         if (list.remove(value)) {
             setList(key, list);
