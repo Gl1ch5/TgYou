@@ -204,7 +204,12 @@ public class TgYouSectionActivity extends BaseFragment {
         if (value.isEmpty()) {
             return "не задано";
         }
-        return row.field.kind == SettingField.Kind.SECRET ? "••••••••" : value;
+        if (row.field.kind == SettingField.Kind.SECRET) {
+            return "••••••••";
+        }
+        // Long values (URLs) would run over the title: cut to what fits next to it.
+        int max = row.field.title.length() > 22 ? 12 : 24;
+        return value.length() > max ? value.substring(0, max) + "…" : value;
     }
 
     private class ListAdapter extends RecyclerListView.SelectionAdapter {

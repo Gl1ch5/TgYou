@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -39,7 +40,7 @@ final class ModCell extends LinearLayout {
     private final TextView meta;
     private final TextView description;
     private final TextView status;
-    private final LinearLayout buttons;
+    private final Flow buttons;
 
     ModCell(Context context) {
         super(context);
@@ -67,8 +68,7 @@ final class ModCell extends LinearLayout {
         status = text(context, 12, Theme.key_text_RedBold, false);
         addView(status, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 0, 6, 0, 0));
 
-        buttons = new LinearLayout(context);
-        buttons.setOrientation(HORIZONTAL);
+        buttons = new Flow(context);
         addView(buttons, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 0, 12, 0, 0));
     }
 
@@ -130,7 +130,51 @@ final class ModCell extends LinearLayout {
             view.setBackground(Theme.createSimpleSelectorRoundRectDrawable(AndroidUtilities.dp(10), bg, ColorUtils.setAlphaComponent(text, 60)));
             view.setTag(b.action);
             view.setOnClickListener((View v) -> b.action.run());
-            buttons.addView(view, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, 36, 0, 0, 8, 0));
+            buttons.addView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, AndroidUtilities.dp(36)));
+        }
+    }
+
+    /** Row of buttons that wraps onto the next line when they do not fit the width. */
+    private static final class Flow extends ViewGroup {
+        private final int gap = AndroidUtilities.dp(8);
+
+        Flow(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected void onMeasure(int widthSpec, int heightSpec) {
+            int width = MeasureSpec.getSize(widthSpec);
+            int x = 0, y = 0, rowH = 0;
+            for (int i = 0; i < getChildCount(); i++) {
+                View c = getChildAt(i);
+                c.measure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.AT_MOST), MeasureSpec.makeMeasureSpec(AndroidUtilities.dp(36), MeasureSpec.EXACTLY));
+                if (x > 0 && x + c.getMeasuredWidth() > width) {
+                    x = 0;
+                    y += rowH + gap;
+                    rowH = 0;
+                }
+                x += c.getMeasuredWidth() + gap;
+                rowH = Math.max(rowH, c.getMeasuredHeight());
+            }
+            setMeasuredDimension(width, getChildCount() == 0 ? 0 : y + rowH);
+        }
+
+        @Override
+        protected void onLayout(boolean changed, int l, int t, int r, int b) {
+            int width = r - l;
+            int x = 0, y = 0, rowH = 0;
+            for (int i = 0; i < getChildCount(); i++) {
+                View c = getChildAt(i);
+                if (x > 0 && x + c.getMeasuredWidth() > width) {
+                    x = 0;
+                    y += rowH + gap;
+                    rowH = 0;
+                }
+                c.layout(x, y, x + c.getMeasuredWidth(), y + c.getMeasuredHeight());
+                x += c.getMeasuredWidth() + gap;
+                rowH = Math.max(rowH, c.getMeasuredHeight());
+            }
         }
     }
 }

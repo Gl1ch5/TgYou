@@ -34,8 +34,8 @@ public final class TgYouPillStack {
 
     public static final String PILLS = "pill.items";
 
-    public static final String[] IDS = {"time", "date", "battery", "memory", "proxy", "ping", "ghost"};
-    public static final String[] TITLES = {"Время", "Дата", "Заряд батареи", "Память приложения", "Прокси", "Пинг прокси", "Режим призрака"};
+    public static final String[] IDS = {"time", "date", "battery", "memory", "weather", "proxy", "ping", "ghost"};
+    public static final String[] TITLES = {"Время", "Дата", "Заряд батареи", "Память приложения", "Погода", "Прокси", "Пинг прокси", "Режим призрака"};
 
     private TgYouPillStack() {
     }
@@ -74,6 +74,9 @@ public final class TgYouPillStack {
             }
             case "proxy":
                 return SharedConfig.isProxyEnabled() ? "Прокси вкл." : "Без прокси";
+            case "weather":
+                loadWeather();
+                return weather;
             case "ping": {
                 SharedConfig.ProxyInfo p = SharedConfig.currentProxy;
                 return SharedConfig.isProxyEnabled() && p != null && p.available ? p.ping + " мс" : "Без прокси";
@@ -82,6 +85,50 @@ public final class TgYouPillStack {
                 return GhostModePlugin.active() ? "Призрак вкл." : "Призрак выкл.";
             default:
                 return "";
+        }
+    }
+
+    private static volatile String weather = "Погода…";
+    private static volatile long weatherTime;
+    private static volatile boolean weatherLoading;
+
+    /** Weather from public keyless APIs: ipwho.is (place by IP, no permission needed) + Open-Meteo. Cached for 30 minutes. */
+    private static void loadWeather() {
+        if (weatherLoading || System.currentTimeMillis() - weatherTime < 30 * 60 * 1000L) {
+            return;
+        }
+        weatherLoading = true;
+        new Thread(() -> {
+            try {
+                org.json.JSONObject place = new org.json.JSONObject(get("https://ipwho.is/?fields=latitude,longitude,success"));
+                String url = "https://api.open-meteo.com/v1/forecast?current=temperature_2m,weather_code&latitude="
+                        + place.getDouble("latitude") + "&longitude=" + place.getDouble("longitude");
+                org.json.JSONObject cur = new org.json.JSONObject(get(url)).getJSONObject("current");
+                int code = cur.getInt("weather_code");
+                String sky = code == 0 ? "☀️" : code <= 3 ? "⛅" : code <= 48 ? "☁️" : code <= 67 || (code >= 80 && code <= 82) ? "🌧" : code <= 77 || code >= 85 && code <= 86 ? "❄️" : "⛈";
+                weather = sky + " " + Math.round(cur.getDouble("temperature_2m")) + "°C";
+                weatherTime = System.currentTimeMillis();
+            } catch (Throwable t) {
+                weather = "Погода ?";
+                weatherTime = System.currentTimeMillis() - 25 * 60 * 1000L;
+            } finally {
+                weatherLoading = false;
+            }
+        }, "tgyou-weather").start();
+    }
+
+    private static String get(String address) throws java.io.IOException {
+        java.net.HttpURLConnection c = (java.net.HttpURLConnection) new java.net.URL(address).openConnection();
+        c.setConnectTimeout(8000);
+        c.setReadTimeout(8000);
+        try (java.io.InputStream in = c.getInputStream(); java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream()) {
+            byte[] buf = new byte[4096];
+            for (int n; (n = in.read(buf)) > 0; ) {
+                out.write(buf, 0, n);
+            }
+            return out.toString("UTF-8");
+        } finally {
+            c.disconnect();
         }
     }
 
@@ -111,7 +158,7 @@ public final class TgYouPillStack {
                 @Override
                 public void run() {
                     update();
-                    AndroidUtilities.runOnUIThread(this, 30000);
+                    AndroidUtilities.runOnUIThread(this, weatherLoading ? 2500 : 30000);
                 }
             };
 
