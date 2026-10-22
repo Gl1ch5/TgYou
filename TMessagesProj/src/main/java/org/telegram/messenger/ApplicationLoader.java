@@ -51,6 +51,11 @@ import java.util.Locale;
 
 public class ApplicationLoader extends Application {
 
+    @Override
+    public android.content.res.Resources getResources() {
+        return com.tgyou.icons.IconPacks.wrap(applicationContext, super.getResources());
+    }
+
     public static ApplicationLoader applicationLoaderInstance;
 
     @SuppressLint("StaticFieldLeak")

@@ -263,8 +263,43 @@ public class ModsActivity extends BaseFragment {
                 rows.add(r);
             }
         }
+        buildIconPacks();
         if (count == 0) {
             simple(T_INFO, "Модов пока нет. Загляните в «Маркетплейс» или установите свой из файла на вкладке «Создать мод».", null, null);
+        }
+    }
+
+    private void buildIconPacks() {
+        Context context = getParentActivity();
+        if (context == null) {
+            return;
+        }
+        List<com.tgyou.icons.IconPacks.Pack> packs = com.tgyou.icons.IconPacks.list(context);
+        if (packs.isEmpty()) {
+            return;
+        }
+        simple(T_HEADER, "Иконпаки", null, null);
+        String active = com.tgyou.icons.IconPacks.active(context);
+        for (com.tgyou.icons.IconPacks.Pack pack : packs) {
+            boolean on = pack.id.equals(active);
+            List<ModCell.Button> buttons = new ArrayList<>();
+            buttons.add(new ModCell.Button(on ? "Выключить" : "Включить", on ? ModCell.Style.SECONDARY : ModCell.Style.PRIMARY, () -> {
+                com.tgyou.icons.IconPacks.activate(context, on ? "" : pack.id);
+                toast("Иконки применятся на новых экранах; для полного эффекта перезапустите приложение");
+                rebuild();
+            }));
+            buttons.add(new ModCell.Button("Удалить", ModCell.Style.DANGER, () -> {
+                com.tgyou.icons.IconPacks.remove(context, pack.id);
+                rebuild();
+            }));
+            Row r = new Row();
+            r.type = T_MOD;
+            r.name = pack.name;
+            r.version = pack.version.isEmpty() ? "" : "v" + pack.version;
+            r.meta = (pack.author.isEmpty() ? "" : pack.author + " · ") + pack.icons + " иконок" + (on ? " · включён" : "");
+            r.description = "";
+            r.buttons = buttons;
+            rows.add(r);
         }
     }
 
@@ -278,7 +313,7 @@ public class ModsActivity extends BaseFragment {
         simple(T_INFO, "В архиве лежит всё, что нужно ИИ-агенту: описание API и хуков, шаблон мода, готовый пример со статистикой и "
                 + "инструкция по упаковке. Отправьте его агенту и опишите, какой мод нужен.", null, null);
         simple(T_HEADER, "Установка", null, null);
-        simple(T_ACTION, "Установить мод из файла", ".zip", this::pickZip);
+        simple(T_ACTION, "Установить из файла", ".zip / .plugin / .icons", this::pickZip);
         simple(T_INFO, "Выберите ZIP с manifest.json в корне. Мод запустится сразу, без перезапуска приложения.", null, null);
     }
 
@@ -360,6 +395,14 @@ public class ModsActivity extends BaseFragment {
                 byte[] bytes = com.tgyou.mods.ModStore.readAll(in);
                 ModRuntime.ensurePython(context);
                 boolean zip = bytes.length > 3 && bytes[0] == 'P' && bytes[1] == 'K';
+                if (zip && com.tgyou.icons.IconPacks.isPack(bytes)) {
+                    com.tgyou.icons.IconPacks.Pack pack = com.tgyou.icons.IconPacks.install(context, bytes);
+                    AndroidUtilities.runOnUIThread(() -> {
+                        toast("Иконпак установлен: " + pack.name + ". Включите его на вкладке «Установленные»");
+                        rebuild();
+                    });
+                    return;
+                }
                 manifest = zip ? ModRuntime.store(context).install(bytes, null) : ModRuntime.store(context).installPlugin(bytes);
                 ModRuntime.activate(context, manifest);
             } catch (Throwable t) {
