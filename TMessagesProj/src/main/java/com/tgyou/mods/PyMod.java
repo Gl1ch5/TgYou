@@ -66,6 +66,17 @@ public final class PyMod implements Plugin {
 
     @Override
     public void onLoad(PluginContext context) {
+        android.content.Context app = org.telegram.messenger.ApplicationLoader.applicationContext;
+        if (ModRuntime.isQuarantined(app, manifest.id)) {
+            error = "Отключён после сбоя. Переустановите мод, чтобы включить снова";
+            return;
+        }
+        ModRuntime.markLoading(app, manifest.id);
+        run(context);
+        ModRuntime.markLoaded(app);
+    }
+
+    private void run(PluginContext context) {
         ModPages.removeAll(manifest.id);
         try {
             Python py = Python.getInstance();

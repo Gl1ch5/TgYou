@@ -616,6 +616,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     private int numberSectionRow;
     private int numberRow;
     public int birthdayRow;
+    public int tgyouIdRow = -1;
     private int setUsernameRow;
     private int bioRow;
     private int phoneSuggestionSectionRow;
@@ -4643,6 +4644,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 Bundle args = new Bundle();
                 args.putLong("chat_id", userInfo.personal_channel_id);
                 presentFragment(new ChatActivity(args));
+            } else if (position == tgyouIdRow) {
+                AndroidUtilities.addToClipboard(String.valueOf(userId));
+                BulletinFactory.of(this).createCopyBulletin("ID скопирован").show();
             } else if (position == birthdayRow) {
                 if (birthdayEffect != null && birthdayEffect.start()) {
                     return;
@@ -10459,6 +10463,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         numberSectionRow = -1;
         numberRow = -1;
         birthdayRow = -1;
+        tgyouIdRow = -1;
         setUsernameRow = -1;
         bioRow = -1;
         channelRow = -1;
@@ -10716,6 +10721,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
                 if (user != null && username != null) {
                     usernameRow = rowCount++;
+                }
+                if (user != null) {
+                    tgyouIdRow = rowCount++;
                 }
                 if (userInfo != null) {
                     if (userInfo.birthday != null) {
@@ -11457,6 +11465,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     if (user.scam || user.fake) {
                         nameTextView[a].setRightDrawable2(getScamDrawable(user.scam ? 0 : 1));
                         nameTextViewRightDrawable2ContentDescription = LocaleController.getString(R.string.ScamMessage);
+                    } else if (com.tgyou.ui.TgYouProfile.isDeveloper(user)) {
+                        nameTextView[a].setRightDrawable2(com.tgyou.ui.TgYouProfile.badge());
                     } else if (user.verified) {
                         nameTextView[a].setRightDrawable2(getVerifiedCrossfadeDrawable(a));
                         nameTextViewRightDrawable2ContentDescription = LocaleController.getString(R.string.AccDescrVerified);
@@ -11484,6 +11494,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 } else if (a == 1) {
                     if (user.scam || user.fake) {
                         nameTextView[a].setRightDrawable2(getScamDrawable(user.scam ? 0 : 1));
+                    } else if (com.tgyou.ui.TgYouProfile.isDeveloper(user)) {
+                        nameTextView[a].setRightDrawable2(com.tgyou.ui.TgYouProfile.badge());
                     } else if (user.verified) {
                         nameTextView[a].setRightDrawable2(getVerifiedCrossfadeDrawable(a));
                     } else {
@@ -13588,6 +13600,11 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                             TLRPC.TL_channelLocation location = (TLRPC.TL_channelLocation) chatInfo.location;
                             detailCell.setTextAndValue(location.address, LocaleController.getString(R.string.AttachLocation), false);
                         }
+                    } else if (position == tgyouIdRow) {
+                        TLRPC.User tgyouUser = getMessagesController().getUser(userId);
+                        if (tgyouUser != null) {
+                            detailCell.setTextAndValue(com.tgyou.ui.TgYouProfile.idValue(tgyouUser), com.tgyou.ui.TgYouProfile.dcValue(tgyouUser) + " · нажмите, чтобы скопировать ID", true);
+                        }
                     } else if (position == numberRow) {
                         TLRPC.User user = UserConfig.getInstance(currentAccount).getCurrentUser();
                         String value;
@@ -14321,7 +14338,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             if (position == infoHeaderRow || position == membersHeaderRow || position == settingsSectionRow2 ||
                     position == numberSectionRow || position == helpHeaderRow || position == debugHeaderRow || position == botPermissionsHeader) {
                 return VIEW_TYPE_HEADER;
-            } else if (position == phoneRow || position == locationRow || position == numberRow || position == birthdayRow) {
+            } else if (position == phoneRow || position == locationRow || position == numberRow || position == birthdayRow || position == tgyouIdRow) {
                 return VIEW_TYPE_TEXT_DETAIL;
             } else if (position == usernameRow || position == setUsernameRow) {
                 return VIEW_TYPE_TEXT_DETAIL_MULTILINE;
@@ -15759,6 +15776,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             put(++pointer, bizHoursRow, sparseIntArray);
             put(++pointer, bizLocationRow, sparseIntArray);
             put(++pointer, birthdayRow, sparseIntArray);
+            put(++pointer, tgyouIdRow, sparseIntArray);
             put(++pointer, channelRow, sparseIntArray);
             put(++pointer, botStarsBalanceRow, sparseIntArray);
             put(++pointer, botTonBalanceRow, sparseIntArray);
