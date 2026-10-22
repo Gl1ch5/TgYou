@@ -401,6 +401,7 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
             canvas.clipRect(0, -getTranslationY() + (occupyStatusBar ? AndroidUtilities.statusBarHeight : 0), getMeasuredWidth(), getMeasuredHeight());
         }
         boolean result = super.drawChild(canvas, child, drawingTime);
+        com.tgyou.core.TgYouHooks.snow(this, supportsHolidayImage && child == titleTextView[0], canvas);
         if (supportsHolidayImage && !titleOverlayShown && !LocaleController.isRTL && (child == titleTextView[0] || child == titleTextView[1] || child == titlesContainer && useContainerForTitles)) {
             Drawable drawable = Theme.getCurrentHolidayDrawable();
             if (drawable != null) {

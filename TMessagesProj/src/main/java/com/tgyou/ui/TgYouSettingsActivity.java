@@ -148,7 +148,7 @@ public class TgYouSettingsActivity extends BaseFragment {
         }
 
         group(context, "Оформление");
-        addWide(context, R.drawable.settings_folders, IconBackgroundColors.CYAN, "Внешний вид", "прозрачность, скругление, размер текста", animate ? index++ : -1, () -> presentFragment(new AppearanceActivity()));
+        addWide(context, R.drawable.settings_folders, IconBackgroundColors.CYAN, "Внешний вид", "прозрачность, скругление, размер текста", animate ? index++ : -1, () -> presentFragment(new AppearanceScreen()));
         addWide(context, R.drawable.settings_folders, IconBackgroundColors.PURPLE, "Иконки", "наборы .icons с предпросмотром", animate ? index++ : -1, () -> presentFragment(new IconPacksActivity()));
         addWide(context, R.drawable.settings_gift, IconBackgroundColors.RED, "Иконка приложения", "TgYou, Telegram и другие", animate ? index++ : -1, () -> presentFragment(new TgYouIconsActivity()));
 

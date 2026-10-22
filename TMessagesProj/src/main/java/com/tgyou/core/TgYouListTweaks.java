@@ -19,6 +19,43 @@ public final class TgYouListTweaks {
     public static final String HIDE_STORIES = "look.hide_stories";
     public static final String HIDE_FAB = "look.hide_fab";
     public static final String HIDE_SEARCH = "look.hide_search";
+    public static final String AVATAR_ROUND = "look.avatar_round";
+    public static final String SNOW = "look.snow";
+
+    public static final String[] ROUND_LABELS = {"0%", "25%", "50%", "75%", "100%"};
+    private static final java.util.WeakHashMap<android.view.View, org.telegram.ui.Components.SnowflakesEffect> SNOW_EFFECTS = new java.util.WeakHashMap<>();
+
+    /** Scales big round radii (avatars) to the chosen rounding; small radii of ordinary pictures stay untouched. */
+    public static int[] avatarRadius(int[] radius) {
+        int level = TgYouPrefs.integer(AVATAR_ROUND, 4);
+        if (level >= 4 || radius == null || radius.length < 4) {
+            return radius;
+        }
+        int min = org.telegram.messenger.AndroidUtilities.dp(14);
+        int[] result = null;
+        for (int i = 0; i < 4; i++) {
+            if (radius[i] >= min) {
+                if (result == null) {
+                    result = radius.clone();
+                }
+                result[i] = Math.max(0, radius[i] * level / 4);
+            }
+        }
+        return result == null ? radius : result;
+    }
+
+    /** Draws falling snow over the title bar of the chat list when forced from settings. */
+    public static void snow(android.view.View bar, boolean eligible, android.graphics.Canvas canvas) {
+        if (!eligible || !TgYouPrefs.bool(SNOW, false)) {
+            return;
+        }
+        org.telegram.ui.Components.SnowflakesEffect effect = SNOW_EFFECTS.get(bar);
+        if (effect == null) {
+            effect = new org.telegram.ui.Components.SnowflakesEffect(0);
+            SNOW_EFFECTS.put(bar, effect);
+        }
+        effect.onDraw(bar, canvas);
+    }
 
     private TgYouListTweaks() {
     }
@@ -79,6 +116,9 @@ public final class TgYouListTweaks {
     public static void searchField(android.view.View field, boolean onlySelect) {
         if (field != null && !onlySelect && TgYouPrefs.bool(HIDE_SEARCH, false)) {
             field.setVisibility(android.view.View.GONE);
+        }
+        if (field instanceof org.telegram.ui.Components.FragmentSearchField && !onlySelect) {
+            TgYouPillStack.attach((org.telegram.ui.Components.FragmentSearchField) field);
         }
     }
 }

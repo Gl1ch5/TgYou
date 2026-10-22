@@ -358,4 +358,12 @@ public final class TgYouHooks {
     public static boolean hideGreeting() {
         return TgYouChatTweaks.hideGreeting();
     }
+
+    public static int[] avatarRadius(int[] radius) {
+        return TgYouListTweaks.avatarRadius(radius);
+    }
+
+    public static void snow(android.view.View bar, boolean eligible, android.graphics.Canvas canvas) {
+        TgYouListTweaks.snow(bar, eligible, canvas);
+    }
 }
