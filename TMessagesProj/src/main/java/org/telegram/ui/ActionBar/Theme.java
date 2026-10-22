@@ -7082,7 +7082,9 @@ public class Theme {
                 if (loadPatterns) {
                     PatternsLoader.createLoader(true);
                 }
-                MediaDataController.getInstance(currentAccount).generateEmojiPreviewThemes(emojiPreviewThemes, currentAccount);
+                if (!emojiPreviewThemes.isEmpty() || !com.tgyou.ui.TgYouThemes.fallback(currentAccount)) {
+                    MediaDataController.getInstance(currentAccount).generateEmojiPreviewThemes(emojiPreviewThemes, currentAccount);
+                }
             }
         }));
     }

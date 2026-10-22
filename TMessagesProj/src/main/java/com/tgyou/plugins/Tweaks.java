@@ -122,6 +122,12 @@ final class Tweaks {
                     }
                     return false;
                 }),
+                new Tweak("no_contact_sync", "Не загружать контакты на сервер",
+                        "Приложение не отправляет вашу адресную книгу в Telegram.",
+                        Section.PRIVACY, false, r -> r instanceof TLRPC.TL_contacts_importContacts),
+                new Tweak("no_recent_stickers", "Не запоминать недавние стикеры",
+                        "Отправка стикера не добавляет его в список недавних.",
+                        Section.PRIVACY, false, r -> r instanceof TLRPC.TL_messages_saveRecentSticker),
                 new Tweak("silent_pin", "Закреплять без уведомления",
                         "Закрепление сообщения не будит участников чата.",
                         Section.MESSAGES, false, r -> {

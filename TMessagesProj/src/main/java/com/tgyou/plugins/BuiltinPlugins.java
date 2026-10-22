@@ -21,6 +21,8 @@ public final class BuiltinPlugins {
                 new SavedChatsPlugin(),
                 new TtlMediaPlugin(),
                 new AllowCopyPlugin(),
+                new HideBlockedPlugin(),
+                new SmartTypographyPlugin(),
                 new ScreenshotNoticePlugin(),
                 new ExtraPrivacyPlugin(),
                 new ExactTimePlugin(),
