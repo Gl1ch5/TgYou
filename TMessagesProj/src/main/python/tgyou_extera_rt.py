@@ -3,6 +3,7 @@ import json
 import threading
 
 current_api = None
+hook_account = None
 
 
 def log(plugin, message):
@@ -82,6 +83,8 @@ def dispatch_send(plugin, account, java_params):
     if handler is None:
         return False
     wrapped = SendParams(java_params)
+    global hook_account
+    hook_account = account
     try:
         result = handler(account, wrapped)
     except Exception as e:
@@ -155,6 +158,8 @@ def install_tl_hooks(plugin):
         handler = getattr(plugin, "pre_request_hook", None)
         if handler is None or not _match(plugin, name):
             return False
+        global hook_account
+        hook_account = _account()
         try:
             result = handler(name, _account(), request)
         except Exception as e:
@@ -172,6 +177,8 @@ def install_tl_hooks(plugin):
         name = _short(request)
         if handler is None or not _match(plugin, name):
             return None
+        global hook_account
+        hook_account = account
         try:
             result = handler(name, account, response, error)
         except Exception as e:
@@ -185,6 +192,8 @@ def install_tl_hooks(plugin):
         h_all = getattr(plugin, "on_updates_hook", None)
         h_one = getattr(plugin, "on_update_hook", None)
         account = _account()
+        global hook_account
+        hook_account = account
         cname = _short(container)
         if h_all is not None and _match(plugin, cname):
             try:
@@ -248,7 +257,7 @@ def install_menu(plugin):
 
     def message_menu(menu):
         for item in sorted(plugin._menu_items, key=lambda i: -(getattr(i, "priority", 0) or 0)):
-            if getattr(item, "menu_type", None) != "MESSAGE_CONTEXT_MENU":
+            if getattr(item, "menu_type", None) != "message_context_menu":
                 continue
             ctx = {
                 "account": _account(),
@@ -278,3 +287,13 @@ def install_menu(plugin):
             menu.add(str(item.text), icon, runnable(action))
 
     api.hook("message.menu", message_menu)
+
+
+def dispatch_app_event(plugin, event):
+    handler = getattr(plugin, "on_app_event", None)
+    if handler is None:
+        return
+    try:
+        handler(event)
+    except Exception as e:
+        log(plugin, "on_app_event: " + repr(e))

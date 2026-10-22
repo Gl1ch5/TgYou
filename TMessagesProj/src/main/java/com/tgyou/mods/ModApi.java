@@ -57,6 +57,12 @@ public final class ModApi {
                     return blocked || truthy(r);
                 });
                 break;
+            case "app.event":
+                context.on(Hooks.APP_EVENT, (event, ignored) -> {
+                    fn.call(event);
+                    return false;
+                });
+                break;
             case "request.response":
                 context.on(Hooks.RESPONSE, (in, response) -> {
                     PyObject r = fn.call(in[0], in[1], response, in[2]);

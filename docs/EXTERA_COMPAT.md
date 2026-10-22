@@ -24,7 +24,16 @@
 | `on_update_hook` / `on_updates_hook` (CANCEL убирает апдейт) | есть (`updates.incoming`, одна строка в `MessagesController.processUpdates`) |
 | `add_menu_item(MenuItemData(MESSAGE_CONTEXT_MENU …))`, `condition`, `on_click(context)` | есть для меню сообщения; меню чата/профиля/шторки — пока нет |
 | Иконпаки `.icons` | есть, см. [ICON_PACKS.md](ICON_PACKS.md) |
-| `hook_method` (Xposed-подобный) | **не поддерживается**: вызов пишется в лог |
+| `on_app_event` (`app_start/resume/pause/stop`) | есть (`app.event`, вызовы в `LaunchActivity.onResume/onPause/onDestroy`) |
+| `extera_utils.text_formatting.parse_text` (HTML/Markdown → текст + entities, смещения в UTF-16), `markdown_utils.parse_markdown` | есть; проверено на обычном Python (смещения), в приложении не проверено |
+| `client_utils`: `send_text/photo/document/video/audio` (video и audio уходят как документ), `edit_message`, `send_request`, `get_*` контроллеры, `get_client`/`AccountClient`, `account_scope`, очереди | есть |
+| `file_utils`, `android_utils` (`R`, `OnClickListener`, `copy_to_clipboard`), `hook_utils` (static-поля) | есть |
+| `BasePlugin.client()`, `export_settings`/`import_settings`, `add_hook("send_message_hook")` | есть |
+| `AlertDialogBuilder` | настоящий диалог Telegram (заголовок, текст, кнопки); остальные методы цепочки принимаются без эффекта |
+| `Custom`, `SimpleSettingFactory`, `Text.create_sub_fragment`, `on_change` | принимаются, **не отображаются** и не вызываются |
+| Меню чата/профиля/шторки (`CHAT_ACTION_MENU`, `PROFILE_ACTION_MENU`, `DRAWER_MENU`) | пока нет |
+| Intents, файловые хуки, `hook_method` (Xposed), `extera_utils.classes` (`java_subclass`) | **не поддерживаются**: вызов пишется в лог |
+| `__requirements__` (pip), `.eaf` (ElyxBuilder) | нет |
 | Собственные экраны плагина (`create_sub_fragment`) | нет |
 
 Неподдержанный метод API не роняет плагин: вызов записывается в лог и игнорируется.

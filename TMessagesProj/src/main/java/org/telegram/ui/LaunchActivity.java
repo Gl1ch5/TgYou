@@ -6738,6 +6738,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
     protected void onPause() {
         super.onPause();
         isResumed = false;
+        com.tgyou.core.TgYouHooks.appEvent("app_pause");
         com.tgyou.update.UpdateManager.onPause();
         pipActivityHandler.onPause();
         NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.stopAllHeavyOperations, 4096);
@@ -6864,6 +6865,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
 
     @Override
     protected void onDestroy() {
+        com.tgyou.core.TgYouHooks.appEvent("app_stop");
         GramWalletStorageAuth.onActivityDestroyed(this);
         isActive = false;
         activeInstanceCount--;
@@ -6977,6 +6979,7 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
     protected void onResume() {
         super.onResume();
         isResumed = true;
+        com.tgyou.core.TgYouHooks.appEvent("app_resume");
         com.tgyou.update.UpdateManager.onResume(this);
         pipActivityHandler.onResume();
         if (onResumeStaticCallback != null) {

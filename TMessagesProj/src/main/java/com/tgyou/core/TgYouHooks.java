@@ -75,6 +75,20 @@ public final class TgYouHooks {
         return host.dispatch(Hooks.RESPONSE, new Object[]{account, request, error}, response);
     }
 
+    private static boolean started;
+
+    public static void appEvent(String event) {
+        PluginHost host = PluginHost.get();
+        if (host == null) {
+            return;
+        }
+        if (!started) {
+            started = true;
+            host.dispatch(Hooks.APP_EVENT, "app_start", false);
+        }
+        host.dispatch(Hooks.APP_EVENT, event, false);
+    }
+
     /** @return true when a plugin dropped the incoming updates */
     public static boolean interceptUpdates(TLRPC.Updates updates) {
         PluginHost host = PluginHost.get();

@@ -31,6 +31,8 @@ public final class Hooks {
     public static final HookPoint<Object[], TLObject> RESPONSE = new HookPoint<>("request.response");
     /** Incoming updates container; true drops it. */
     public static final HookPoint<org.telegram.tgnet.TLRPC.Updates, Boolean> UPDATES = new HookPoint<>("updates.incoming");
+    /** Input: app_start / app_resume / app_pause / app_stop. */
+    public static final HookPoint<String, Boolean> APP_EVENT = new HookPoint<>("app.event");
     public static final HookPoint<TLObject, Boolean> OUTGOING_REQUEST = new HookPoint<>("request.outgoing");
 
     /** Input: unused. Value: whether the window must be hidden from screenshots and screen capture. */

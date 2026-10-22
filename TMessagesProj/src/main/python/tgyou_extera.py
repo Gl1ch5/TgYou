@@ -94,4 +94,5 @@ def load(api, path):
     plugin = cls()
     plugin._api = api
     plugin._schema = _schema(_items(cls))
+    plugin._install_app_events()
     plugin.on_plugin_load()
