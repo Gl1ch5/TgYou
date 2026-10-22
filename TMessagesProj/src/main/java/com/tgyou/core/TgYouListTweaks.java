@@ -20,6 +20,7 @@ public final class TgYouListTweaks {
     public static final String HIDE_FAB = "look.hide_fab";
     public static final String HIDE_SEARCH = "look.hide_search";
     public static final String AVATAR_ROUND = "look.avatar_round";
+    public static final String CENTER_TITLE = "look.center_title";
     public static final String SNOW = "look.snow";
 
     public static final String[] ROUND_LABELS = {"0%", "25%", "50%", "75%", "100%"};
@@ -120,5 +121,20 @@ public final class TgYouListTweaks {
         if (field instanceof org.telegram.ui.Components.FragmentSearchField && !onlySelect) {
             TgYouPillStack.attach((org.telegram.ui.Components.FragmentSearchField) field);
         }
+    }
+
+    /** Search bar height of the chat list: 0 when the bar is hidden, so no empty gap is left. */
+    public static void searchHeight(DialogsActivity fragment, android.view.View root, boolean onlySelect, boolean active) {
+        int h = active && !onlySelect && TgYouPrefs.bool(HIDE_SEARCH, false) ? 0 : 48;
+        if (DialogsActivity.SEARCH_FIELD_HEIGHT != h) {
+            DialogsActivity.SEARCH_FIELD_HEIGHT = h;
+            if (root != null) {
+                root.requestLayout();
+            }
+        }
+    }
+
+    public static boolean centerTitle(int folderId, long communityId, boolean onlySelect) {
+        return folderId == 0 && communityId == 0 && !onlySelect && TgYouPrefs.bool(CENTER_TITLE, false);
     }
 }

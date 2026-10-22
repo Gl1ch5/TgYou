@@ -3,6 +3,7 @@ package com.tgyou.ui;
 import android.content.Context;
 
 import com.tgyou.core.TgYouAppearance;
+import com.tgyou.core.TgYouFolders;
 import com.tgyou.core.TgYouGlass;
 import com.tgyou.core.TgYouListTweaks;
 import com.tgyou.core.TgYouPrefs;
@@ -38,7 +39,14 @@ public class AppearanceScreen extends TgYouScreen {
                 }));
         toggle(TgYouListTweaks.HIDE_STORIES, "Скрыть истории", "Лента историй над списком чатов не показывается.", false);
         toggle(TgYouListTweaks.HIDE_FAB, "Скрыть кнопку нового сообщения", "Плавающая кнопка «написать» пропадает.", false);
-        toggle(TgYouListTweaks.HIDE_SEARCH, "Скрыть поиск", "Строка поиска в списке чатов скрыта, место под ней остаётся.", false);
+        toggle(TgYouListTweaks.HIDE_SEARCH, "Скрыть поиск", "Строка поиска в списке чатов скрыта, список поднимается на её место.", false);
+        toggle(TgYouListTweaks.CENTER_TITLE, "Заголовок по центру", "Заголовок списка чатов выравнивается по центру шапки.", false);
+        gap();
+
+        header("Папки");
+        choice(TgYouFolders.TITLE_MODE, "Заголовки папок", "Иконка — это эмодзи в начале названия папки.", 0, TgYouFolders.TITLE_LABELS);
+        choice(TgYouFolders.COUNTER_MODE, "Счётчик уведомлений на папках", null, 0, TgYouFolders.COUNTER_LABELS);
+        toggle(TgYouFolders.HIDE_ALL, "Скрыть вкладку «Все чаты»", "Вкладка не показывается; при открытии выбирается первая папка. Свайпом влево её всё ещё можно открыть.", false);
         gap();
 
         header("Оформление");

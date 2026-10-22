@@ -176,6 +176,9 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
 
     EllipsizeSpanAnimator ellipsizeSpanAnimator = new EllipsizeSpanAnimator(this);
 
+    /** TgYou: centre the title horizontally. */
+    public boolean tgyouCenter;
+
     public ActionBar(Context context) {
         this(context, null);
     }
@@ -1544,7 +1547,8 @@ public class ActionBar extends FrameLayout implements FactorAnimator.Target, The
                         textTop = (getCurrentActionBarHeight() - titleTextView[i].getTextHeight()) / 2;
                     }
                 }
-                titleTextView[i].layout(textLeft, additionalTop + textTop - titleTextView[i].getPaddingTop(), textLeft + titleTextView[i].getMeasuredWidth(), additionalTop + textTop + titleTextView[i].getTextHeight() - titleTextView[i].getPaddingTop() + titleTextView[i].getPaddingBottom());
+                int tgyouLeft = tgyouCenter ? Math.max(textLeft, (right - left - titleTextView[i].getMeasuredWidth()) / 2) : textLeft;
+                titleTextView[i].layout(tgyouLeft, additionalTop + textTop - titleTextView[i].getPaddingTop(), tgyouLeft + titleTextView[i].getMeasuredWidth(), additionalTop + textTop + titleTextView[i].getTextHeight() - titleTextView[i].getPaddingTop() + titleTextView[i].getPaddingBottom());
             }
         }
         if (additionalSubTitleOverlayContainer != null) {

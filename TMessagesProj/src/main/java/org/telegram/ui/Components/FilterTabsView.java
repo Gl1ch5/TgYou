@@ -132,6 +132,9 @@ public class FilterTabsView extends FrameLayout {
         }
 
         public int getWidth(boolean store) {
+            if (isDefault && com.tgyou.core.TgYouFolders.hideAll()) {
+                return 0;
+            }
             int width = titleWidth = (int) Math.ceil(HintView2.measureCorrectly(title, textPaint));
             int c;
             if (store) {

@@ -293,7 +293,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     public static final int MAIN_TABS_HEIGHT_WITH_MARGINS = MAIN_TABS_HEIGHT + MAIN_TABS_MARGIN * 2;
     public static final int FILTER_TABS_HEIGHT = 36;
     public static final int SEARCH_TABS_HEIGHT = 36 + 7 + 7;
-    public static final int SEARCH_FIELD_HEIGHT = 48;
+    public static int SEARCH_FIELD_HEIGHT = 48;
 
     private static final int ANIMATOR_ID_SEARCH_VISIBLE = 1;
     private static final int ANIMATOR_ID_DONE_BUTTON_VISIBLE = 2;
@@ -3072,6 +3072,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     @Override
     public void onFragmentDestroy() {
         super.onFragmentDestroy();
+        com.tgyou.core.TgYouListTweaks.searchHeight(this, null, onlySelect, false);
         if (observersGroup != null) {
             observersGroup.removeAllObservers();
             observersGroup = null;
@@ -3293,6 +3294,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         fragmentSearchField.setPivotX(0);
         fragmentSearchField.setPivotY(0);
         com.tgyou.core.TgYouHooks.searchField(fragmentSearchField, onlySelect);
+        com.tgyou.core.TgYouListTweaks.searchHeight(this, null, onlySelect, true);
         if (initialDialogsType == DIALOGS_TYPE_DEFAULT) {
             speedItem = menu.addItem(-47, R.drawable.avd_speed);
             AndroidUtilities.removeFromParent(speedItem);
@@ -3521,6 +3523,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 logoDrawable.setColorFilter(getThemedColor(Theme.key_telegram_color_dialogsLogo), PorterDuff.Mode.MULTIPLY);
                 SpannableStringBuilder ssb = new SpannableStringBuilder(com.tgyou.core.TgYouHooks.dialogsTitle("Telegram You"));
                 actionBar.setTitle(ssb, statusDrawable);
+                actionBar.tgyouCenter = com.tgyou.core.TgYouListTweaks.centerTitle(folderId, communityId, onlySelect);
                 updateStatus(UserConfig.getInstance(currentAccount).getCurrentUser(), false);
             }
             if (folderId == 0) {
@@ -3674,13 +3677,13 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                         return 0;
                     }
                     if (tabId == filterTabsView.getDefaultTabId()) {
-                        return getMessagesStorage().getMainUnreadCount();
+                        return com.tgyou.core.TgYouFolders.counter(currentAccount, getMessagesStorage().getMainUnreadCount(), true, null);
                     }
                     ArrayList<MessagesController.DialogFilter> dialogFilters = getMessagesController().getDialogFilters();
                     if (tabId < 0 || tabId >= dialogFilters.size()) {
                         return 0;
                     }
-                    return getMessagesController().getDialogFilters().get(tabId).unreadCount;
+                    return com.tgyou.core.TgYouFolders.counter(currentAccount, getMessagesController().getDialogFilters().get(tabId).unreadCount, false, dialogFilters.get(tabId));
                 }
 
                 @Override
@@ -6879,10 +6882,10 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 filterTabsView.removeTabs();
                 for (int a = 0, N = filters.size(); a < N; a++) {
                     if (filters.get(a).isDefault()) {
-                        filterTabsView.addTab(a, 0, LocaleController.getString(R.string.FilterAllChats), null, false, true, filters.get(a).locked);
+                        filterTabsView.addTab(a, 0, com.tgyou.core.TgYouFolders.title(null, true, LocaleController.getString(R.string.FilterAllChats)), null, false, true, filters.get(a).locked);
                     } else {
                         final MessagesController.DialogFilter filter = filters.get(a);
-                        filterTabsView.addTab(a, filter.localId, filter.name, filter.entities, filter.title_noanimate, false, filters.get(a).locked);
+                        filterTabsView.addTab(a, filter.localId, com.tgyou.core.TgYouFolders.title(filter.name, false, null), com.tgyou.core.TgYouFolders.entities(filter.name, filter.entities, false), filter.title_noanimate, false, filters.get(a).locked);
                     }
                 }
                 if (stableId >= 0) {
@@ -6900,6 +6903,11 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                         updateCurrentTab = true;
                         viewPages[0].selectedType = id;
                     }
+                }
+                int tgyouPick = com.tgyou.core.TgYouFolders.firstOther(filters);
+                if (tgyouPick >= 0 && filterTabsView.getCurrentTabId() == filterTabsView.getDefaultTabId() && filterTabsView.selectTabWithStableId(filters.get(tgyouPick).localId)) {
+                    viewPages[0].selectedType = tgyouPick;
+                    updateCurrentTab = true;
                 }
                 for (int a = 0; a < viewPages.length; a++) {
                     if (viewPages[a].selectedType >= filters.size()) {
@@ -7022,6 +7030,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     @Override
     public void onResume() {
         super.onResume();
+        com.tgyou.core.TgYouListTweaks.searchHeight(this, fragmentView, onlySelect, true);
+        if (filterTabsView != null && com.tgyou.core.TgYouFolders.changed()) updateFilterTabs(true, false);
+        if (actionBar != null) { boolean c = com.tgyou.core.TgYouListTweaks.centerTitle(folderId, communityId, onlySelect); if (actionBar.tgyouCenter != c) { actionBar.tgyouCenter = c; actionBar.requestLayout(); } }
         if (dialogStoriesCell != null) {
             dialogStoriesCell.onResume();
         }
@@ -7240,6 +7251,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     @Override
     public void onPause() {
         super.onPause();
+        com.tgyou.core.TgYouListTweaks.searchHeight(this, fragmentView, onlySelect, false);
         if (storiesBulletin != null) {
             storiesBulletin.hide();
             storiesBulletin = null;
