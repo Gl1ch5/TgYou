@@ -38,6 +38,16 @@ public final class TgYouProfile {
         return dc != 0 ? "DC " + dc : "DC неизвестен (нет фото)";
     }
 
+    /** Bot API form: -100... for channels and supergroups, -... for basic groups. */
+    public static String chatIdValue(TLRPC.Chat chat) {
+        return org.telegram.messenger.ChatObject.isChannel(chat) ? "-100" + chat.id : "-" + chat.id;
+    }
+
+    public static String chatDcValue(TLRPC.Chat chat) {
+        int dc = chat.photo != null ? chat.photo.dc_id : 0;
+        return dc != 0 ? "DC " + dc : "DC неизвестен (нет фото)";
+    }
+
     public static String rowTitle(TLRPC.User user) {
         return "ID " + idValue(user) + " · " + dcValue(user);
     }

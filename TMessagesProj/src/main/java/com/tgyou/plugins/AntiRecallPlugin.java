@@ -33,6 +33,9 @@ public final class AntiRecallPlugin implements Plugin {
     public static final String MARK_DELETED = "spy.mark_deleted";
     public static final String MARK_EDITED = "spy.mark_edited";
     public static final String DIM = "spy.dim";
+    public static final String MARK_COLOR = "spy.mark_deleted_color";
+    /** Цвета кружков для метки удалёнок; номер 0 в настройке означает «как у времени». */
+    public static final int[] MARK_COLORS = {0xFFE53935, 0xFFFB8C00, 0xFFFDD835, 0xFF43A047, 0xFF00ACC1, 0xFF1E88E5, 0xFF8E24AA, 0xFFEC407A};
     public static final String KEEP_READS = "spy.keep_reads";
     public static final String EXCEPTIONS = "spy.exceptions";
 
@@ -101,12 +104,12 @@ public final class AntiRecallPlugin implements Plugin {
             CharSequence result = time;
             if (db.isDeleted(account, key, message.getId())) {
                 result = TextUtils.concat(mark(MARKS[Math.max(0, Math.min(2, TgYouPrefs.integer(MARK_DELETED, 0)))],
-                        org.telegram.messenger.R.drawable.tgyou_deleted, "удалено"), " ", result);
+                        org.telegram.messenger.R.drawable.tgyou_deleted, "удалено", markColor()), " ", result);
             }
             int edits = db.editCount(account, key, message.getId());
             if (edits > 0) {
                 result = TextUtils.concat(mark(MARKS[Math.max(0, Math.min(2, TgYouPrefs.integer(MARK_EDITED, 0)))],
-                        org.telegram.messenger.R.drawable.tgyou_edited, "ред."), edits > 1 ? edits + " " : " ", result);
+                        org.telegram.messenger.R.drawable.tgyou_edited, "ред.", 0), edits > 1 ? edits + " " : " ", result);
             }
             return result;
         });
@@ -143,16 +146,29 @@ public final class AntiRecallPlugin implements Plugin {
     }
 
     /** The vector icon, plain text or nothing, depending on the chosen style. */
-    private static CharSequence mark(String style, int icon, String text) {
+    private static int markColor() {
+        int index = TgYouPrefs.integer(MARK_COLOR, 0);
+        return index >= 1 && index <= MARK_COLORS.length ? MARK_COLORS[index - 1] : 0;
+    }
+
+    private static CharSequence mark(String style, int icon, String text, int color) {
         if (style.equals("нет")) {
             return "";
         }
         if (style.equals("текст")) {
-            return text;
+            if (color == 0) {
+                return text;
+            }
+            android.text.SpannableString colored = new android.text.SpannableString(text);
+            colored.setSpan(new android.text.style.ForegroundColorSpan(color), 0, text.length(), android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return colored;
         }
         android.graphics.drawable.Drawable d = ApplicationLoader.applicationContext.getResources().getDrawable(icon).mutate();
         int size = org.telegram.messenger.AndroidUtilities.dp(12);
         d.setBounds(0, 0, size, size);
+        if (color != 0) {
+            d.setColorFilter(color, android.graphics.PorterDuff.Mode.SRC_IN);
+        }
         android.text.SpannableString span = new android.text.SpannableString(" ");
         span.setSpan(new android.text.style.ImageSpan(d, android.text.style.ImageSpan.ALIGN_BOTTOM), 0, 1, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return span;

@@ -61,6 +61,7 @@ public class AppearanceScreen extends TgYouScreen {
         toggle(TgYouListTweaks.HIDE_STORIES, "Скрыть истории", "Лента историй над списком чатов не показывается.", false);
         toggle(TgYouListTweaks.HIDE_FAB, "Скрыть кнопку нового сообщения", "Плавающая кнопка «написать» пропадает.", false);
         toggle(TgYouListTweaks.HIDE_SEARCH, "Скрыть поиск", "Строка поиска в списке чатов скрыта, список поднимается на её место.", false);
+        toggle(com.tgyou.core.TgYouMiniAvatars.KEY, "Мини-аватарки отправителей", "Маленькая аватарка автора последнего сообщения перед превью в группах. Работает в двухстрочном виде списка.", false, v -> TgYouAppearance.reloadUi());
         toggle(TgYouListTweaks.CENTER_TITLE, "Заголовок по центру", "Заголовок списка чатов выравнивается по центру шапки.", false);
         gap();
 

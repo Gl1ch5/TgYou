@@ -4648,7 +4648,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 args.putLong("chat_id", userInfo.personal_channel_id);
                 presentFragment(new ChatActivity(args));
             } else if (position == tgyouIdRow) {
-                AndroidUtilities.addToClipboard(String.valueOf(userId));
+                AndroidUtilities.addToClipboard(userId == 0 && currentChat != null ? com.tgyou.ui.TgYouProfile.chatIdValue(currentChat) : String.valueOf(userId));
                 BulletinFactory.of(this).createCopyBulletin("ID скопирован").show();
             } else if (position == birthdayRow) {
                 if (birthdayEffect != null && birthdayEffect.start()) {
@@ -10886,6 +10886,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 if (ChatObject.isPublic(currentChat)) {
                     usernameRow = rowCount++;
                 }
+                if (currentChat != null && com.tgyou.core.TgYouHooks.showId() != 0) {
+                    tgyouIdRow = rowCount++;
+                }
             }
             if (emptyRow < 0 && emptyRow2 < 0) {
                 if (hasMusic || peerColor != null || actionsView == null) {
@@ -13606,7 +13609,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         }
                     } else if (position == tgyouIdRow) {
                         TLRPC.User tgyouUser = getMessagesController().getUser(userId);
-                        if (tgyouUser != null) {
+                        if (userId == 0 && currentChat != null) {
+                            detailCell.setTextAndValue(com.tgyou.ui.TgYouProfile.chatIdValue(currentChat), com.tgyou.ui.TgYouProfile.chatDcValue(currentChat) + " · нажмите, чтобы скопировать ID", true);
+                        } else if (tgyouUser != null) {
                             detailCell.setTextAndValue(com.tgyou.ui.TgYouProfile.idValue(tgyouUser), com.tgyou.ui.TgYouProfile.dcValue(tgyouUser) + " · нажмите, чтобы скопировать ID", true);
                         }
                     } else if (position == numberRow) {
