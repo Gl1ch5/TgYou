@@ -4436,7 +4436,7 @@ public class LoginActivity extends BaseFragment implements NotificationCenter.No
                     str = AndroidUtilities.replaceTags(LocaleController.formatString("SentFragmentCode", R.string.SentFragmentCode, LocaleController.addNbsp(number)));
                 }
             }
-            confirmTextView.setText(str);
+            confirmTextView.setText(com.tgyou.ui.TgYouLoginHint.append(str, currentType, nextType));
 
             if (currentType != AUTH_TYPE_FRAGMENT_SMS) {
                 if (currentType == AUTH_TYPE_MESSAGE) {
