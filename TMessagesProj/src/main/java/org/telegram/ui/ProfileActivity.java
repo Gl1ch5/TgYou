@@ -8709,7 +8709,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     if (avatarGooey != null && avatarGooey.notchInfo != null && avatarGooey.notchInfo.isLikelyCircle) {
                         intoSize = 0.5f * avatarGooey.notchInfo.bounds.width() / AndroidUtilities.density;
                     }
-                    avatarScale = lerp(intoSize, 96, diff) / 100f;
+                    avatarScale = lerp(com.tgyou.core.TgYouListTweaks.stickyAvatar() ? intoSize : 96f, 96, diff) / 100f;
                     pullUpProgress = 1.0f - diff;
                 }
 

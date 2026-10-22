@@ -339,6 +339,9 @@ public class BlurredBackgroundProviderImpl {
         final boolean isDark = resourcesProvider != null ? resourcesProvider.isDark() : Theme.isCurrentThemeDark();
         final boolean isLight = !isDark;
         boolean blurEnabled = SharedConfig.chatBlurEnabled();
+        if (com.tgyou.core.TgYouGlass.forceBlur()) {
+            return blurEnabled;
+        }
         if (blurEnabled && isLight) {
             if (MessagesController.getInstance(currentAccount).config.disableBlurInLightTheme.get()) {
                 blurEnabled = false;

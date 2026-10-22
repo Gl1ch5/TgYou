@@ -119,4 +119,11 @@ public final class TgYouChatTweaks {
     public static boolean aiSummary() {
         return TgYouPrefs.bool(AI_SUMMARY, true);
     }
+
+    public static final String CHAT_THEMES = "chats.chat_themes";
+
+    /** False when themes set by the other side of a chat must be ignored. */
+    public static boolean chatThemes() {
+        return TgYouPrefs.bool(CHAT_THEMES, true);
+    }
 }

@@ -142,12 +142,12 @@ public class BlurredBackgroundDrawableRenderNode extends BlurredBackgroundDrawab
                 c.drawColor(backgroundColor);
             }
         }
-        if (strokeColorTop != 0) {
+        if (strokeColorTop != 0 && com.tgyou.core.TgYouGlass.stroke()) {
             drawStroke(c, 0, 0, boundProps.boundsWithPadding.width(),
                     boundProps.boundsWithPadding.height(), boundProps.radii,
                     boundProps.strokeWidthTop, true, paintStrokeTop);
         }
-        if (strokeColorBottom != 0) {
+        if (strokeColorBottom != 0 && com.tgyou.core.TgYouGlass.stroke()) {
             drawStroke(c, 0, 0, boundProps.boundsWithPadding.width(),
                     boundProps.boundsWithPadding.height(), boundProps.radii,
                     boundProps.strokeWidthBottom, false, paintStrokeBottom);

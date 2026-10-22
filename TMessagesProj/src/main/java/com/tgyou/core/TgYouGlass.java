@@ -48,4 +48,26 @@ public final class TgYouGlass {
     public static float thickness(float v) { load(); return v * thickness; }
     public static float intensity(float v) { load(); return v * intensity; }
     public static float index(float v) { load(); return v * index; }
+
+    public static final String STROKE = "look.glass_stroke";
+    public static final String MENU = "look.glass_menu";
+    public static final String FORCE_BLUR = "look.glass_force_blur";
+    public static final String[] STROKE_LABELS = {"Блики", "Нет"};
+
+    /** Whether the highlight outline of blurred/glass panels is drawn. */
+    public static boolean stroke() {
+        return TgYouPrefs.integer(STROKE, 0) == 0;
+    }
+
+    /** Ignore the server flags that switch blur off in the light/dark theme. */
+    public static boolean forceBlur() {
+        return TgYouPrefs.bool(FORCE_BLUR, false);
+    }
+
+    /** Makes the message context menu translucent. */
+    public static void menu(org.telegram.ui.ActionBar.ActionBarPopupWindow.ActionBarPopupWindowLayout layout) {
+        if (layout != null && TgYouPrefs.bool(MENU, false)) {
+            layout.setBackgroundColor(androidx.core.graphics.ColorUtils.setAlphaComponent(layout.getBackgroundColor(), 0xA6));
+        }
+    }
 }

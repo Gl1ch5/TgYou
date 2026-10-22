@@ -32324,6 +32324,7 @@ public class ChatActivity extends BaseFragment implements
                 boolean showNoForwards = (isPeerNoForwards() || message.messageOwner.noforwards && currentUser != null && currentUser.bot) && message.messageOwner.action == null && message.isSent() && !message.isEditing() && chatMode != MODE_SCHEDULED && chatMode != MODE_SAVED && getDialogId() != UserObject.VERIFY;
                 scrimPopupContainerLayout.addView(popupLayout, LayoutHelper.createLinearRelatively(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.LEFT, isReactionsAvailable ? 16 : 0, 0, isReactionsAvailable ? 36 : 0, 0));
                 scrimPopupContainerLayout.setPopupWindowLayout(popupLayout);
+                com.tgyou.core.TgYouGlass.menu(popupLayout);
                 if (showNoForwards) {
                     popupLayout.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
                     boolean isChannel = ChatObject.isChannel(currentChat) && !currentChat.megagroup;
@@ -43481,7 +43482,7 @@ public class ChatActivity extends BaseFragment implements
     }
 
     private void setChatThemeEmoticon(final TLRPC.ChatTheme theme) {
-        if (themeDelegate == null || parentThemeDelegate != null) {
+        if (themeDelegate == null || parentThemeDelegate != null || !com.tgyou.core.TgYouChatTweaks.chatThemes()) {
             return;
         }
         ThemeKey key = ThemeKey.of(theme);

@@ -2,7 +2,10 @@ package com.tgyou.ui;
 
 import android.content.Context;
 
+import com.tgyou.core.Plugin;
+import com.tgyou.core.PluginHost;
 import com.tgyou.core.TgYouAppearance;
+import com.tgyou.core.TgYouChatTweaks;
 import com.tgyou.core.TgYouFolders;
 import com.tgyou.core.TgYouGlass;
 import com.tgyou.core.TgYouListTweaks;
@@ -21,6 +24,24 @@ public class AppearanceScreen extends TgYouScreen {
     @Override
     protected String screenTitle() {
         return "Внешний вид";
+    }
+
+    private static boolean systemFont() {
+        PluginHost host = PluginHost.get();
+        Plugin p = host == null ? null : host.find("fonts");
+        return p != null && host.isEnabled(p) && "Системный".equals(host.settingsOf(p).getString("family", "Системный"));
+    }
+
+    private static void setSystemFont(boolean on) {
+        PluginHost host = PluginHost.get();
+        Plugin p = host == null ? null : host.find("fonts");
+        if (p == null) {
+            return;
+        }
+        if (on) {
+            host.settingsOf(p).putString("family", "Системный");
+        }
+        host.setEnabled(p, on);
     }
 
     @Override
@@ -49,7 +70,27 @@ public class AppearanceScreen extends TgYouScreen {
         toggle(TgYouFolders.HIDE_ALL, "Скрыть вкладку «Все чаты»", "Вкладка не показывается; при открытии выбирается первая папка. Свайпом влево её всё ещё можно открыть.", false);
         gap();
 
+        header("Material Design 3");
+        master("m3", "Material Design 3", TgYouAppearance.M3_KEYS, new String[]{
+                "Скругление пузырей 20",
+                "Тональная панель ввода",
+                "Тональные входящие пузыри",
+                "Тональная шапка",
+                "Тонированный фон списков",
+                "Без разделителей"}, null, v -> TgYouAppearance.m3Changed());
+        info("Оттенки берутся из акцентного цвета темы. Каждый пункт работает отдельно.");
+        gap();
+
+        header("Размытие");
+        choice(TgYouGlass.STROKE, "Обводка стекла", "Светлая окантовка размытых панелей.", 0, v -> TgYouAppearance.reloadUi(), TgYouGlass.STROKE_LABELS);
+        toggle(TgYouGlass.MENU, "Стеклянное меню сообщения", "Меню по долгому нажатию на сообщение становится полупрозрачным.", false);
+        toggle(TgYouGlass.FORCE_BLUR, "Принудительное размытие", "Игнорировать серверный запрет размытия в светлой и тёмной теме.", false, v -> TgYouAppearance.reloadUi());
+        gap();
+
         header("Оформление");
+        toggle(TgYouChatTweaks.CHAT_THEMES, "Различные темы в чатах", "Показывать темы, которые собеседники ставят в чате. Выключено: везде ваша тема.", true);
+        toggle(TgYouListTweaks.STICKY_AVATAR, "Липкая анимация аватарок", "Аватарка в профиле уменьшается и прилипает к шапке при прокрутке. Выключено: остаётся крупной.", true);
+        toggle("look.system_font", "Системные шрифты", "Жирный и курсивный текст рисует системный шрифт вместо шрифтов Telegram. Применяется после перезапуска.", systemFont(), v -> setSystemFont(Boolean.TRUE.equals(v)));
         toggle("look.system_emoji", "Системные эмодзи", "Эмодзи рисует система, а не набор Telegram.", SharedConfig.useSystemEmoji, v -> {
             SharedConfig.useSystemEmoji = Boolean.TRUE.equals(v);
             ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Context.MODE_PRIVATE).edit().putBoolean("useSystemEmoji", SharedConfig.useSystemEmoji).apply();

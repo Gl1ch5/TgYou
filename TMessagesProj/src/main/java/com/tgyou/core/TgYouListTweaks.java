@@ -137,4 +137,10 @@ public final class TgYouListTweaks {
     public static boolean centerTitle(int folderId, long communityId, boolean onlySelect) {
         return folderId == 0 && communityId == 0 && !onlySelect && TgYouPrefs.bool(CENTER_TITLE, false);
     }
+
+    public static final String STICKY_AVATAR = "look.sticky_avatar";
+
+    public static boolean stickyAvatar() {
+        return TgYouPrefs.bool(STICKY_AVATAR, true);
+    }
 }
