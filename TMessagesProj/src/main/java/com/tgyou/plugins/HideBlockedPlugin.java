@@ -38,7 +38,7 @@ public final class HideBlockedPlugin implements Plugin {
     @Override
     public void onLoad(PluginContext context) {
         context.on(Hooks.MESSAGE_VISIBLE, (message, visible) -> {
-            if (!visible || message == null || message.messageOwner == null || message.isOut()) {
+            if (!visible || !com.tgyou.core.TgYouPrefs.bool(MessageFilterPlugin.HIDE_BLOCKED, true) || message == null || message.messageOwner == null || message.isOut()) {
                 return visible;
             }
             long from = message.getFromChatId();

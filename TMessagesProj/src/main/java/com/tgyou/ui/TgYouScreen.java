@@ -86,6 +86,7 @@ public abstract class TgYouScreen extends BaseFragment {
         Getter<Boolean> checked;
         int icon;
         int color;
+        int color2;
         boolean red;
         String[] keys;
         String[] titles;
@@ -234,10 +235,11 @@ public abstract class TgYouScreen extends BaseFragment {
         return r;
     }
 
-    protected Row link(int icon, int color, String title, String value, Runnable action) {
+    protected Row link(int icon, org.telegram.ui.Components.IconBackgroundColors color, String title, String value, Runnable action) {
         Row r = add(T_LINK);
         r.icon = icon;
-        r.color = color;
+        r.color = color.top;
+        r.color2 = color.bottom;
         r.title = title;
         r.sub = value;
         r.action = action;
@@ -584,7 +586,7 @@ public abstract class TgYouScreen extends BaseFragment {
                 }
                 case T_LINK: {
                     TextCell cell = (TextCell) view;
-                    cell.setTextAndValueAndColorfulIcon(row.title, row.sub, false, row.icon, row.color, row.color, divider);
+                    cell.setTextAndValueAndColorfulIcon(row.title, row.sub, false, row.icon, row.color, row.color2, divider);
                     break;
                 }
                 case T_BUTTON: {

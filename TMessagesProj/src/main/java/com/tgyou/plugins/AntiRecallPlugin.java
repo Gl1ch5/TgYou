@@ -5,9 +5,8 @@ import android.text.TextUtils;
 import com.tgyou.core.Hooks;
 import com.tgyou.core.Plugin;
 import com.tgyou.core.PluginContext;
-import com.tgyou.core.PluginSettings;
+import com.tgyou.core.TgYouPrefs;
 import com.tgyou.core.Section;
-import com.tgyou.core.SettingField;
 import com.tgyou.core.TgYouDb;
 
 import org.telegram.messenger.ApplicationLoader;
@@ -29,17 +28,15 @@ import java.util.List;
  */
 public final class AntiRecallPlugin implements Plugin {
 
-    private static final String KEEP_DELETED = "keep_deleted";
-    private static final String KEEP_EDITS = "keep_edits";
-    private static final String MARK_DELETED = "mark_deleted";
-    private static final String MARK_EDITED = "mark_edited";
+    public static final String KEEP_DELETED = "spy.keep_deleted";
+    public static final String KEEP_EDITS = "spy.keep_edits";
+    public static final String MARK_DELETED = "spy.mark_deleted";
+    public static final String MARK_EDITED = "spy.mark_edited";
+    public static final String DIM = "spy.dim";
+    public static final String KEEP_READS = "spy.keep_reads";
+    public static final String EXCEPTIONS = "spy.exceptions";
 
-    private static final String DIM = "dim";
-    private static final String[] DELETED_MARKS = {"значок", "текст", "нет"};
-    private static final String[] EDITED_MARKS = {"значок", "текст", "нет"};
-    private static final String[] DIM_LEVELS = {"100%", "70%", "50%", "35%"};
-
-    private PluginSettings settings;
+    private static final String[] MARKS = {"значок", "текст", "нет"};
 
     @Override
     public String id() {
@@ -63,22 +60,16 @@ public final class AntiRecallPlugin implements Plugin {
     }
 
     @Override
-    public List<SettingField> fields() {
-        return Arrays.asList(
-                SettingField.toggle(KEEP_DELETED, "Сохранять удалённые сообщения", true),
-                SettingField.toggle(KEEP_EDITS, "Сохранять историю правок", true),
-                SettingField.choice(MARK_DELETED, "Пометка удалённых", DELETED_MARKS[0], DELETED_MARKS),
-                SettingField.choice(MARK_EDITED, "Пометка изменённых", EDITED_MARKS[0], EDITED_MARKS),
-                SettingField.choice(DIM, "Прозрачность удалённых", DIM_LEVELS[2], DIM_LEVELS)
-        );
+    public boolean enabledByDefault() {
+        return true;
     }
 
     @Override
     public void onLoad(PluginContext context) {
-        settings = context.settings();
+        com.tgyou.core.TgYouSpy.start();
 
         context.on(Hooks.MESSAGES_DELETED, (deleted, ids) -> {
-            if (!settings.getBoolean(KEEP_DELETED, true) || ids.isEmpty()) {
+            if (!TgYouPrefs.bool(KEEP_DELETED, true) || ids.isEmpty() || TgYouPrefs.listHasLong(EXCEPTIONS, deleted.dialogKey)) {
                 return ids;
             }
             // only messages we actually have are worth keeping
@@ -87,7 +78,7 @@ public final class AntiRecallPlugin implements Plugin {
         });
 
         context.on(Hooks.MESSAGE_EDITED, (edited, ignored) -> {
-            if (!settings.getBoolean(KEEP_EDITS, true)) {
+            if (!TgYouPrefs.bool(KEEP_EDITS, true) || TgYouPrefs.listHasLong(EXCEPTIONS, MessageObject.getDialogId(edited.message))) {
                 return null;
             }
             TLRPC.Message now = edited.message;
@@ -109,12 +100,12 @@ public final class AntiRecallPlugin implements Plugin {
             long key = TgYouDb.dialogKey(message);
             CharSequence result = time;
             if (db.isDeleted(account, key, message.getId())) {
-                result = TextUtils.concat(mark(settings.getString(MARK_DELETED, DELETED_MARKS[0]),
+                result = TextUtils.concat(mark(MARKS[Math.max(0, Math.min(2, TgYouPrefs.integer(MARK_DELETED, 0)))],
                         org.telegram.messenger.R.drawable.tgyou_deleted, "удалено"), " ", result);
             }
             int edits = db.editCount(account, key, message.getId());
             if (edits > 0) {
-                result = TextUtils.concat(mark(settings.getString(MARK_EDITED, EDITED_MARKS[0]),
+                result = TextUtils.concat(mark(MARKS[Math.max(0, Math.min(2, TgYouPrefs.integer(MARK_EDITED, 0)))],
                         org.telegram.messenger.R.drawable.tgyou_edited, "ред."), edits > 1 ? edits + " " : " ", result);
             }
             return result;
@@ -125,8 +116,7 @@ public final class AntiRecallPlugin implements Plugin {
                     || !TgYouDb.get().isDeleted(message.currentAccount, TgYouDb.dialogKey(message), message.getId())) {
                 return alpha;
             }
-            String level = settings.getString(DIM, DIM_LEVELS[2]);
-            return level.equals(DIM_LEVELS[1]) ? 0.7f : level.equals(DIM_LEVELS[2]) ? 0.5f : level.equals(DIM_LEVELS[3]) ? 0.35f : alpha;
+            return TgYouPrefs.bool(DIM, true) ? 0.5f : alpha;
         });
 
         context.on(Hooks.MESSAGE_MENU, (menu, ignored) -> {
@@ -137,6 +127,13 @@ public final class AntiRecallPlugin implements Plugin {
             int account = message.currentAccount;
             long key = TgYouDb.dialogKey(message);
             int count = TgYouDb.get().editCount(account, key, message.getId());
+            if (TgYouPrefs.bool(KEEP_READS, true) && message.isOut()) {
+                int date = TgYouDb.get().readDate(account, message.getDialogId(), message.getId());
+                if (date > 0) {
+                    String when = LocaleController.formatDateChat(date) + ", " + LocaleController.getInstance().getFormatterDay().format((long) date * 1000);
+                    menu.add("Прочитано: " + when, org.telegram.messenger.R.drawable.msg_seen, () -> { });
+                }
+            }
             if (count > 0) {
                 menu.add("История правок (" + count + ")", org.telegram.messenger.R.drawable.msg_edit,
                         () -> showHistory(menu, account, key, message));

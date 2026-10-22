@@ -109,6 +109,9 @@ public class TgYouSettingsActivity extends BaseFragment {
         addBanners(context);
         group(context, "Настройки");
         addWide(context, R.drawable.settings_privacy, IconBackgroundColors.GREEN, "Режим Призрака", "не читать, не печатать, офлайн, отложка", animate ? index++ : -1, () -> presentFragment(new GhostScreen()));
+        addWide(context, R.drawable.settings_folders, IconBackgroundColors.BLUE, "Фильтры сообщений", "слова, теневой бан", animate ? index++ : -1, () -> presentFragment(new FiltersScreen()));
+        addWide(context, R.drawable.settings_devices, IconBackgroundColors.PURPLE, "Шпион", "удалённые, правки, прочтения, вложения", animate ? index++ : -1, () -> presentFragment(new SpyScreen()));
+        addWide(context, R.drawable.settings_data, IconBackgroundColors.ORANGE, "Основные", "скорость, профиль, архив, хранилище", animate ? index++ : -1, () -> presentFragment(new BasicScreen()));
         group(context, "Функции по разделам");
 
         LinearLayout rowLayout = null;

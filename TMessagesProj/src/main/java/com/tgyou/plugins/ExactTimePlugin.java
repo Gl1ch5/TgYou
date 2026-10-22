@@ -35,9 +35,14 @@ public final class ExactTimePlugin implements Plugin {
     }
 
     @Override
+    public boolean enabledByDefault() {
+        return true;
+    }
+
+    @Override
     public void onLoad(PluginContext context) {
         context.on(Hooks.MESSAGE_TIME, (message, time) -> {
-            if (time == null || message == null || message.messageOwner == null) {
+            if (!com.tgyou.core.TgYouPrefs.bool(com.tgyou.core.TgYouTweaks.SECONDS, false) || time == null || message == null || message.messageOwner == null) {
                 return time;
             }
             String text = time.toString();

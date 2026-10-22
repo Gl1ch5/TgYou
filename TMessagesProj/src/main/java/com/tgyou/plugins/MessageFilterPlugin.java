@@ -3,26 +3,31 @@ package com.tgyou.plugins;
 import com.tgyou.core.Hooks;
 import com.tgyou.core.Plugin;
 import com.tgyou.core.PluginContext;
-import com.tgyou.core.PluginSettings;
 import com.tgyou.core.Section;
-import com.tgyou.core.SettingField;
+import com.tgyou.core.TgYouPrefs;
 
 import org.telegram.messenger.MessageObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
-/** Скрывает входящие сообщения с заданными словами и сообщения от заблокированных ботов-спамеров по словам. */
+/**
+ * Фильтры сообщений: общие (слова, фразы или регулярные выражения «re:...») и «теневой бан»
+ * (сообщения выбранных пользователей скрыты везде). Настраивается на экране «Фильтры сообщений».
+ */
 public final class MessageFilterPlugin implements Plugin {
 
-    private static final String WORDS = "words";
-    private static final String ONLY_INCOMING = "only_incoming";
+    public static final String ENABLED = "filters.enabled";
+    public static final String WORDS = "filters.words";
+    public static final String SHADOW = "filters.shadow";
+    public static final String IN_CHATS = "filters.in_chats";
+    public static final String ONLY_INCOMING = "filters.only_incoming";
+    public static final String HIDE_BLOCKED = "filters.hide_blocked";
 
-    private PluginSettings settings;
-    private String cachedRaw = "";
-    private List<String> cachedWords = new ArrayList<>();
+    private List<String> cachedSource = null;
+    private final List<Object> compiled = new ArrayList<>();
 
     @Override
     public String id() {
@@ -31,12 +36,12 @@ public final class MessageFilterPlugin implements Plugin {
 
     @Override
     public String name() {
-        return "Фильтр сообщений";
+        return "Фильтры сообщений";
     }
 
     @Override
     public String description() {
-        return "Скрывает в чатах сообщения, в которых встречаются заданные слова или фразы (через запятую, без учёта регистра).";
+        return "Скрывает сообщения со словами из фильтров и сообщения пользователей из «теневого бана». Настройки: Настройки TgYou, «Фильтры сообщений».";
     }
 
     @Override
@@ -45,50 +50,60 @@ public final class MessageFilterPlugin implements Plugin {
     }
 
     @Override
-    public List<SettingField> fields() {
-        return Arrays.asList(
-                SettingField.text(WORDS, "Слова и фразы через запятую", ""),
-                SettingField.toggle(ONLY_INCOMING, "Только входящие", true)
-        );
+    public boolean enabledByDefault() {
+        return true;
     }
 
     @Override
     public void onLoad(PluginContext context) {
-        settings = context.settings();
-        context.on(Hooks.MESSAGE_VISIBLE, (message, visible) -> visible && !matches(message));
+        context.on(Hooks.MESSAGE_VISIBLE, (message, visible) -> visible && !hidden(message));
     }
 
-    private synchronized List<String> words() {
-        String raw = settings.getString(WORDS, "");
-        if (!raw.equals(cachedRaw)) {
-            cachedRaw = raw;
-            List<String> list = new ArrayList<>();
-            for (String part : raw.split(",")) {
-                String w = part.trim().toLowerCase(Locale.ROOT);
-                if (!w.isEmpty()) {
-                    list.add(w);
+    private synchronized List<Object> filters() {
+        List<String> raw = TgYouPrefs.list(WORDS);
+        if (cachedSource == null || !cachedSource.equals(raw)) {
+            cachedSource = new ArrayList<>(raw);
+            compiled.clear();
+            for (String w : raw) {
+                String t = w.trim();
+                if (t.isEmpty()) {
+                    continue;
+                }
+                if (t.startsWith("re:")) {
+                    try {
+                        compiled.add(Pattern.compile(t.substring(3), Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE));
+                    } catch (Throwable ignore) {
+                    }
+                } else {
+                    compiled.add(t.toLowerCase(Locale.ROOT));
                 }
             }
-            cachedWords = list;
         }
-        return cachedWords;
+        return compiled;
     }
 
-    private boolean matches(MessageObject message) {
-        List<String> words = words();
-        if (words.isEmpty() || message == null || message.messageOwner == null) {
+    private boolean hidden(MessageObject message) {
+        if (message == null || message.messageOwner == null || !TgYouPrefs.bool(ENABLED, true)) {
             return false;
         }
-        if (settings.getBoolean(ONLY_INCOMING, true) && message.isOut()) {
+        long from = message.getFromChatId();
+        if (from != 0 && !message.isOut() && TgYouPrefs.listHasLong(SHADOW, from)) {
+            return true;
+        }
+        if (TgYouPrefs.bool(ONLY_INCOMING, true) && message.isOut()) {
             return false;
         }
+        if (!TgYouPrefs.bool(IN_CHATS, true) && message.getDialogId() < 0) {
+            return false;
+        }
+        List<Object> list = filters();
         String text = message.messageOwner.message;
-        if (text == null || text.isEmpty()) {
+        if (list.isEmpty() || text == null || text.isEmpty()) {
             return false;
         }
-        text = text.toLowerCase(Locale.ROOT);
-        for (String w : words) {
-            if (text.contains(w)) {
+        String lower = text.toLowerCase(Locale.ROOT);
+        for (Object f : list) {
+            if (f instanceof Pattern ? ((Pattern) f).matcher(text).find() : lower.contains((String) f)) {
                 return true;
             }
         }
