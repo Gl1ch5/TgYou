@@ -1,5 +1,6 @@
 package org.telegram.ui.Components;
 
+import com.tgyou.core.TgYouHooks;
 import static org.telegram.messenger.AndroidUtilities.dp;
 import static org.telegram.messenger.LocaleController.formatString;
 import static org.telegram.messenger.LocaleController.getString;
@@ -106,6 +107,7 @@ public class ChatGreetingsView extends LinearLayout {
         if (preloadedGreetingsSticker == null) {
             preloadedGreetingsSticker = MediaDataController.getInstance(currentAccount).getGreetingsSticker();
         }
+        if (TgYouHooks.hideGreeting()) stickerToSendView.setVisibility(GONE);
     }
 
     public void setText(CharSequence title, CharSequence description) {

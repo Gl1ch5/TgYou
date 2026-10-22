@@ -6856,6 +6856,7 @@ public class ChatActivity extends BaseFragment implements
                     if (searchOtherButton != null && searchOtherButton.getVisibility() == View.VISIBLE && isKeyboardVisible()) {
                         AndroidUtilities.hideKeyboard(getParentActivity().getCurrentFocus());
                     }
+                    if (com.tgyou.core.TgYouHooks.hideKeyboardOnScroll() && isKeyboardVisible()) AndroidUtilities.hideKeyboard(getParentActivity().getCurrentFocus());
                     if (newState == RecyclerView.SCROLL_STATE_SETTLING) {
                         wasManualScroll = true;
                         scrollingChatListView = true;
@@ -7395,7 +7396,7 @@ public class ChatActivity extends BaseFragment implements
                 } else {
                     String username = ChatObject.getPublicUsername(chat);
                     if (username != null) {
-                        chatActivityEnterView.replaceWithText(start, len, "@" + username + " ", false);
+                        chatActivityEnterView.replaceWithText(start, len, "@" + username + com.tgyou.core.TgYouHooks.mentionTail(), false);
                     }
                 }
             } else if (object instanceof TLRPC.User) {
@@ -7404,7 +7405,7 @@ public class ChatActivity extends BaseFragment implements
                     searchUserMessages(user, null);
                 } else {
                     if (UserObject.getPublicUsername(user) != null) {
-                        chatActivityEnterView.replaceWithText(start, len, "@" + UserObject.getPublicUsername(user) + " ", false);
+                        chatActivityEnterView.replaceWithText(start, len, "@" + UserObject.getPublicUsername(user) + com.tgyou.core.TgYouHooks.mentionTail(), false);
                     } else {
                         String name = UserObject.getFirstName(user, false);
                         Spannable spannable = new SpannableString(name + " ");

@@ -8,6 +8,7 @@
 
 package org.telegram.ui.Components;
 
+import com.tgyou.core.TgYouHooks;
 import static org.telegram.messenger.AndroidUtilities.dp;
 import static org.telegram.messenger.AndroidUtilities.dpf2;
 import static org.telegram.messenger.AndroidUtilities.lerp;
@@ -11228,7 +11229,7 @@ public class ChatActivityEnterView extends FrameLayout implements
                 public void onAnimationStart(Animator animation) {
                     if (isVisible) {
                         createSenderSelectView();
-                        senderSelectView.setVisibility(VISIBLE);
+                        senderSelectView.setVisibility(TgYouHooks.hideSendAs() ? GONE : VISIBLE);
                     }
                     float tx = 0;
                     if (senderSelectView != null) {
@@ -11264,7 +11265,7 @@ public class ChatActivityEnterView extends FrameLayout implements
                         createSenderSelectView();
                     }
                     if (senderSelectView != null) {
-                        senderSelectView.setVisibility(isVisible ? VISIBLE : GONE);
+                        senderSelectView.setVisibility(isVisible && !TgYouHooks.hideSendAs() ? VISIBLE : GONE);
                         senderSelectView.setAlpha(endAlpha);
                         senderSelectView.setTranslationX(endX);
                         tx = senderSelectView.getTranslationX();
@@ -11284,7 +11285,7 @@ public class ChatActivityEnterView extends FrameLayout implements
                 createSenderSelectView();
             }
             if (senderSelectView != null) {
-                senderSelectView.setVisibility(isVisible ? VISIBLE : GONE);
+                senderSelectView.setVisibility(isVisible && !TgYouHooks.hideSendAs() ? VISIBLE : GONE);
                 senderSelectView.setTranslationX(endX);
             }
             float translationX = isVisible ? endX : 0;

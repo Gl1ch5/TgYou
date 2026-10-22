@@ -9631,7 +9631,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                     if (AndroidUtilities.isTablet()) {
                         maxWidth = (int) (AndroidUtilities.getMinTabletSide() * 0.4f);
                     } else {
-                        maxWidth = (int) (Math.min(getParentWidth(), AndroidUtilities.displaySize.y) * 0.5f);
+                        maxWidth = (int) (Math.min(getParentWidth(), AndroidUtilities.displaySize.y) * 0.5f * com.tgyou.core.TgYouHooks.stickerScale());
                     }
                     maxWidth = Math.max(backgroundWidth, maxWidth);
                     if (!reactionsLayoutInBubble.isSmall) {
@@ -9677,7 +9677,7 @@ public class ChatMessageCell extends BaseCell implements SeekBar.SeekBarDelegate
                     if (AndroidUtilities.isTablet()) {
                         maxHeight = maxWidth = (int) (AndroidUtilities.getMinTabletSide() * 0.4f);
                     } else {
-                        maxHeight = maxWidth = (int) (Math.min(getParentWidth(), AndroidUtilities.displaySize.y) * 0.5f);
+                        maxHeight = maxWidth = (int) (Math.min(getParentWidth(), AndroidUtilities.displaySize.y) * 0.5f * com.tgyou.core.TgYouHooks.stickerScale());
                     }
                     String filter;
                     if (messageObject.isAnimatedEmoji() || messageObject.isDice()) {

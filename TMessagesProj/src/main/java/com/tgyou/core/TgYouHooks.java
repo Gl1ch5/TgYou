@@ -338,4 +338,24 @@ public final class TgYouHooks {
     public static int showId() {
         return TgYouPrefs.integer(TgYouTweaks.SHOW_ID, 1);
     }
+
+    public static float stickerScale() {
+        return TgYouChatTweaks.stickerScale();
+    }
+
+    public static boolean hideKeyboardOnScroll() {
+        return TgYouChatTweaks.hideKeyboardOnScroll();
+    }
+
+    public static String mentionTail() {
+        return TgYouChatTweaks.mentionTail();
+    }
+
+    public static boolean hideSendAs() {
+        return TgYouChatTweaks.hideSendAs();
+    }
+
+    public static boolean hideGreeting() {
+        return TgYouChatTweaks.hideGreeting();
+    }
 }
