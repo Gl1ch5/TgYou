@@ -126,7 +126,15 @@ public class ModsActivity extends BaseFragment {
         listView.setLayoutManager(new LinearLayoutManager(context));
         listView.setVerticalScrollBarEnabled(false);
         listView.setAdapter(adapter = new ListAdapter(context));
-        listView.setOnItemClickListener((view, position) -> {
+        listView.setOnItemClickListener((RecyclerListView.OnItemClickListenerExtended) (view, position, x, y) -> {
+            // RecyclerListView takes the tap before the cell's buttons see it, so route button taps here.
+            if (view instanceof ModCell) {
+                Runnable button = ((ModCell) view).actionAt(x, y);
+                if (button != null) {
+                    button.run();
+                    return;
+                }
+            }
             Row row = rows.get(position);
             if (row.action != null) {
                 row.action.run();

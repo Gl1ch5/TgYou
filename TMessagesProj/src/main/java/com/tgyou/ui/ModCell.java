@@ -82,6 +82,20 @@ final class ModCell extends LinearLayout {
         return view;
     }
 
+    /** The button action under a tap at (x, y) in this cell's coordinates, or null. */
+    Runnable actionAt(float x, float y) {
+        for (int i = 0; i < buttons.getChildCount(); i++) {
+            View child = buttons.getChildAt(i);
+            android.graphics.Rect rect = new android.graphics.Rect();
+            child.getHitRect(rect);
+            rect.offset(buttons.getLeft(), buttons.getTop());
+            if (rect.contains((int) x, (int) y) && child.getTag() instanceof Runnable) {
+                return (Runnable) child.getTag();
+            }
+        }
+        return null;
+    }
+
     void set(String name, String ver, String metaLine, String desc, String problem, List<Button> list) {
         setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundWhite));
         title.setText(name);
@@ -114,6 +128,7 @@ final class ModCell extends LinearLayout {
             }
             view.setTextColor(text);
             view.setBackground(Theme.createSimpleSelectorRoundRectDrawable(AndroidUtilities.dp(10), bg, ColorUtils.setAlphaComponent(text, 60)));
+            view.setTag(b.action);
             view.setOnClickListener((View v) -> b.action.run());
             buttons.addView(view, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, 36, 0, 0, 8, 0));
         }

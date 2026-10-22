@@ -75,6 +75,44 @@ public final class TgYouHooks {
         return host.dispatch(Hooks.RESPONSE, new Object[]{account, request, error}, response);
     }
 
+    private static final int ITEM_MENU_BASE = 0x7B000000;
+    private static final SparseArray<Runnable> itemActions = new SparseArray<>();
+    private static int itemMenuNext = ITEM_MENU_BASE;
+
+    /** Adds plugin entries to the sub menu {@code item} of a chat ({@link ItemMenu#CHAT}) or profile. */
+    public static void extendItemMenu(String type, BaseFragment fragment, org.telegram.ui.ActionBar.ActionBarMenuItem item,
+                                      long dialogId, TLRPC.User user, TLRPC.Chat chat) {
+        PluginHost host = PluginHost.get();
+        if (host == null || item == null) {
+            return;
+        }
+        ItemMenu menu = new ItemMenu(type, fragment, dialogId, user, chat);
+        host.dispatch(Hooks.ITEM_MENU, menu, false);
+        if (itemActions.size() > 256) {
+            itemActions.clear();
+            itemMenuNext = ITEM_MENU_BASE;
+        }
+        for (ItemMenu.Entry entry : new ArrayList<>(menu.entries)) {
+            int id = itemMenuNext++;
+            itemActions.put(id, entry.action);
+            item.lazilyAddSubItem(id, entry.icon, entry.title);
+        }
+    }
+
+    /** @return true when {@code id} belonged to a plugin entry of a chat/profile menu and has been run */
+    public static boolean itemMenuClicked(int id) {
+        Runnable action = itemActions.get(id);
+        if (action == null) {
+            return false;
+        }
+        try {
+            action.run();
+        } catch (Throwable t) {
+            org.telegram.messenger.FileLog.e("tgyou: item menu action failed", t);
+        }
+        return true;
+    }
+
     private static boolean started;
 
     public static void appEvent(String event) {

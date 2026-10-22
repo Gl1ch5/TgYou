@@ -145,6 +145,7 @@ public class TgYouSettingsActivity extends BaseFragment {
             addWide(context, R.drawable.settings_calls, IconBackgroundColors.GREEN, page.title, "страница мода", animate ? index++ : -1, () -> presentFragment(new ModPageActivity(page)));
         }
         addWide(context, R.drawable.settings_ask, IconBackgroundColors.BLUE, "Обновления", "новые версии из релизов GitHub", animate ? index++ : -1, () -> presentFragment(new TgYouUpdateActivity()));
+        addWide(context, R.drawable.settings_folders, IconBackgroundColors.PURPLE, "Иконки", "наборы .icons с предпросмотром", animate ? index++ : -1, () -> presentFragment(new IconPacksActivity()));
         addWide(context, R.drawable.settings_gift, IconBackgroundColors.RED, "Иконка приложения", "TgYou, Telegram и другие", animate ? index++ : -1, () -> presentFragment(new TgYouIconsActivity()));
         addWide(context, R.drawable.settings_faq, IconBackgroundColors.GRAY, "Все функции", host.plugins().size() + " плагинов и модов", animate ? index++ : -1, () -> presentFragment(new TgYouSectionActivity((Section) null)));
     }

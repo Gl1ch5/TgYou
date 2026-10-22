@@ -247,6 +247,20 @@ def _copy_fields(src, dst):
             current_api.log("request copy: " + repr(e))
 
 
+def _icon_res(icon):
+    """Drawable name (msg_info) or resource id -> resource id; 0 when unknown."""
+    if isinstance(icon, int):
+        return icon
+    if not icon:
+        return 0
+    try:
+        from java import jclass
+        app = jclass("org.telegram.messenger.ApplicationLoader").applicationContext
+        return int(app.getResources().getIdentifier(str(icon), "drawable", app.getPackageName()))
+    except Exception:
+        return 0
+
+
 # --- menu items -------------------------------------------------------------------
 
 def install_menu(plugin):
@@ -283,10 +297,43 @@ def install_menu(plugin):
                     log(plugin, "menu click: " + repr(e))
 
             from client_utils import runnable
-            icon = item.icon if isinstance(item.icon, int) else 0
-            menu.add(str(item.text), icon, runnable(action))
+            menu.add(str(item.text), _icon_res(item.icon), runnable(action))
+
+    def item_menu(menu):
+        for item in sorted(plugin._menu_items, key=lambda i: -(getattr(i, "priority", 0) or 0)):
+            if getattr(item, "menu_type", None) != menu.type:
+                continue
+            user, chat = menu.user, menu.chat
+            ctx = {
+                "account": _account(),
+                "fragment": menu.fragment,
+                "dialog_id": menu.dialogId,
+                "dialogId": menu.dialogId,
+                "user": user,
+                "chat": chat,
+                "userId": user.id if user is not None else 0,
+                "chatId": chat.id if chat is not None else 0,
+            }
+            try:
+                cond = getattr(item, "condition", None)
+                if cond is not None and not cond(ctx):
+                    continue
+            except Exception as e:
+                log(plugin, "menu condition: " + repr(e))
+                continue
+
+            def action(item=item, ctx=ctx):
+                try:
+                    if item.on_click is not None:
+                        item.on_click(ctx)
+                except Exception as e:
+                    log(plugin, "menu click: " + repr(e))
+
+            from client_utils import runnable
+            menu.add(str(item.text), _icon_res(item.icon), runnable(action))
 
     api.hook("message.menu", message_menu)
+    api.hook("menu.item", item_menu)
 
 
 def dispatch_app_event(plugin, event):

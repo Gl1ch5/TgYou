@@ -1889,6 +1889,8 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     if (error) {
                         Toast.makeText(this, "Unsupported content", Toast.LENGTH_SHORT).show();
                     }
+                } else if (com.tgyou.ui.IconPackInstall.handle(this, intent)) {
+                    // .icons file: the install offer is shown by IconPackInstall
                 } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
                     Uri data = intent.getData();
 

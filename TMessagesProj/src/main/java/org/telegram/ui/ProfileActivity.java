@@ -2546,6 +2546,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 if (getParentActivity() == null) {
                     return;
                 }
+                if (com.tgyou.core.TgYouHooks.itemMenuClicked(id)) {
+                    return;
+                }
                 if (id == -1) {
                     if (sharedMediaLayout != null && sharedMediaLayout.scrollSlidingTextTabStrip != null && sharedMediaLayout.scrollSlidingTextTabStrip.isReordering()) {
                         stopTabsReorder();
@@ -12460,6 +12463,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         if (sharedMediaLayout != null) {
             sharedMediaLayout.getSearchItem().requestLayout();
         }
+        com.tgyou.core.TgYouHooks.extendItemMenu(com.tgyou.core.ItemMenu.PROFILE, this, otherItem, userId != 0 ? userId : -chatId, getMessagesController().getUser(userId), getMessagesController().getChat(chatId));
         updateStoriesViewBounds(false);
     }
 

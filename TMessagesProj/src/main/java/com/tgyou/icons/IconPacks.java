@@ -240,6 +240,56 @@ public final class IconPacks {
         return new BitmapDrawable(res, bitmap);
     }
 
+    /** Metadata and sample icons of a pack that is not installed yet (the archive is unpacked to a temp dir). */
+    public static final class Preview {
+        public Pack pack;
+        public List<Bitmap> icons = new ArrayList<>();
+    }
+
+    public static Preview previewZip(Context context, byte[] zip, int count, int sizePx) throws Exception {
+        File staging = new File(root(context), ".preview-" + System.nanoTime());
+        try {
+            unpack(zip, staging);
+            Preview p = new Preview();
+            p.pack = describe(staging);
+            p.icons = sampleIcons(staging, count, sizePx);
+            return p;
+        } finally {
+            deleteRecursively(staging);
+        }
+    }
+
+    /** Up to {@code count} icons of an installed pack, evenly spread over its sorted icon list. */
+    public static List<Bitmap> preview(Context context, String id, int count, int sizePx) {
+        try {
+            return sampleIcons(new File(root(context), id), count, sizePx);
+        } catch (Throwable t) {
+            FileLog.e("tgyou: icon pack preview " + id, t);
+            return new ArrayList<>();
+        }
+    }
+
+    private static List<Bitmap> sampleIcons(File dir, int count, int sizePx) throws Exception {
+        JSONObject icons = new JSONObject(new String(readAll(new FileInputStream(new File(dir, "metadata.json"))), "UTF-8")).getJSONObject("icons");
+        List<String> keys = new ArrayList<>();
+        for (Iterator<String> it = icons.keys(); it.hasNext(); ) {
+            keys.add(it.next());
+        }
+        java.util.Collections.sort(keys);
+        List<Bitmap> result = new ArrayList<>();
+        if (keys.isEmpty()) {
+            return result;
+        }
+        float step = Math.max(1f, keys.size() / (float) count);
+        for (float i = 0; i < keys.size() && result.size() < count; i += step) {
+            try {
+                result.add(render(new File(dir, icons.getString(keys.get((int) i))), sizePx, sizePx));
+            } catch (Throwable ignore) {
+            }
+        }
+        return result;
+    }
+
     private static Bitmap render(File file, int w, int h) throws Exception {
         if (file.getName().toLowerCase().endsWith(".svg")) {
             SVG svg = SVG.getFromInputStream(new FileInputStream(file));

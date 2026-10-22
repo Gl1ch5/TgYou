@@ -57,6 +57,12 @@ public final class ModApi {
                     return blocked || truthy(r);
                 });
                 break;
+            case "menu.item":
+                context.on(Hooks.ITEM_MENU, (menu, ignored) -> {
+                    fn.call(menu);
+                    return false;
+                });
+                break;
             case "app.event":
                 context.on(Hooks.APP_EVENT, (event, ignored) -> {
                     fn.call(event);
