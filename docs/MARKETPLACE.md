@@ -5,7 +5,7 @@
 Проверка: `curl https://grzxk.ru/tgyou/health` → `{"ok":true,"api_version":1}`.
 
 Формат пакета, лимиты, модерация и все методы API описаны в [backend/README.md](../backend/README.md). Кратко:
-- плагин — ZIP с `manifest.json` и Python-файлом (`entry`);
+- плагин — файл `.mod` (ZIP) с `manifest.json` и Python-файлом (`entry`);
 - публикация создаёт версию в статусе `pending`; администратор одобряет её токеном `MARKET_ADMIN_TOKEN`;
 - клиент обязан сверять SHA-256 скачанного пакета с `latest.sha256` каталога (заголовок `X-Package-SHA256`).
 

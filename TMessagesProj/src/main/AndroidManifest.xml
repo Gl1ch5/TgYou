@@ -273,6 +273,12 @@
                 <data android:pathPattern=".*\\.icons"/>
                 <data android:pathPattern=".*\\..*\\.icons"/>
                 <data android:pathPattern=".*\\..*\\..*\\.icons"/>
+                <data android:pathPattern=".*\\.mod"/>
+                <data android:pathPattern=".*\\..*\\.mod"/>
+                <data android:pathPattern=".*\\..*\\..*\\.mod"/>
+                <data android:pathPattern=".*\\.plugin"/>
+                <data android:pathPattern=".*\\..*\\.plugin"/>
+                <data android:pathPattern=".*\\..*\\..*\\.plugin"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND_MULTIPLE"/>

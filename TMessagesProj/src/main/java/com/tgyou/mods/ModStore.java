@@ -73,6 +73,57 @@ public final class ModStore {
         }
     }
 
+    /** Reads the manifest of a .mod archive without installing it. */
+    public static ModManifest peek(byte[] zip) throws Exception {
+        try (ZipInputStream in = new ZipInputStream(new java.io.ByteArrayInputStream(zip))) {
+            ZipEntry entry;
+            while ((entry = in.getNextEntry()) != null) {
+                if (entry.getName().equals("manifest.json")) {
+                    return ModManifest.parse(new String(readAll(in), "UTF-8"));
+                }
+            }
+        }
+        throw new IllegalArgumentException("нет manifest.json");
+    }
+
+    /** Reads name, author and description of an exteraGram .plugin without installing it. */
+    public ModManifest peekPlugin(byte[] source) throws Exception {
+        File tmp = new File(root, ".import-" + System.nanoTime() + ".py");
+        try {
+            java.nio.file.Files.write(tmp.toPath(), source);
+            com.chaquo.python.Python py = com.chaquo.python.Python.getInstance();
+            return ModManifest.parse(py.getModule("tgyou_extera").callAttr("describe", tmp.getAbsolutePath()).toString());
+        } finally {
+            tmp.delete();
+        }
+    }
+
+    /** Packs an installed mod into a shareable .mod archive (a ZIP with manifest.json at the root). */
+    public byte[] pack(String id) throws Exception {
+        File dir = dirOf(id);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try (java.util.zip.ZipOutputStream zip = new java.util.zip.ZipOutputStream(bos)) {
+            packDir(zip, dir, "");
+        }
+        return bos.toByteArray();
+    }
+
+    private static void packDir(java.util.zip.ZipOutputStream zip, File dir, String prefix) throws Exception {
+        File[] files = dir.listFiles();
+        if (files == null) {
+            return;
+        }
+        for (File file : files) {
+            if (file.isDirectory()) {
+                if (!file.getName().equals("__pycache__")) {
+                    packDir(zip, file, prefix + file.getName() + "/");
+                }
+            } else {
+                put(zip, prefix + file.getName(), java.nio.file.Files.readAllBytes(file.toPath()));
+            }
+        }
+    }
+
     /** Installs an exteraGram .plugin (one Python file) by wrapping it into an ordinary mod. */
     public ModManifest installPlugin(byte[] source) throws Exception {
         File tmp = new File(root, ".import-" + System.nanoTime() + ".py");

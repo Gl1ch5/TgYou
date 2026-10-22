@@ -257,6 +257,7 @@ public class ModsActivity extends BaseFragment {
                 if (!mod.manifest.settings.isEmpty()) {
                     buttons.add(new ModCell.Button("Настройки", ModCell.Style.SECONDARY, () -> presentFragment(new TgYouSectionActivity(mod))));
                 }
+                buttons.add(new ModCell.Button("Поделиться", ModCell.Style.SECONDARY, () -> shareMod(mod)));
                 buttons.add(new ModCell.Button("Удалить", ModCell.Style.DANGER, () -> confirmRemove(mod)));
                 Row r = new Row();
                 r.type = T_MOD;
@@ -321,8 +322,8 @@ public class ModsActivity extends BaseFragment {
         simple(T_INFO, "В архиве лежит всё, что нужно ИИ-агенту: описание API и хуков, шаблон мода, готовый пример со статистикой и "
                 + "инструкция по упаковке. Отправьте его агенту и опишите, какой мод нужен.", null, null);
         simple(T_HEADER, "Установка", null, null);
-        simple(T_ACTION, "Установить из файла", ".zip / .plugin / .icons", this::pickZip);
-        simple(T_INFO, "Выберите ZIP с manifest.json в корне. Мод запустится сразу, без перезапуска приложения.", null, null);
+        simple(T_ACTION, "Установить из файла", ".mod / .plugin / .icons", this::pickZip);
+        simple(T_INFO, "Файл .mod — это ZIP с manifest.json в корне (подойдёт и обычный .zip). Мод запустится сразу, без перезапуска приложения.", null, null);
     }
 
     private void showDetails(String name, String version, String author, String description, String changelog) {
@@ -386,7 +387,7 @@ public class ModsActivity extends BaseFragment {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        startActivityForResult(Intent.createChooser(intent, "Мод (.zip) или плагин exteraGram (.plugin)"), REQUEST_PICK_ZIP);
+        startActivityForResult(Intent.createChooser(intent, "Мод (.mod), плагин exteraGram (.plugin) или иконки (.icons)"), REQUEST_PICK_ZIP);
     }
 
     @Override
@@ -397,31 +398,33 @@ public class ModsActivity extends BaseFragment {
         Uri uri = data.getData();
         Context context = getParentActivity();
         org.telegram.messenger.Utilities.globalQueue.postRunnable(() -> {
-            String error = null;
-            ModManifest manifest = null;
             try (InputStream in = context.getContentResolver().openInputStream(uri)) {
-                byte[] bytes = com.tgyou.mods.ModStore.readAll(in);
-                ModRuntime.ensurePython(context);
-                boolean zip = bytes.length > 3 && bytes[0] == 'P' && bytes[1] == 'K';
-                if (zip && com.tgyou.icons.IconPacks.isPack(bytes)) {
-                    com.tgyou.icons.IconPacks.Pack pack = com.tgyou.icons.IconPacks.install(context, bytes);
-                    AndroidUtilities.runOnUIThread(() -> {
-                        toast("Иконпак установлен: " + pack.name + ". Включите его на вкладке «Установленные»");
-                        rebuild();
-                    });
-                    return;
-                }
-                manifest = zip ? ModRuntime.store(context).install(bytes, null) : ModRuntime.store(context).installPlugin(bytes);
-                ModRuntime.activate(context, manifest);
+                ModInstall.offer(context, com.tgyou.mods.ModStore.readAll(in), this::rebuild);
             } catch (Throwable t) {
-                error = t.getMessage() != null ? t.getMessage() : t.toString();
+                AndroidUtilities.runOnUIThread(() -> toast("Не удалось прочитать файл"));
             }
-            String err = error;
-            ModManifest done = manifest;
-            AndroidUtilities.runOnUIThread(() -> {
-                toast(err != null ? "Не удалось установить: " + err : "Установлено: " + done.name);
-                rebuild();
-            });
+        });
+    }
+
+    /** Packs an installed mod into a .mod file and offers it to the share sheet. */
+    private void shareMod(PyMod mod) {
+        Context context = getParentActivity();
+        org.telegram.messenger.Utilities.globalQueue.postRunnable(() -> {
+            try {
+                File out = new File(new File(context.getFilesDir(), "cache"), mod.manifest.id + ".mod");
+                out.getParentFile().mkdirs();
+                java.nio.file.Files.write(out.toPath(), ModRuntime.store(context).pack(mod.manifest.id));
+                Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", out);
+                AndroidUtilities.runOnUIThread(() -> {
+                    Intent send = new Intent(Intent.ACTION_SEND);
+                    send.setType("application/octet-stream");
+                    send.putExtra(Intent.EXTRA_STREAM, uri);
+                    send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    context.startActivity(Intent.createChooser(send, "Мод " + mod.manifest.name));
+                });
+            } catch (Throwable t) {
+                AndroidUtilities.runOnUIThread(() -> toast("Не удалось упаковать мод: " + t.getMessage()));
+            }
         });
     }
 

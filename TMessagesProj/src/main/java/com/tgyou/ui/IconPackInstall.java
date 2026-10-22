@@ -37,7 +37,7 @@ public final class IconPackInstall {
         return true;
     }
 
-    private static String displayName(Context context, Uri uri) {
+    static String displayName(Context context, Uri uri) {
         if ("content".equals(uri.getScheme())) {
             try (Cursor c = context.getContentResolver().query(uri, new String[]{OpenableColumns.DISPLAY_NAME}, null, null, null)) {
                 if (c != null && c.moveToFirst()) {
