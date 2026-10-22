@@ -22,6 +22,7 @@ public final class BuiltinPlugins {
                 new TtlMediaPlugin(),
                 new AllowCopyPlugin(),
                 new HideBlockedPlugin(),
+                new FontsPlugin(),
                 new SmartTypographyPlugin(),
                 new ScreenshotNoticePlugin(),
                 new ExtraPrivacyPlugin(),

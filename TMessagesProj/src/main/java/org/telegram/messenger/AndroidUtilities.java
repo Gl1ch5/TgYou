@@ -261,6 +261,10 @@ public class AndroidUtilities {
 
     public static Typeface bold() {
         if (mediumTypeface == null) {
+            Typeface tgyou = com.tgyou.core.TgYouFonts.override(TYPEFACE_ROBOTO_MEDIUM);
+            if (tgyou != null) {
+                return mediumTypeface = tgyou;
+            }
             if (SharedConfig.useSystemBoldFont && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 mediumTypeface = Typeface.create(null, 500, false);
             } else {
@@ -2390,6 +2394,10 @@ public class AndroidUtilities {
     }
 
     public static Typeface getTypeface(String assetPath) {
+        Typeface tgyou = com.tgyou.core.TgYouFonts.override(assetPath);
+        if (tgyou != null) {
+            return tgyou;
+        }
         synchronized (typefaceCache) {
             if (!typefaceCache.containsKey(assetPath)) {
                 try {

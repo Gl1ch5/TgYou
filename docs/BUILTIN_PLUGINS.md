@@ -111,3 +111,7 @@ Groq отвечает «Access denied» с части сетей. По умол�
 - **Умная типографика** (`smart_typography`, «Сообщения»): в `messages.sendMessage` без entities меняет ` -- `→`—`, `...`→`…`, `"`→«ёлочки» (опция). Ссылки, код и команды не трогает.
 - **Tweaks:** `no_contact_sync` (не отправлять `contacts.importContacts`), `no_recent_stickers` (не отправлять `messages.saveRecentSticker`).
 - **Цветовая тема в настройках чатов:** если `account.getThemes("android")` не вернул тем, `TgYouThemes.fallback` берёт темы из `account.getChatThemes` (`Theme.loadRemoteThemes`, одна строка-хук). Статус: скомпилировано, на устройстве не проверено.
+
+## Шрифты (`fonts`, «Интерфейс»)
+
+`TgYouFonts.override(asset)` вызывается из `AndroidUtilities.bold()` и `getTypeface()` и подменяет жирный/курсивный шрифт (assets `rmedium`, `rextrabold`, `rbold`, `ritalic`) на выбранный: системный, с засечками, рукописный, узкий, моноширинный или файл по пути. Настройки читаются из prefs `tgyou_plugins` напрямую (ключи `fonts.enabled/family/path`). Обычный (не жирный) текст рисуется системным шрифтом самого Android и не меняется. Применяется после перезапуска. Скомпилировано, на устройстве не проверено.
