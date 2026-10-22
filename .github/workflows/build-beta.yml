@@ -80,6 +80,7 @@ jobs:
         env:
           TG_API_ID: ${{ secrets.TG_API_ID }}
           TG_API_HASH: ${{ secrets.TG_API_HASH }}
+          TG_RELEASE_TAG: ${{ inputs.release_tag }}
           # betas are arm64 only
           TG_ABIS: arm64-v8a
           # branch builds skip R8; release builds are minified

@@ -37,6 +37,7 @@ public class TgYouSettingsActivity extends BaseFragment {
     private static final int ACTION_SECTION = 0;
     private static final int ACTION_ALL_PLUGINS = 1;
     private static final int ACTION_ICONS = 2;
+    private static final int ACTION_UPDATES = 3;
 
     private static final class Row {
         final int type;
@@ -110,6 +111,7 @@ public class TgYouSettingsActivity extends BaseFragment {
             }
         }
         rows.add(new Row(TYPE_HEADER, null, "Управление", null, ACTION_SECTION));
+        rows.add(new Row(TYPE_ITEM, null, "Обновления", "GitHub", ACTION_UPDATES));
         rows.add(new Row(TYPE_ITEM, null, "Иконка приложения", "", ACTION_ICONS));
         rows.add(new Row(TYPE_ITEM, null, "Все плагины", String.valueOf(host.plugins().size()), ACTION_ALL_PLUGINS));
         rows.add(new Row(TYPE_INFO, null, "Telegram You " + BuildVars.BUILD_VERSION_STRING
@@ -120,7 +122,9 @@ public class TgYouSettingsActivity extends BaseFragment {
         if (row.type != TYPE_ITEM) {
             return;
         }
-        if (row.action == ACTION_ICONS) {
+        if (row.action == ACTION_UPDATES) {
+            presentFragment(new TgYouUpdateActivity());
+        } else if (row.action == ACTION_ICONS) {
             presentFragment(new TgYouIconsActivity());
         } else {
             presentFragment(new TgYouSectionActivity(row.action == ACTION_ALL_PLUGINS ? null : row.section));

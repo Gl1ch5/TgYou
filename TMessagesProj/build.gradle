@@ -151,6 +151,7 @@ android {
 
         buildConfigField "int", "TG_API_ID", (System.getenv("TG_API_ID") ?: "0")
         buildConfigField "String", "TG_API_HASH", "\"" + (System.getenv("TG_API_HASH") ?: "") + "\""
+        buildConfigField "String", "TG_RELEASE_TAG", "\"" + (System.getenv("TG_RELEASE_TAG") ?: "") + "\""
 
         if (!prebuiltJni) {
             externalNativeBuild {
