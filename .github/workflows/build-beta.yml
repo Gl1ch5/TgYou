@@ -115,6 +115,25 @@ jobs:
           name: telegram-you-beta
           path: TMessagesProj_App/build/outputs/apk/**/*.apk
 
+      # Readable notes: the subjects of the commits since the previous release, shown as a list in the app
+      - name: Release notes
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.release_tag != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.release_tag || github.ref_name }}
+        run: |
+          prev=$(gh api "repos/${{ github.repository }}/releases?per_page=30" --jq '[.[] | select(.tag_name != env.TAG) | .tag_name][0]' || true)
+          {
+            echo "## Что нового"
+            if [ -n "$prev" ]; then
+              gh api "repos/${{ github.repository }}/compare/${prev}...${{ github.sha }}" \
+                --jq '[.commits[].commit.message | split("\n")[0] | select(startswith("Merge") | not)] | reverse | .[:20][] | "- " + .' || true
+              echo
+              echo "Full Changelog: https://github.com/${{ github.repository }}/compare/${prev}...${TAG}"
+            fi
+          } > release-notes.md
+          cat release-notes.md
+
       - name: Publish prerelease
         if: startsWith(github.ref, 'refs/tags/v') || inputs.release_tag != ''
         uses: softprops/action-gh-release@v2
@@ -123,5 +142,5 @@ jobs:
           tag_name: ${{ inputs.release_tag || github.ref_name }}
           target_commitish: ${{ github.sha }}
           name: Telegram You ${{ inputs.release_tag || github.ref_name }}
-          generate_release_notes: true
+          body_path: release-notes.md
           files: TMessagesProj_App/build/outputs/apk/**/*.apk

@@ -31,6 +31,8 @@ public final class Updater {
         public String notes;
         public String apkUrl;
         public long size;
+        /** ISO date of publication, e.g. 2026-10-23T02:48:28Z. */
+        public String date = "";
     }
 
     public interface CheckCallback {
@@ -63,6 +65,12 @@ public final class Updater {
 
     private static String etag;
     private static Release cached;
+    private static volatile java.util.List<Release> history = new java.util.ArrayList<>();
+
+    /** All published builds, newest first, from the last successful check. */
+    public static java.util.List<Release> history() {
+        return history;
+    }
 
     public static void check(CheckCallback callback) {
         Utilities.globalQueue.postRunnable(() -> {
@@ -84,6 +92,7 @@ public final class Updater {
                 }
                 JSONArray list = found != null ? new JSONArray() : new JSONArray(readAll(c.getInputStream()));
                 etag = c.getHeaderField("ETag");
+                java.util.List<Release> all = new java.util.ArrayList<>();
                 for (int i = 0; i < list.length(); i++) {
                     JSONObject r = list.getJSONObject(i);
                     if (r.optBoolean("draft")) {
@@ -99,6 +108,8 @@ public final class Updater {
                             rel.notes = r.optString("body");
                             rel.apkUrl = a.optString("browser_download_url");
                             rel.size = a.optLong("size");
+                            rel.date = r.optString("published_at");
+                            all.add(rel);
                             if (found == null || rank(rel.tag) > rank(found.tag)) {
                                 found = rel;
                             }
@@ -107,6 +118,10 @@ public final class Updater {
                     }
                 }
                 cached = found;
+                if (!all.isEmpty()) {
+                    java.util.Collections.sort(all, (x, y) -> Long.compare(rank(y.tag), rank(x.tag)));
+                    history = all;
+                }
             } catch (Throwable t) {
                 error = t.getMessage() != null ? t.getMessage() : t.toString();
             }
