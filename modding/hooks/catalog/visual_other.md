@@ -1,4 +1,4 @@
-# visual / other (14750 методов)
+# visual / other (14917 методов)
 
 ## `org.telegram.SQLite.SQLitePreparedStatement`
 - `bindByteBuffer(int index, ByteBuffer value)` -> `void`
@@ -320,6 +320,9 @@
 - `onDetachedFromWindow()` -> `void`
 - `onDraw(@NonNull Canvas canvas)` -> `void`
 
+## `org.telegram.messenger.support.customtabs.CustomTabsClient`
+- `static bindCustomTabsService(Context context, String packageName, CustomTabsServiceConnection connection)` -> `boolean`
+
 ## `org.telegram.messenger.support.customtabs.CustomTabsIntent$Builder`
 - `setSecondaryToolbarColor(@ColorInt int color)` -> `Builder`
 - `setToolbarColor(@ColorInt int color)` -> `Builder`
@@ -328,10 +331,15 @@
 - `bindSessionToPostMessageService(Context context, String packageName)` -> `boolean`
 
 ## `org.telegram.messenger.utils.DebugRecordingCanvas`
+- `drawArc(@NonNull RectF oval, float startAngle, float sweepAngle, boolean useCenter, @NonNull Paint paint)` -> `void`
+- `drawArc(float left, float top, float right, float bottom, float startAngle, float sweepAngle, boolean useCenter, @NonNull Paint paint)` -> `void`
 - `drawBitmap(@NonNull Bitmap bitmap, float left, float top, @Nullable Paint paint)` -> `void`
 - `drawBitmap(@NonNull Bitmap bitmap, @Nullable Rect src, @NonNull RectF dst, @Nullable Paint paint)` -> `void`
 - `drawBitmap(@NonNull Bitmap bitmap, @Nullable Rect src, @NonNull Rect dst, @Nullable Paint paint)` -> `void`
 - `drawBitmap(@NonNull Bitmap bitmap, @NonNull Matrix matrix, @Nullable Paint paint)` -> `void`
+- `drawBitmap(@NonNull int[] colors, int offset, int stride, float x, float y, int width, int height, boolean hasAlpha, @Nullable Paint paint)` -> `void`
+- `drawBitmap(@NonNull int[] colors, int offset, int stride, int x, int y, int width, int height, boolean hasAlpha, @Nullable Paint paint)` -> `void`
+- `drawBitmapMesh(@NonNull Bitmap bitmap, int meshWidth, int meshHeight, @NonNull float[] verts, int vertOffset, @Nullable int[] colors, int colorOffset, @Nullable Paint paint)` -> `void`
 - `drawCircle(float cx, float cy, float radius, @NonNull Paint paint)` -> `void`
 - `drawColor(int color)` -> `void`
 - `drawColor(int color, @NonNull PorterDuff.Mode mode)` -> `void`
@@ -354,10 +362,21 @@
 - `drawRect(@NonNull Rect r, @NonNull Paint paint)` -> `void`
 - `drawRect(float left, float top, float right, float bottom, @NonNull Paint paint)` -> `void`
 - `drawRoundRect(@NonNull RectF rect, float rx, float ry, @NonNull Paint paint)` -> `void`
+- `drawRoundRect(float left, float top, float right, float bottom, float rx, float ry, @NonNull Paint paint)` -> `void`
+- `drawText(@NonNull char[] text, int index, int count, float x, float y, @NonNull Paint paint)` -> `void`
+- `drawText(@NonNull CharSequence text, int start, int end, float x, float y, @NonNull Paint paint)` -> `void`
 - `drawText(@NonNull String text, float x, float y, @NonNull Paint paint)` -> `void`
+- `drawText(@NonNull String text, int start, int end, float x, float y, @NonNull Paint paint)` -> `void`
+- `drawTextOnPath(@NonNull char[] text, int index, int count, @NonNull Path path, float hOffset, float vOffset, @NonNull Paint paint)` -> `void`
+- `drawTextOnPath(@NonNull String text, @NonNull Path path, float hOffset, float vOffset, @NonNull Paint paint)` -> `void`
+- `drawTextRun(@NonNull char[] text, int index, int count, int contextIndex, int contextCount, float x, float y, boolean isRtl, @NonNull Paint paint)` -> `void`
+- `drawTextRun(@NonNull CharSequence text, int start, int end, int contextStart, int contextEnd, float x, float y, boolean isRtl, @NonNull Paint paint)` -> `void`
+- `drawTextRun(@NonNull MeasuredText text, int start, int end, int contextStart, int contextEnd, float x, float y, boolean isRtl, @NonNull Paint paint)` -> `void`
+- `drawVertices(@NonNull VertexMode mode, int vertexCount, @NonNull float[] verts, int vertOffset, @Nullable float[] texs, int texOffset, @Nullable int[] colors, int colorOffset, @Nullable short[] indices, int indexOffset, int indexCount, @NonNull Paint paint)` -> `void`
 - `save()` -> `int`
 - `saveLayer(@Nullable RectF bounds, @Nullable Paint paint)` -> `int`
 - `saveLayer(@Nullable RectF bounds, @Nullable Paint paint, int saveFlags)` -> `int`
+- `saveLayer(float left, float top, float right, float bottom, @Nullable Paint paint, int saveFlags)` -> `int`
 
 ## `org.telegram.messenger.utils.DebugRecordingCanvas$GetClipBoundsCmd`
 - `wasClipEmpty()` -> `boolean`
@@ -371,6 +390,8 @@
 - `static getCommunityCardDrawableRadius(int size)` -> `int`
 
 ## `org.telegram.messenger.utils.FrameMetricsOverlayView`
+- `static attachToActivityCorner(@NonNull Activity activity, int cornerGravity, int marginDp)` -> `FrameMetricsOverlayView`
+- `static attachToActivityCorner(@NonNull Activity activity, int cornerGravity, int marginDp, @Nullable View observedView)` -> `FrameMetricsOverlayView`
 - `detach()` -> `void`
 - `onDraw(Canvas canvas)` -> `void`
 - `onMeasure(int w, int h)` -> `void`
@@ -705,8 +726,10 @@
 - `getResources()` -> `Resources`
 - `getResourcesProvider()` -> `Theme.ResourcesProvider`
 - `static getText(IArticleViewer parent, WebpageAdapter adapter, View parentView, TL_iv.RichText parentRichText, TL_iv.RichText richText, TL_iv.PageBlock parentBlock, int maxWidth)` -> `CharSequence`
+- `static getText(IArticleViewer parent, TLRPC.WebPage page, View parentView, TL_iv.RichText parentRichText, TL_iv.RichText richText, TL_iv.PageBlock parentBlock, int maxWidth)` -> `CharSequence`
 - `getTextColor()` -> `int`
 - `static getTextFlags(TL_iv.RichText richText)` -> `int`
+- `static getTextPaint(IArticleViewer parent, TL_iv.RichText parentRichText, TL_iv.RichText richText, TL_iv.PageBlock parentBlock)` -> `TextPaint`
 - `getTextSelectionHelper(View view)` -> `TextSelectionHelper.ArticleTextSelectionHelper`
 - `getThemedColor(int key)` -> `int`
 - `static getUrl(TL_iv.RichText richText)` -> `String`
@@ -1336,6 +1359,7 @@
 
 ## `org.telegram.ui.AspectRatioFrameLayout$AspectRatioUpdateDispatcher`
 - `run()` -> `void`
+- `scheduleUpdate(float targetAspectRatio, float naturalAspectRatio, boolean aspectRatioMismatch)` -> `void`
 
 ## `org.telegram.ui.AutoDeleteMessagesActivity`
 - `createView(Context context)` -> `View`
@@ -1453,6 +1477,7 @@
 - `onInsets(int left, int top, int right, int bottom)` -> `void`
 
 ## `org.telegram.ui.Business.BusinessBotButton`
+- `set(long dialogId, long botId, String url, int flags)` -> `void`
 - `setLeftMargin(float leftMargin)` -> `void`
 
 ## `org.telegram.ui.Business.BusinessChatbotController`
@@ -1938,6 +1963,7 @@
 - `setColorFilter(@Nullable ColorFilter colorFilter)` -> `void`
 
 ## `org.telegram.ui.Cells.BotButton`
+- `draw(Canvas canvas, RectF rect, boolean drawProgress, boolean drawBuyCard, Theme.ResourcesProvider resourcesProvider)` -> `boolean`
 - `getPressScale()` -> `float`
 - `setPressed(boolean pressed)` -> `void`
 
@@ -2845,6 +2871,7 @@
 - `getStep(int value)` -> `int`
 - `getValue(float progress)` -> `int`
 - `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `set(int value, Options options, Utilities.Callback<Integer> whenChanged)` -> `void`
 - `setLabel(CharSequence label)` -> `void`
 - `setMinValueAllowed(int value)` -> `void`
 - `updateTexts(int value, boolean animated)` -> `void`
@@ -2853,6 +2880,9 @@
 - `getMax()` -> `int`
 - `getMin()` -> `int`
 - `getStepsCount()` -> `int`
+- `static make(int style, int min, int max, Utilities.CallbackReturn<Integer, CharSequence> toString)` -> `Options`
+- `static make(int style, int[] steps, int between, Utilities.Callback2Return<Integer, Integer, CharSequence> toString)` -> `Options`
+- `static make(int style, String resId, int min, int max)` -> `Options`
 
 ## `org.telegram.ui.Cells.StatisticPostInfoCell`
 - `dispatchDraw(Canvas canvas)` -> `void`
@@ -3475,6 +3505,7 @@
 - `onDraw(Canvas canvas)` -> `void`
 
 ## `org.telegram.ui.Charts.BaseChartView`
+- `static RoundedRect(Path path, float left, float top, float right, float bottom, float rx, float ry, boolean tl, boolean tr, boolean br, boolean bl)` -> `Path`
 - `animateLegend(boolean show)` -> `void`
 - `clearSelection()` -> `void`
 - `createAnimator(float f1, float f2, ValueAnimator.AnimatorUpdateListener l)` -> `ValueAnimator`
@@ -3644,6 +3675,7 @@
 ## `org.telegram.ui.Charts.view_data.LegendSignatureView`
 - `formatWholeNumber(long v, int formatter, int formatterIndex, TextView textView, float k)` -> `CharSequence`
 - `recolor()` -> `void`
+- `setData(int index, long date, ArrayList<LineViewData> lines, boolean animateChanges, int formatter, float k)` -> `void`
 - `setSize(int n)` -> `void`
 - `setUseWeek(boolean useWeek)` -> `void`
 - `showProgress(boolean show, boolean force)` -> `void`
@@ -3997,6 +4029,7 @@
 - `static createAutoDeleteDatePickerDialog(Context context, int type, Theme.ResourcesProvider resourcesProvider, final ScheduleDatePickerDelegate datePickerDelegate)` -> `BottomSheet.Builder`
 - `static createBackgroundActivityDialog(Context ctx)` -> `Dialog`
 - `static createBackgroundLocationPermissionDialog(Activity activity, TLRPC.User selfUser, Runnable cancelRunnable, Theme.ResourcesProvider resourcesProvider)` -> `AlertDialog.Builder`
+- `static createBirthdayPickerDialog(Context context, String title, String button, TL_account.TL_birthday currentBirthday, final Utilities.Callback<TL_account.TL_birthday> whenSelectedBirthday, Runnable addPrivacyText, boolean showRemoveYear, boolean showDelete, Theme.ResourcesProvider resourcesProvider)` -> `BottomSheet.Builder`
 - `static createBlockDialogAlert(BaseFragment fragment, int count, boolean reportSpam, TLRPC.User user, BlockDialogCallback onProcessRunnable)` -> `void`
 - `static createBotLaunchAlert(BaseFragment fragment, TLRPC.User user, Runnable onConfirm, Runnable onDismiss)` -> `void`
 - `static createBotLaunchAlert(BaseFragment fragment, AtomicBoolean allowWrite, TLRPC.User user, Runnable loadBotSheet)` -> `void`
@@ -4007,6 +4040,7 @@
 - `static createClearDaysDialogAlert(BaseFragment fragment, int days, TLRPC.User user, TLRPC.Chat chat, boolean canDeleteHistory, MessagesStorage.BooleanCallback onProcessRunnable, Theme.ResourcesProvider resourcesProvider)` -> `void`
 - `static createClearOrDeleteDialogAlert(BaseFragment fragment, boolean clear, TLRPC.Chat chat, TLRPC.User user, boolean secret, boolean canDeleteHistory, MessagesStorage.BooleanCallback onProcessRunnable)` -> `void`
 - `static createClearOrDeleteDialogAlert(BaseFragment fragment, boolean clear, TLRPC.Chat chat, TLRPC.User user, boolean secret, boolean checkDeleteForAll, boolean forceDeleteForAll, boolean canDeleteHistory, MessagesStorage.BooleanCallback onProcessRunnable)` -> `void`
+- `static createClearOrDeleteDialogAlert(BaseFragment fragment, boolean clear, boolean second, TLRPC.Chat chat, TLRPC.User user, boolean secret, boolean checkDeleteForAll, boolean forceDeleteForAll, boolean canDeleteHistory, MessagesStorage.BooleanCallback onProcessRunnable, Theme.ResourcesProvider resourcesProvider)` -> `void`
 - `static createClearOrDeleteDialogsAlert(BaseFragment fragment, boolean clear, boolean canDeleteHistory, int canClearCacheCount, int count, boolean hasDialogsToRevoke, MessagesStorage.BooleanCallback onProcessRunnable, Theme.ResourcesProvider resourcesProvider)` -> `void`
 - `static createColorSelectDialog(Activity parentActivity, final long dialog_id, final int topicId, final int globalType, final Runnable onSelect)` -> `Dialog`
 - `static createColorSelectDialog(Activity parentActivity, final long dialog_id, final long topicId, final int globalType, final Runnable onSelect, Theme.ResourcesProvider resourcesProvider)` -> `Dialog`
@@ -4077,11 +4111,14 @@
 - `static ensurePaidMessagesMultiConfirmation(int currentAccount, ArrayList<Long> dialogIds, int messagesCount, Utilities.Callback<HashMap<Long, Long>> confirmed)` -> `boolean`
 - `static ensurePaidMessagesMultiConfirmationTopicKeys(int currentAccount, ArrayList<MessagesStorage.TopicKey> topicKeys, int messagesCount, Utilities.Callback<HashMap<Long, Long>> confirmed)` -> `boolean`
 - `static needsPaidMessageAlert(int currentAccount, long dialogId)` -> `boolean`
+- `static showAddBrowserException(Context context, Theme.ResourcesProvider resourcesProvider, boolean inAppBrowserEnabled, Utilities.Callback<String> whenDone)` -> `void`
 - `static showAddLinkToPoll(Context context, Theme.ResourcesProvider resourcesProvider, String existingUrl, TLRPC.WebPage webPage, Utilities.Callback<String> whenDone, @Nullable Runnable onDelete)` -> `void`
 - `static showAddUserAlert(TLRPC.TL_error error, final BaseFragment fragment, boolean isChannel, boolean isCommunity, TLObject request)` -> `void`
 - `static showAlertWithCheckbox(Context context, CharSequence title, CharSequence message, CharSequence check, CharSequence button, Utilities.Callback<Boolean> onAction, Theme.ResourcesProvider resourcesProvider)` -> `AlertDialog`
 - `static showAlertWithCheckbox(Context context, CharSequence title, CharSequence message, CharSequence check, CharSequence button, Utilities.Callback<Boolean> onAction, Theme.ResourcesProvider resourcesProvider, boolean withBalance)` -> `AlertDialog`
 - `static showAlertWithCheckboxWithBalance(Context context, CharSequence title, CharSequence message, CharSequence check, CharSequence button, Utilities.Callback<Boolean> onAction, Theme.ResourcesProvider resourcesProvider)` -> `AlertDialog`
+- `static showBanGroupCreatorFromCommunityConfirmAlert(final Context context, final Theme.ResourcesProvider resourcesProvider, final int currentAccount, final long dialogId, final ArrayList<Long> chats, final MessagesStorage.LongCallback onChatClick, final Runnable onConfirm)` -> `AlertDialog`
+- `static showBanGroupCreatorFromCommunityJoinedChatsAlert(final Context context, final Theme.ResourcesProvider resourcesProvider, final int currentAccount, final long dialogId, final ArrayList<Long> chats, final MessagesStorage.LongCallback onChatClick)` -> `AlertDialog`
 - `static showBlockReportSpamAlert(BaseFragment fragment, long dialog_id, TLRPC.User currentUser, TLRPC.Chat currentChat, TLRPC.EncryptedChat encryptedChat, boolean isLocation, TLRPC.ChatFull chatInfo, MessagesStorage.IntCallback callback, Theme.ResourcesProvider resourcesProvider)` -> `void`
 - `static showBlockReportSpamReplyAlert(ChatActivity fragment, MessageObject messageObject, long peerId, Theme.ResourcesProvider resourcesProvider, Runnable hideDim)` -> `void`
 - `static showCallsForbidden(Context context, int currentAccount, long dialogId, Theme.ResourcesProvider resourcesProvider)` -> `void`
@@ -4094,6 +4131,7 @@
 - `static showFloodWaitAlert(String error, final BaseFragment fragment)` -> `void`
 - `static showGiftThemeApplyConfirm(Context context, Theme.ResourcesProvider resourcesProvider, int currentAccount, TL_stars.StarGift gift, long dialogId, Runnable onConfirm)` -> `void`
 - `static showLeaveGroupWithFutureOwner(BaseFragment fragment, TLRPC.Chat chat, TLRPC.User futureCreator, Runnable onAppointNewOwner, Runnable onLeave)` -> `void`
+- `static showOpenExternalBrowserAlert(Context context, Theme.ResourcesProvider resourcesProvider, String url, boolean currentDefaultIsInApp, boolean showCheckbox, Utilities.Callback2<Boolean, Boolean> whenDone)` -> `void`
 - `static showOpenUrlAlert(BaseFragment fragment, String url, boolean punycode, boolean ask)` -> `void`
 - `static showOpenUrlAlert(BaseFragment fragment, String url, boolean punycode, boolean ask, Theme.ResourcesProvider resourcesProvider)` -> `void`
 - `static showOpenUrlAlert(BaseFragment fragment, String url, boolean punycode, boolean tryTelegraph, boolean ask, Browser.Progress progress, Theme.ResourcesProvider resourcesProvider)` -> `void`
@@ -4554,6 +4592,7 @@
 - `useNested(boolean useNested)` -> `Builder`
 
 ## `org.telegram.ui.Components.BulletSpan`
+- `drawLeadingMargin(Canvas canvas, Paint paint, int x, int dir, int top, int baseline, int bottom, CharSequence text, int start, int end, boolean first, Layout layout)` -> `void`
 - `getBulletRadius()` -> `int`
 - `getColor()` -> `int`
 - `getGapWidth()` -> `int`
@@ -4883,6 +4922,9 @@
 - `setInterceptTouch(boolean value)` -> `void`
 - `setSegments(long totalSize, boolean animated, SegmentSize ...segments)` -> `void`
 - `setSelected(int index)` -> `void`
+
+## `org.telegram.ui.Components.CacheChart$Sector`
+- `draw(Canvas canvas, RectF outerRect, RectF innerRect, float angleCenter, float angleSize, float rounding, float alpha, float textAlpha)` -> `void`
 
 ## `org.telegram.ui.Components.CacheChart$SegmentSize`
 - `static of(long size)` -> `SegmentSize`
@@ -5259,6 +5301,7 @@
 - `stopAnimation()` -> `void`
 
 ## `org.telegram.ui.Components.CodepointsLengthInputFilter`
+- `filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend)` -> `CharSequence`
 - `getMax()` -> `int`
 
 ## `org.telegram.ui.Components.CombinedDrawable`
@@ -5350,6 +5393,9 @@
 - `setText(CharSequence text, boolean animated, int count, boolean isText)` -> `void`
 - `setType(int type)` -> `void`
 - `updateBackgroundRect()` -> `void`
+
+## `org.telegram.ui.Components.CreateBotAlert`
+- `static show(Context context, int currentAccount, TLRPC.User bot, TLRPC.TL_requestPeerTypeCreateBot peerType, boolean via_deeplink, Utilities.Callback<TLRPC.User> onCreated, Theme.ResourcesProvider resourcesProvider, BulletinFactory bulletinFactory, boolean inWebApp)` -> `void`
 
 ## `org.telegram.ui.Components.CreateRtmpStreamBottomSheet`
 - `createAdapter(RecyclerListView listView)` -> `RecyclerListView.SelectionAdapter`
@@ -5612,6 +5658,7 @@
 - `animateAddImpl(final ViewHolder holder)` -> `void`
 - `animateChange(ViewHolder oldHolder, ViewHolder newHolder,ItemHolderInfo info, int fromX, int fromY, int toX, int toY)` -> `boolean`
 - `animateChangeImpl(final ChangeInfo changeInfo)` -> `void`
+- `animateMove(final ViewHolder holder, ItemHolderInfo info, int fromX, int fromY, int toX, int toY)` -> `boolean`
 - `animateMoveImpl(final ViewHolder holder, ItemHolderInfo info, int fromX, int fromY, int toX, int toY)` -> `void`
 - `animateRemove(final ViewHolder holder, ItemHolderInfo info)` -> `boolean`
 - `dispatchFinishedWhenDone()` -> `void`
@@ -5663,6 +5710,7 @@
 - `updateRaised()` -> `void`
 
 ## `org.telegram.ui.Components.EdgeEffectTrackerFactory`
+- `createEdgeEffect(@NonNull RecyclerView view, @RecyclerView.EdgeEffectFactory.EdgeDirection int direction)` -> `EdgeEffect`
 - `getDistance(@EdgeDirection int direction)` -> `float`
 
 ## `org.telegram.ui.Components.EdgeEffectTrackerFactory$TrackingEdgeEffect`
@@ -5793,6 +5841,8 @@
 - `setHintColor(int value)` -> `void`
 - `setRightText(CharSequence text)` -> `void`
 - `setSelectionOverride(int start, int end)` -> `void`
+- `showInputDialog(String title, String hint, String initial, boolean showPaste, InputDialogCallback callback)` -> `void`
+- `showInputDialog(String title, String hint, String initial, boolean showPaste, boolean adaptive, InputDialogCallback callback)` -> `void`
 - `startActionMode(final ActionMode.Callback callback, int type)` -> `ActionMode`
 - `startActionMode(final ActionMode.Callback callback)` -> `ActionMode`
 - `toggleStyleForSelection(int flag)` -> `void`
@@ -6466,6 +6516,7 @@
 ## `org.telegram.ui.Components.GuardBotReplaceSheet`
 - `createAdapter(RecyclerListView listView)` -> `RecyclerListView.SelectionAdapter`
 - `getTitle()` -> `CharSequence`
+- `static show(Context context, Theme.ResourcesProvider resourcesProvider, int currentAccount, TLObject currentBot, TLObject newBot, Runnable onUseNew)` -> `void`
 
 ## `org.telegram.ui.Components.HashtagActivity`
 - `createView(Context context)` -> `View`
@@ -6641,6 +6692,7 @@
 - `setCanEdit(boolean canEdit)` -> `void`
 - `setInviteDelegate(InviteDelegate inviteDelegate)` -> `void`
 - `show()` -> `void`
+- `static showSubscriptionSheet(Context context, int currentAccount, long dialogId, TL_stars.TL_starsSubscriptionPricing pricing, TLRPC.TL_chatInviteImporter importer, TLRPC.ChannelParticipant participant, Theme.ResourcesProvider resourcesProvider)` -> `BottomSheet`
 - `updateColors()` -> `void`
 
 ## `org.telegram.ui.Components.InviteLinkBottomSheet$Adapter`
@@ -8838,6 +8890,9 @@
 ## `org.telegram.ui.Components.Premium.GLIcon.GLIconTextureView$RenderThread`
 - `run()` -> `void`
 
+## `org.telegram.ui.Components.Premium.GLIcon.GLProgramCache`
+- `static create(Context context, String namespace, String vertexSource, String fragmentSource, String positionAttribute, String normalAttribute)` -> `int`
+
 ## `org.telegram.ui.Components.Premium.GLIcon.Icon3D`
 - `destroy()` -> `void`
 - `draw(float[] mvpMatrix, float[] worldMatrix, int width, int height, float gradientStartX, float gradientScaleX, float gradientStartY, float gradientScaleY, float white, float golden, float dt)` -> `void`
@@ -8883,6 +8938,7 @@
 - `setParentViewForGradien(ViewGroup containerView)` -> `void`
 - `setPremiumLocked()` -> `void`
 - `setStarRating(TL_stars.Tl_starsRating rating)` -> `void`
+- `setStarsUpgradePrice(TL_stars.StarGiftUpgradePrice from, long current_stars, TL_stars.StarGiftUpgradePrice to)` -> `void`
 - `setStaticGradinet(PremiumGradient.PremiumGradientTools gradientTools)` -> `void`
 - `setStatus(int currentLevel, int maxLevel, boolean animated)` -> `void`
 - `setType(int type)` -> `void`
@@ -8920,6 +8976,7 @@
 - `setCurrentValue(int currentValue)` -> `void`
 - `setDialogId(long dialogId)` -> `void`
 - `setRequiredLvl(int requiredLvl)` -> `void`
+- `setRestrictedUsers(TLRPC.Chat chat, ArrayList<TLRPC.User> userRestrictedPrivacy, ArrayList<Long> premiumMessagingBlockedUsers, ArrayList<Long> premiumInviteBlockedUsers, String forceLink)` -> `void`
 - `setVeryLargeFile(boolean b)` -> `void`
 - `showStatisticButtonInLink(Runnable runnable)` -> `void`
 - `updatePremiumButtonText()` -> `void`
@@ -9177,9 +9234,13 @@
 - `static giveawayCountriesMax()` -> `long`
 - `static giveawayPeriodMax()` -> `long`
 - `static invalidateGiftOptionsToCache(int currentAccount)` -> `void`
+- `static launchPreparedGiveaway(TL_stories.PrepaidGiveaway prepaidGiveaway, List<TLObject> chats, List<TLObject> selectedCountries, TLRPC.Chat chat, int date, boolean onlyNewSubscribers, boolean winnersVisible, boolean withAdditionPrize, int users, String prizeDesc, Utilities.Callback<Void> onSuccess, Utilities.Callback<TLRPC.TL_error> onError)` -> `void`
 - `static payGiftCode(List<TLObject> users, TLRPC.TL_premiumGiftCodeOption option, TLRPC.Chat chat, TLRPC.TL_textWithEntities message, BaseFragment baseFragment, Utilities.Callback<Void> onSuccess, Utilities.Callback<TLRPC.TL_error> onError)` -> `void`
 - `static payGiftCodeByGoogle(List<TLObject> users, TLRPC.TL_premiumGiftCodeOption option, TLRPC.Chat chat, TLRPC.TL_textWithEntities message, BaseFragment baseFragment, Utilities.Callback<Void> onSuccess, Utilities.Callback<TLRPC.TL_error> onError)` -> `void`
 - `static payGiftCodeByInvoice(List<TLObject> users, TLRPC.TL_premiumGiftCodeOption option, TLRPC.Chat chat, TLRPC.TL_textWithEntities message, BaseFragment baseFragment, Utilities.Callback<Void> onSuccess, Utilities.Callback<TLRPC.TL_error> onError)` -> `void`
+- `static payGiveAway(List<TLObject> chats, List<TLObject> selectedCountries, TLRPC.TL_premiumGiftCodeOption option, TLRPC.Chat chat, int date, boolean onlyNewSubscribers, BaseFragment baseFragment, boolean winnersVisible, boolean withAdditionPrize, String prizeDesc, Utilities.Callback<Void> onSuccess, Utilities.Callback<TLRPC.TL_error> onError)` -> `void`
+- `static payGiveAwayByGoogle(List<TLObject> chats, List<TLObject> selectedCountries, TLRPC.TL_premiumGiftCodeOption option, TLRPC.Chat chat, int date, boolean onlyNewSubscribers, BaseFragment baseFragment, boolean winnersVisible, boolean withAdditionPrize, String prizeDesc, Utilities.Callback<Void> onSuccess, Utilities.Callback<TLRPC.TL_error> onError)` -> `void`
+- `static payGiveAwayByInvoice(List<TLObject> chats, List<TLObject> selectedCountries, TLRPC.TL_premiumGiftCodeOption option, TLRPC.Chat chat, int date, boolean onlyNewSubscribers, BaseFragment baseFragment, boolean winnersVisible, boolean withAdditionPrize, String prizeDesc, Utilities.Callback<Void> onSuccess, Utilities.Callback<TLRPC.TL_error> onError)` -> `void`
 - `static prepareServerDate(long date)` -> `int`
 - `static searchChats(long currentChatId, int guid, String query, int count, Utilities.Callback<List<TLRPC.InputPeer>> onDone)` -> `void`
 - `static searchContacts(String query, boolean allowBots, Utilities.Callback<List<TLRPC.User>> onDone)` -> `int`
@@ -9754,7 +9815,9 @@
 - `stopAnimation()` -> `void`
 
 ## `org.telegram.ui.Components.RLottieNative`
+- `static createFromFile(String path, String json, @Nullable int[] metaOut, @Nullable int[] colorReplacement, int fitzModifier, @Nullable Map<String, Integer> layerColors)` -> `RLottieNative`
 - `static createFromFile(String path)` -> `RLottieNative`
+- `static createFromRawJson(String json, @Nullable int[] metaOut, int[] colorReplacement, @Nullable Map<String, Integer> layerColors)` -> `RLottieNative`
 - `static createFromRawJson(String json)` -> `RLottieNative`
 - `static createFromRawJson(String json, @Nullable int[] metaOut)` -> `RLottieNative`
 - `finalize()` -> `void`
@@ -10034,6 +10097,8 @@
 - `setSections()` -> `void`
 - `setSections(boolean topPadding)` -> `void`
 - `setSections(int padding, float roundRadius, boolean topPadding)` -> `void`
+- `setSections(Utilities.CallbackReturn<View, Boolean> isSectionView, int padding, float roundRadius, Utilities.Callback5<Canvas, RectF, Float, Float, Float> drawSectionBackground, boolean topPadding)` -> `void`
+- `setSections(Utilities.CallbackReturn<View, Boolean> isSectionView, Utilities.CallbackReturn<Integer, Boolean> isViewTypeSection, int padding, float roundRadius, Utilities.Callback5<Canvas, RectF, Float, Float, Float> drawSectionBackground, boolean topPadding)` -> `void`
 - `setSectionsType(@SectionsType int type)` -> `void`
 - `setSelectorDrawableColor(int color)` -> `void`
 - `setSelectorRadius(int radius)` -> `void`
@@ -10057,6 +10122,7 @@
 - `verifyDrawable(Drawable drawable)` -> `boolean`
 
 ## `org.telegram.ui.Components.RecyclerListView$FastScroll`
+- `applyBlurDrawables(BlurredBackgroundDrawableViewFactory factory, BlurredBackgroundProvider backgroundProvider)` -> `void`
 - `fillDrawablesRect(RectF rect)` -> `boolean`
 - `getAlpha()` -> `float`
 - `getProgress()` -> `float`
@@ -10085,6 +10151,7 @@
 
 ## `org.telegram.ui.Components.RecyclerListView$ListSectionsDecoration`
 - `capture(Canvas canvas, RectF position)` -> `void`
+- `getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state)` -> `void`
 - `onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull State state)` -> `void`
 
 ## `org.telegram.ui.Components.RecyclerListView$OnItemClickListenerExtended`
@@ -10112,6 +10179,9 @@
 - `onBindViewHolder(ViewHolder holder, int position)` -> `void`
 - `update(boolean diff)` -> `void`
 - `updateHashes()` -> `void`
+
+## `org.telegram.ui.Components.RecyclerListView$SectionsDrawer`
+- `static draw(List<Section> sections, float roundRadius, Utilities.Callback5<Float, Float, Float, Float, Float> drawRoundRect)` -> `void`
 
 ## `org.telegram.ui.Components.RecyclerListView$SelectionAdapter`
 - `getSelectionBottomPadding(View view)` -> `int`
@@ -10323,6 +10393,7 @@
 - `abortAnimation()` -> `void`
 - `computeScrollOffset()` -> `boolean`
 - `extendDuration(int extend)` -> `void`
+- `fling(int startX, int startY, int velocityX, int velocityY, int minX, int maxX, int minY, int maxY)` -> `void`
 - `forceFinished(boolean finished)` -> `void`
 - `getCurrVelocity()` -> `float`
 - `getCurrX()` -> `int`
@@ -10338,6 +10409,7 @@
 - `startScroll(int startX, int startY, int dx, int dy)` -> `void`
 - `startScroll(int startX, int startY, int dx, int dy, int duration)` -> `void`
 - `timePassed()` -> `int`
+- `static viscousFluid(float x)` -> `float`
 
 ## `org.telegram.ui.Components.SearchCounterView`
 - `onDraw(Canvas canvas)` -> `void`
@@ -10399,6 +10471,7 @@
 - `static onBackPressedRenameTagAlert(boolean invoked)` -> `boolean`
 - `onDetachedFromWindow()` -> `void`
 - `static openRenameTagAlert(Context context, int currentAccount, TLRPC.Reaction reaction, Theme.ResourcesProvider resourcesProvider, boolean forceNotAdaptive)` -> `void`
+- `setBlurredFactory(BlurredBackgroundDrawableViewFactory blurredFactory, BlurredBackgroundProvider blurredColorProvider)` -> `void`
 - `setChosen(ReactionsLayoutInBubble.VisibleReaction visibleReaction, boolean notify)` -> `void`
 - `setFilter(ReactionsLayoutInBubble.VisibleReaction reaction)` -> `boolean`
 - `setShown(float shownT)` -> `void`
@@ -11473,7 +11546,10 @@
 
 ## `org.telegram.ui.Components.TelegramRoundVideoUpload`
 - `didReceivedNotification(int id, int account, Object... args)` -> `void`
+- `onBytesAvailable(long outputId, @NonNull File file, long offset, long length)` -> `void`
+- `onOutputCompleted(long outputId, @NonNull File file, long finalSize, long durationMs, boolean hasAudio)` -> `void`
 - `onOutputError(long outputId, @NonNull Exception error)` -> `void`
+- `onOutputInvalidated(long outputId, @NonNull RoundVideoSession.OutputInvalidationReason reason)` -> `void`
 - `onOutputStarted(long outputId, @NonNull File file)` -> `void`
 - `release(boolean cancelUploads)` -> `void`
 
@@ -11732,7 +11808,11 @@
 
 ## `org.telegram.ui.Components.TornEdge`
 - `static bitmapHeight(Params p)` -> `int`
+- `static buildSlabPath(Params p, float width, float topBaseline, float bottomBaseline, float[] topProfile, float[] bottomProfile)` -> `Path`
 - `static createTearBitmap(Params p, int width, int seed)` -> `Bitmap`
+- `static draw(Canvas canvas, Params p, float width, float topBaseline, float bottomBaseline, int color, float cornerRadius, float[] topProfile, float[] bottomProfile)` -> `void`
+- `static drawBottomEdge(Canvas canvas, Bitmap tear, Params p, int width, float left, float baselineY, Paint paint)` -> `void`
+- `static drawTopEdge(Canvas canvas, Bitmap tear, Params p, int width, float left, float baselineY, Paint paint)` -> `void`
 - `static fragmentHeight(Params p)` -> `int`
 - `static profile(Params p, int widthPx, int seed)` -> `float[]`
 
@@ -11855,6 +11935,8 @@
 - `contentsEquals(UItem a, UItem b)` -> `boolean`
 - `createView(Context context, RecyclerListView listView, int currentAccount, int classGuid, Theme.ResourcesProvider resourcesProvider)` -> `Header`
 - `equals(UItem a, UItem b)` -> `boolean`
+- `static of(int id, CharSequence text1, CharSequence text2, CharSequence text3, View.OnClickListener onClick)` -> `UItem`
+- `static of(int id, CharSequence text1, CharSequence text2, CharSequence text3, OnClickListener onClick, boolean emojify, OnClickListener onEmojifyClick, OnClickListener onAnotherExampleClick)` -> `UItem`
 
 ## `org.telegram.ui.Components.TranslateAlert3$Text`
 - `dispatchDraw(@NonNull Canvas canvas)` -> `void`
@@ -11940,6 +12022,7 @@
 - `static asGraySection(CharSequence text, CharSequence button, View.OnClickListener onClickListener)` -> `UItem`
 - `static asHeader(CharSequence text)` -> `UItem`
 - `static asHeader(int id, CharSequence text)` -> `UItem`
+- `static asIntSlideView(int style, int min, int value, int max, Utilities.CallbackReturn<Integer, CharSequence> toString, Utilities.Callback<Integer> whenChose)` -> `UItem`
 - `static asLargeHeader(CharSequence text)` -> `UItem`
 - `static asLargeQuickReply(QuickRepliesController.QuickReply quickReply)` -> `UItem`
 - `static asLargeShadow(CharSequence text)` -> `UItem`
@@ -12131,6 +12214,7 @@
 - `isReorderRemoving()` -> `boolean`
 - `isReordering()` -> `boolean`
 - `listenReorder(Utilities.Callback2<Integer, ArrayList<UItem>> onReordered)` -> `void`
+- `listenReorder(Utilities.Callback2<Integer, ArrayList<UItem>> onReordered, boolean otherAxis)` -> `void`
 - `makeHorizontal()` -> `void`
 - `onReorderEnd(ViewHolder viewHolder)` -> `void`
 - `onReorderMoved(ViewHolder viewHolder)` -> `void`
@@ -12423,6 +12507,7 @@
 - `selectTabWithId(int id, float progress)` -> `void`
 - `setAnimationIdicatorProgress(float value)` -> `void`
 - `setBlurredBackground(BlurredBackgroundDrawable drawable)` -> `void`
+- `setColors(int tabLineColorKey, int activeTextColorKey, int unactiveTextColorKey, int selectorColorKey, int backgroundColorKey)` -> `void`
 - `setDelegate(TabsViewDelegate filterTabsViewDelegate)` -> `void`
 - `setIsEditing(boolean value)` -> `void`
 - `setOnTabLongClick(Utilities.Callback2Return<Integer, View, Boolean> onTabLongClick)` -> `void`
@@ -12593,6 +12678,7 @@
 
 ## `org.telegram.ui.Components.chat.ChatListViewPaddingsAnimator`
 - `getCurrentAdditionalHeight()` -> `int`
+- `setPaddings(int paddingTopTarget, float paddingBottomAnimated, boolean allowScrollCompensation)` -> `void`
 
 ## `org.telegram.ui.Components.chat.SendButtonBlockedByTypingView`
 - `onAttachedToWindow()` -> `void`
@@ -12604,12 +12690,16 @@
 
 ## `org.telegram.ui.Components.chat.ViewPositionWatcher`
 - `clear()` -> `void`
+- `static computeCoordinatesInParent(@NonNull View view, @NonNull ViewGroup parentView, PointF out)` -> `boolean`
+- `static computeRectInParent(@NonNull View view, @NonNull View parentView, @NonNull RectF out)` -> `boolean`
 - `static computeXCoordinateInParent(@NonNull View view, @NonNull ViewGroup parentView)` -> `float`
 - `static computeYCoordinateInParent(@NonNull View view, @NonNull ViewGroup parentView)` -> `float`
 - `onPreDraw()` -> `boolean`
 - `onViewAttachedToWindow(@NonNull View v)` -> `void`
 - `onViewDetachedFromWindow(@NonNull View v)` -> `void`
 - `shutdown()` -> `void`
+- `subscribe(@NonNull View view, @NonNull ViewGroup parentView, @NonNull OnChangedListener listener)` -> `void`
+- `subscribe(@NonNull View view, @NonNull ViewGroup parentView, @NonNull OnChangedListener listener, boolean multiwindow)` -> `void`
 - `unsubscribe(@NonNull View view)` -> `void`
 
 ## `org.telegram.ui.Components.chat.ViewPositionWatcher$ViewOnPreDraw`
@@ -12618,6 +12708,7 @@
 ## `org.telegram.ui.Components.chat.WallpaperBitmapProvider`
 - `getNavigationBarColor(BlurredBackgroundSource source)` -> `int`
 - `getStatusBarColor(BlurredBackgroundSource source)` -> `int`
+- `updateSourceFromBackgroundViewDrawable(Drawable drawable)` -> `BlurredBackgroundSource`
 
 ## `org.telegram.ui.Components.inset.KeyboardState`
 - `getState()` -> `State`
@@ -12884,6 +12975,7 @@
 - `destroy()` -> `void`
 - `draw(@NonNull Canvas canvas)` -> `void`
 - `draw(@NonNull Canvas canvas, int alphaValue, boolean renderToBlurBuffer)` -> `void`
+- `static findIntersectionWithGravity(float x1, float y1, float radius1, float x2, float y2, float radius2, boolean left)` -> `PointF`
 - `getBlurBitmapPaint()` -> `Paint`
 - `getBubbleWidth()` -> `int`
 - `getOpacity()` -> `int`
@@ -13167,6 +13259,7 @@
 ## `org.telegram.ui.DataUsage2Activity$Cell`
 - `onDraw(Canvas canvas)` -> `void`
 - `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `set(int imageColorTop, int imageColorBottom, int imageResId, CharSequence title, CharSequence value, boolean divider)` -> `void`
 - `setArrow(Boolean value)` -> `void`
 
 ## `org.telegram.ui.DataUsage2Activity$CustomCharacterSpan`
@@ -13611,6 +13704,9 @@
 - `onLayout(boolean changed, int left, int top, int right, int bottom)` -> `void`
 - `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
 - `setTextAndIcon(String text, Drawable icon, boolean divider)` -> `void`
+
+## `org.telegram.ui.FragmentUsernameBottomSheet`
+- `static open(Context context, int type, String name, TLObject owner, TL_fragment.TL_collectibleInfo info, Theme.ResourcesProvider resourcesProvider)` -> `void`
 
 ## `org.telegram.ui.GradientClip`
 - `clipOut(Canvas canvas, RectF rect, float alpha)` -> `void`
@@ -14188,6 +14284,7 @@
 - `onEffectChange(long effectId)` -> `void`
 - `scrollTo(boolean last)` -> `void`
 - `setCameraTexture(TextureView textureView)` -> `void`
+- `setEditText(EditTextCaption editText, Utilities.Callback2<Canvas, Utilities.Callback0Return<Boolean>> drawEditText, Utilities.Callback<Canvas> drawEditTextBackground)` -> `void`
 - `setEffectId(long effectId)` -> `void`
 - `setItemOptions(ItemOptions options)` -> `void`
 - `setMessageObjects(ArrayList<MessageObject> messageObjects)` -> `void`
@@ -14240,6 +14337,9 @@
 - `updateItems(boolean animated, boolean notify)` -> `void`
 
 ## `org.telegram.ui.MultiLayoutTypingAnimator`
+- `static drawHorizontalFadeMask(Canvas canvas, float left, float top, float right, float bottom, float lineL, float lineW, float xPosition, int dir)` -> `void`
+- `static drawLayoutWithLastLineFade(Canvas canvas, Layout layout, int lineIndex, float xPosition)` -> `void`
+- `static drawLayoutWithLastLineFade(Canvas canvas, Layout layout, int lineIndex, float xPosition, Renderer drawer)` -> `void`
 - `getBlockAlpha(Block block)` -> `float`
 - `getCurrentBlockIndex()` -> `int`
 - `getFadeLineIndex(Block block)` -> `int`
@@ -14530,6 +14630,7 @@
 - `onCreate(Bundle savedInstanceState)` -> `void`
 - `setCell(BaseFragment fragment, ChatMessageCell messageCell, byte[] taskId)` -> `void`
 - `setOnDismissListener(Runnable onDismiss)` -> `void`
+- `setupMessageOptions(ChatActivity chatActivity, ArrayList<Integer> icons, ArrayList<CharSequence> items, ArrayList<Integer> options, Utilities.Callback<Integer> onOptionClick)` -> `void`
 - `show()` -> `void`
 
 ## `org.telegram.ui.PostSuggestionsEditActivity`
@@ -14735,7 +14836,17 @@
 - `smoothScrollBy(int dy, long duration, Interpolator interpolator)` -> `void`
 
 ## `org.telegram.ui.ReportBottomSheet`
+- `static continueReport(ChatActivity fragment, byte[] option, String message, ArrayList<Integer> ids, Utilities.Callback<Boolean> whenDone)` -> `void`
 - `onBackPressed()` -> `void`
+- `static openChat(int currentAccount, Context context, long dialogId)` -> `void`
+- `static openChat(int currentAccount, Context context, BulletinFactory bulletinFactory, long dialogId)` -> `void`
+- `static openChat(ChatActivity fragment)` -> `void`
+- `static openChat(BaseFragment fragment, long dialogId)` -> `void`
+- `static openMessage(BaseFragment fragment, MessageObject message)` -> `void`
+- `static openSponsored(ChatActivity fragment, MessageObject message, Theme.ResourcesProvider resourceProvider)` -> `void`
+- `static openSponsored(int currentAccount, Context context, long dialogId, TLRPC.TL_sponsoredMessage ad, BulletinFactory bulletinFactory, Theme.ResourcesProvider resourceProvider, Runnable showPremium, Runnable done)` -> `void`
+- `static openSponsoredPeer(BaseFragment fragment, byte[] random_id, Theme.ResourcesProvider resourceProvider, Runnable remove)` -> `void`
+- `static openStory(int currentAccount, Context context, TL_stories.StoryItem storyItem, BulletinFactory bulletinFactory, Theme.ResourcesProvider resourceProvider, Utilities.Callback<Boolean> whenDone)` -> `void`
 
 ## `org.telegram.ui.ReportBottomSheet$ContainerView`
 - `dispatchDraw(Canvas canvas)` -> `void`
@@ -15045,7 +15156,9 @@
 - `beforeSendingFinalRequest(TLObject req, MessageObject msg, Runnable send)` -> `boolean`
 - `beforeSendingFinalRequest(TLObject req, ArrayList<MessageObject> messages, Runnable send)` -> `boolean`
 - `beforeSendingMessage(MessageObject msg)` -> `void`
+- `buy(Activity activity, TL_stars.TL_starsTopupOption option, Utilities.Callback2<Boolean, String> whenDone, TLRPC.InputPeer purposePeer)` -> `void`
 - `buyGift(Activity activity, TL_stars.TL_starsGiftOption option, long user_id, Utilities.Callback2<Boolean, String> whenDone)` -> `void`
+- `buyGiveaway(Activity activity, TLRPC.Chat chat, List<TLObject> chats, TL_stars.TL_starsGiveawayOption option, int users, List<TLObject> countries, int date, boolean winnersVisible, boolean onlyNewSubscribers, boolean withAdditionPrize, String prizeDescription, Utilities.Callback2<Boolean, String> whenDone)` -> `void`
 - `buyPremiumGift(long dialogId, Object option, TLRPC.TL_textWithEntities text, Utilities.Callback2<Boolean, String> whenDone)` -> `void`
 - `buyResellingGift(TLRPC.TL_payments_paymentFormStarGift form, TL_stars.StarGift gift, long dialogId, Utilities.Callback2<Boolean, String> whenDone)` -> `void`
 - `buyResellingGift(TLRPC.TL_payments_paymentFormStarGift form, TL_stars.StarGift gift, long dialogId, TLRPC.TL_textWithEntities message, boolean hideMyName, Utilities.Callback2<Boolean, String> whenDone)` -> `void`
@@ -15103,6 +15216,7 @@
 - `payAfterConfirmed(MessageObject messageObject, TLRPC.InputInvoice inputInvoice, TLRPC.TL_payments_paymentFormStars form, Utilities.Callback<Boolean> whenDone)` -> `void`
 - `preloadTransactions()` -> `void`
 - `static showNoSupportDialog(Context context, Theme.ResourcesProvider resourcesProvider)` -> `void`
+- `showPaidMessageToast(long dialogId, MessageObject messageObject, long payStars, Utilities.Callback<HashSet<MessageObject>> undo, Runnable send, boolean needsUndo)` -> `void`
 - `showPriceChangedToast(List<MessageObject> msgs)` -> `void`
 - `showStarsTopup(Activity activity, long amount, String purpose)` -> `void`
 - `stopPaidMessages(long user_id, long parent_id, boolean refund, boolean stop)` -> `void`
@@ -15150,6 +15264,8 @@
 - `onItemClick(UItem item, int position)` -> `void`
 - `onPause()` -> `void`
 - `onResume()` -> `void`
+- `static openConfirmPurchaseSheet(Context context, Theme.ResourcesProvider resourcesProvider, int currentAccount, MessageObject messageObject, long userId, String purchase, long stars, TLRPC.WebDocument photo, int subscription_period, Utilities.Callback<Utilities.Callback<Boolean>> whenConfirmed, Runnable whenDismissed)` -> `BottomSheet`
+- `static openStarsChannelInviteSheet(Context context, Theme.ResourcesProvider resourcesProvider, int currentAccount, TLRPC.ChatInvite chatInvite, Utilities.Callback<Utilities.Callback<Boolean>> whenConfirmed, Runnable whenDismissed)` -> `BottomSheet`
 - `static replaceDiamond(CharSequence cs)` -> `SpannableStringBuilder`
 - `static replaceDiamond(CharSequence cs, final float scale)` -> `SpannableStringBuilder`
 - `static replaceDiamond(CharSequence cs, final float scale, ColoredImageSpan[] cache, final float tx, final float ty, float sx)` -> `SpannableStringBuilder`
@@ -15466,6 +15582,7 @@
 - `onCreate(Bundle savedInstanceState)` -> `void`
 - `setCell(ChatActivity chatActivity, ChatMessageCell messageCell, int taskId)` -> `void`
 - `setOnDismissListener(Runnable onDismiss)` -> `void`
+- `setupMessageOptions(ChatActivity chatActivity, ArrayList<Integer> icons, ArrayList<CharSequence> items, ArrayList<Integer> options, Utilities.Callback<Integer> onOptionClick)` -> `void`
 - `show()` -> `void`
 
 ## `org.telegram.ui.TooManyCommunitiesActivity`
@@ -15772,7 +15889,9 @@
 - `updateColors()` -> `void`
 
 ## `org.telegram.ui.Wallet.CollectibleCell$Factory`
+- `bindView(View view, UItem item, boolean divider, UniversalAdapter adapter, UniversalRecyclerView listView)` -> `void`
 - `contentsEquals(UItem first, UItem second)` -> `boolean`
+- `createView(Context context, RecyclerListView listView, int currentAccount, int classGuid, Theme.ResourcesProvider resourcesProvider)` -> `CollectibleCell`
 - `equals(UItem first, UItem second)` -> `boolean`
 - `static getCollectible(UItem item)` -> `TL_wallet.nftItem`
 - `isClickable()` -> `boolean`
@@ -15836,6 +15955,7 @@
 - `listen()` -> `Runnable`
 - `makeSureSecretPhraseBackedUpLocally(Utilities.Callback<String > whenDone)` -> `void`
 - `makeSureSecretPhraseBackedUpLocally(boolean sheet, boolean progress, Utilities.Callback<String > whenDone)` -> `void`
+- `static mergeRecipientPeer(TL_wallet.WalletTransactionPeer local, TL_wallet.WalletTransactionPeer remote)` -> `TL_wallet.WalletTransactionPeer`
 - `static messageMatchesTransaction(MessageObject message, TL_wallet.walletTransaction transaction)` -> `boolean`
 - `needsFingerprint()` -> `boolean`
 - `needsPasscode()` -> `boolean`
@@ -15919,15 +16039,21 @@
 
 ## `org.telegram.ui.Wallet.GramWalletTonConnect`
 - `approveSession(ConnectRequest context, Utilities.Callback<String> whenDone)` -> `void`
+- `createSession(String dappClientId, String manifestUrl, String requestJson, String traceId, String embeddedRequest, Utilities.Callback2<ConnectRequest, String> whenDone)` -> `void`
 - `decide(Pending request, boolean declined, Utilities.Callback<String> callback)` -> `void`
 - `disconnectSession(TL_wallet.tonConnectSession session, Utilities.Callback<String > whenDone)` -> `void`
 - `static exception(String operation, Throwable error)` -> `String`
 - `static log(String operation, String message)` -> `void`
+- `static openTransactionRequest(Context context, int currentAccount, long sessionId, int messageId, Theme.ResourcesProvider resourcesProvider)` -> `void`
+- `static openTransactionRequest(Context context, int currentAccount, long sessionId, int messageId, Theme.ResourcesProvider resourcesProvider, Runnable onDismiss)` -> `void`
 - `static parseRequest(String plaintext, TL_wallet.tonConnectSession session, String address, int now)` -> `JSONObject`
 - `preview(Pending request, Utilities.Callback2<TL_wallet.walletTransaction, String> callback)` -> `void`
 - `release(Pending request)` -> `void`
 - `static rpc(String operation, TLRPC.TL_error error)` -> `String`
 - `static sameIcon(TLRPC.WebDocument first, TLRPC.WebDocument second)` -> `boolean`
+- `static showConnectSheet(Context context, int currentAccount, ConnectRequest connection, Theme.ResourcesProvider resourcesProvider, Runnable onComplete)` -> `BottomSheet`
+- `static showOauthConnectSheet(Context context, int currentAccount, TLRPC.TL_urlAuthResultRequest auth, Theme.ResourcesProvider resourcesProvider, Utilities.Callback<TL_wallet.inputTonConnectOauthSession> onApproved, Runnable onCancel)` -> `BottomSheet`
+- `static showTransactionSheet(Context context, int currentAccount, Pending request, Theme.ResourcesProvider resourcesProvider)` -> `BottomSheet`
 - `static supportedFeatures()` -> `JSONArray`
 
 ## `org.telegram.ui.Wallet.GramWalletTonConnect$Pending`
@@ -15969,6 +16095,13 @@
 - `setOverlayNavBarColor(int color)` -> `void`
 - `show()` -> `void`
 - `updateColors()` -> `void`
+
+## `org.telegram.ui.Wallet.PasswordRequest`
+- `static open(int currentAccount, Utilities.CallbackReturn<TLRPC.InputCheckPasswordSRP, TLMethod<Result>> makeRequest, Utilities.Callback3<Result, TLRPC.TL_error, TLRPC.InputCheckPasswordSRP> done)` -> `void`
+- `static open(int currentAccount, Utilities.CallbackReturn<TLRPC.InputCheckPasswordSRP, TLMethod<Result>> makeRequestReturn, Utilities.Callback3<Result, TLRPC.TL_error, TLRPC.InputCheckPasswordSRP> done, boolean sheet, boolean progress)` -> `void`
+- `static open(int currentAccount, Utilities.Callback2<TLRPC.InputCheckPasswordSRP, Utilities.Callback<TLMethod<Result>>> makeRequestCallback, Utilities.Callback3<Result, TLRPC.TL_error, TLRPC.InputCheckPasswordSRP> done, boolean sheet, boolean progress)` -> `void`
+- `static open(int currentAccount, Utilities.CallbackReturn<TLRPC.InputCheckPasswordSRP, TLMethod<Result>> makeRequest, Utilities.Callback3<Result, TLRPC.TL_error, TLRPC.InputCheckPasswordSRP> done, boolean sheet, boolean progress, Runnable cleanup)` -> `void`
+- `static open(int currentAccount, Utilities.Callback2<TLRPC.InputCheckPasswordSRP, Utilities.Callback<TLMethod<Result>>> makeRequest, Utilities.Callback3<Result, TLRPC.TL_error, TLRPC.InputCheckPasswordSRP> done, boolean sheet, boolean progress, Runnable cleanup)` -> `void`
 
 ## `org.telegram.ui.Wallet.PasswordRequest$RequestScope`
 - `close()` -> `void`
@@ -16042,7 +16175,10 @@
 - `onLongClick(UItem item, View view, int position, float x, float y)` -> `boolean`
 - `onRequestPermissionsResultFragment(int requestCode, String[] permissions, int[] grantResults)` -> `void`
 - `onResume()` -> `void`
+- `static openCollectibleSheet(Context context, TL_wallet.nftItem collectible, Theme.ResourcesProvider resourceProvider)` -> `void`
 - `static openOnramp(int currentAccount, long amount, Utilities.Callback<String> whenDone)` -> `void`
+- `static openTransactionSheet(Context context, int currentAccount, TL_wallet.walletTransaction initialTransaction, Utilities.Callback3<String, Boolean, Utilities.Callback<String>> onSend, Utilities.Callback2<String, Boolean> onDismiss, Theme.ResourcesProvider resourceProvider)` -> `void`
+- `static openTransactionSheet(Context context, int currentAccount, TL_wallet.walletTransaction initialTransaction, Utilities.Callback3<String, Boolean, Utilities.Callback<String>> onSend, Utilities.Callback2<String, Boolean> onDismiss, byte[] commentRecipientPublicKey, Runnable openWallet, Theme.ResourcesProvider resourceProvider)` -> `void`
 - `static openWalletFirstGramsAlert(Context context, int currentAccount, Theme.ResourcesProvider resourceProvider)` -> `BottomSheet`
 - `static openWalletHowItWorksAlert(Context context, Theme.ResourcesProvider resourceProvider)` -> `void`
 - `static openWalletQRAlert(Context context, int currentAccount, Theme.ResourcesProvider resourcesProvider)` -> `void`
@@ -16093,6 +16229,8 @@
 - `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
 - `onNestedPreFling(View target, float velocityX, float velocityY)` -> `boolean`
 - `onNestedPreScroll(View target, int dx, int dy, int[] consumed, int type)` -> `void`
+- `onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type, int[] consumed)` -> `void`
+- `onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed, int type)` -> `void`
 - `onNestedScrollAccepted(View child, View target, int axes, int type)` -> `void`
 - `onStartNestedScroll(View child, View target, int axes, int type)` -> `boolean`
 - `onStopNestedScroll(View target, int type)` -> `void`
@@ -16144,6 +16282,7 @@
 
 ## `org.telegram.ui.Wallet.WalletCard3D`
 - `destroy()` -> `void`
+- `draw(float[] mvpMatrix, float[] modelViewMatrix, float lightDirectionX, float lightDirectionY, float lightDirectionZ, float cardGradientRotation, int surfaceWidth, int surfaceHeight)` -> `void`
 - `static prepareTextures(Context context, int cardIconResId, int qrButtonRightPadding)` -> `void`
 - `setCardIcon(Context context, int drawableResId, int qrButtonRightPadding)` -> `void`
 - `setDiamondBounds(float[] bounds, float alpha)` -> `void`
@@ -16151,6 +16290,7 @@
 - `setFrontBitmap(Bitmap bitmap)` -> `void`
 
 ## `org.telegram.ui.Wallet.WalletCard3D$MaterialProgram`
+- `bind(float[] mvpMatrix, float[] modelViewMatrix, float lightDirectionX, float lightDirectionY, float lightDirectionZ, float cardGradientRotation, float qrButtonRightPadding)` -> `void`
 - `setEngravingTexel(float x, float y)` -> `void`
 
 ## `org.telegram.ui.Wallet.WalletCard3D$Mesh`
@@ -16209,6 +16349,9 @@
 - `setRotation(float rotationX, float rotationY)` -> `void`
 - `submitFrontBitmap(Bitmap bitmap)` -> `void`
 
+## `org.telegram.ui.Wallet.WalletCardGLRenderer$FaceProjection`
+- `project(int width, int height, float rotationX, float rotationY, boolean back, float[] result)` -> `void`
+
 ## `org.telegram.ui.Wallet.WalletCardGeometry`
 - `static radiusX(float width)` -> `float`
 - `static radiusY(float height)` -> `float`
@@ -16218,6 +16361,10 @@
 - `detach(View view)` -> `void`
 - `drawn(View view)` -> `void`
 - `static get(Context context)` -> `WalletCardMotion`
+
+## `org.telegram.ui.Wallet.WalletCardQrBounds`
+- `static compute(float[] m, int width, int height, float left, float top, float right, float bottom, int[] result, float[] uvFootprint)` -> `void`
+- `static compute(float[] m, int width, int height, float left, float top, float right, float bottom, int textureWidth, int textureHeight, boolean mipmapped, int[] result, float[] uvFootprint)` -> `void`
 
 ## `org.telegram.ui.Wallet.WalletCardTiltBaseline`
 - `getRotationX()` -> `float`
@@ -16237,6 +16384,7 @@
 - `onAccuracyChanged(Sensor sensor, int accuracy)` -> `void`
 - `onAttachedToWindow()` -> `void`
 - `onDetachedFromWindow()` -> `void`
+- `onLayout(boolean changed, int left, int top, int right, int bottom)` -> `void`
 - `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
 - `onSensorChanged(SensorEvent event)` -> `void`
 - `onSizeChanged(int w, int h, int oldw, int oldh)` -> `void`
@@ -16302,21 +16450,36 @@
 - `whenReady(Runnable callback)` -> `void`
 
 ## `org.telegram.ui.Wallet.WalletEngine2`
+- `balance(Utilities.Callback2<Long, String > onResult)` -> `void`
 - `close()` -> `void`
 - `static createImportProof(SecretPhrase phrase, String domain, String payload, int timestamp)` -> `ImportedWalletProof`
 - `static createOwnershipProof(SecretPhrase phrase, String domain, String payload, int timestamp)` -> `ImportedWalletProof`
 - `static decryptComment(SecretPhrase secretPhrase, String senderAddress, String encryptedComment)` -> `String`
+- `decryptTransactionComment(SecretPhrase secretPhrase, String transactionTxHash, Utilities.Callback2<String , String > onResult)` -> `void`
+- `emulateRotateKey(Utilities.Callback2<TL_wallet.walletTransaction, String > onResult)` -> `void`
+- `emulateSend(String address, long amount, String comment, byte[] comment_recipient_public_key, Utilities.Callback2<TL_wallet.walletTransaction, String > onResult)` -> `Runnable`
+- `emulateSendNFT(String address, String gift_address, Utilities.Callback2<TL_wallet.walletTransaction, String> onResult)` -> `Runnable`
+- `emulateSendNFT(String address, String gift_address, String comment, Utilities.Callback2<TL_wallet.walletTransaction, String> onResult)` -> `Runnable`
 - `static encryptedCommentPayload(String body)` -> `String`
 - `static getMnemonicWordlist()` -> `String[]`
 - `getTransactionByHash(String tx_hash, Utilities.Callback<TL_wallet.walletTransaction> done)` -> `void`
+- `prepareRotateKey(SecretPhrase secret_phrase, @Nullable String gasless_address, Utilities.Callback4<TL_wallet.sendTransfer, SecretPhrase , byte[] , String > onResult)` -> `void`
+- `prepareSend(SecretPhrase secret_phrase, String address, long amount, String comment, byte[] comment_recipient_public_key, String gasless_address, Utilities.Callback3<TL_wallet.sendTransfer, String , String > onResult)` -> `void`
+- `prepareSendNFT(SecretPhrase secret_phrase, String address, String gift_address, Utilities.Callback2<TL_wallet.sendTransfer, String> onResult)` -> `void`
+- `prepareSendNFT(SecretPhrase secret_phrase, String address, String gift_address, String comment, Utilities.Callback2<TL_wallet.sendTransfer, String> onResult)` -> `void`
+- `prepareTonConnectTransfer(SecretPhrase secretPhrase, GramWalletTonConnect.Transaction request, String operationId, Utilities.Callback2<TL_wallet.sendTransfer, String> callback)` -> `void`
 - `previewSignMessage(GramWalletTonConnect.Transaction request, Utilities.Callback<String> callback)` -> `void`
 - `previewTonConnect(GramWalletTonConnect.Transaction request, Utilities.Callback2<TL_wallet.walletTransaction, String> callback)` -> `void`
+- `rotateKey(SecretPhrase current_secret_phrase, Utilities.Callback2<SecretPhrase , byte[] > onNewSecretPhrase, Utilities.Callback2<SendPhase, String > onState)` -> `void`
 - `static sameTonConnectAddress(String first, String second)` -> `boolean`
 - `static secretPhraseToAddress(SecretPhrase secretPhrase)` -> `String`
 - `static secretPhraseToAnchorPublicKey(SecretPhrase secretPhrase)` -> `byte[]`
 - `static secretPhraseToPublicKey(SecretPhrase secretPhrase)` -> `byte[]`
+- `static signData(SecretPhrase phrase, TL_wallet.tonConnectSession session, String address, byte[] publicKey, JSONObject payload, String domain, int timestamp)` -> `JSONObject`
+- `signMessage(SecretPhrase secretPhrase, GramWalletTonConnect.Transaction request, String operationId, Utilities.Callback2<String, String> callback)` -> `void`
 - `static textCommentFromBody(String body)` -> `String`
 - `static toUserFriendlyAddress(String address)` -> `String`
+- `static tonConnectCrypto(SecretPhrase secretPhrase, TL_wallet.tonConnectSession session, String address, byte[] publicKey, JSONObject parameters)` -> `JSONObject`
 
 ## `org.telegram.ui.Wallet.WalletEngine2$HttpTransport`
 - `close()` -> `void`
@@ -16417,6 +16580,7 @@
 - `setScaleProperty(float amplitude)` -> `void`
 
 ## `org.telegram.ui.Wallet.WalletSendEnterAmount$AmountInputView$AmountCharacterSpan`
+- `draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, @NonNull Paint paint)` -> `void`
 - `getSize(@NonNull Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fm)` -> `int`
 
 ## `org.telegram.ui.Wallet.WalletSendEnterAmount$AmountInputView$GlyphMotion`
@@ -16605,10 +16769,12 @@
 - `static clear()` -> `void`
 - `static get(Context context, int currentAccount, long botId)` -> `BotBiometry`
 - `static getAvailableType(Context context)` -> `String`
+- `static getBots(Context context, int currentAccount, Utilities.Callback<ArrayList<Bot>> whenDone)` -> `void`
 - `static getDeviceId(Context context, int currentAccount, long botId)` -> `String`
 - `getStatus()` -> `JSONObject`
 - `granted()` -> `boolean`
 - `setGranted(boolean granted)` -> `void`
+- `static toggleBotDisabled(Context context, int currentAccount, long botId, boolean disabled)` -> `void`
 - `updateToken(String reason, String token, Utilities.Callback<Boolean> whenDone)` -> `void`
 
 ## `org.telegram.ui.bots.BotButtons`
@@ -16986,6 +17152,7 @@
 ## `org.telegram.ui.bots.WebViewRequestProps`
 - `applyResponse(TLObject response)` -> `void`
 - `equals(@Nullable Object obj)` -> `boolean`
+- `static of(int currentAccount, long peerId, long botId, String buttonText, String buttonUrl, @BotWebViewAttachedSheet.WebViewType int type, int replyToMsgId, long monoforumTopicId, boolean silent, TLRPC.BotApp app, boolean allowWrite, String startParam, TLRPC.User botUser, int flags, boolean compact, boolean fullscreen)` -> `WebViewRequestProps`
 
 ## `org.telegram.ui.community.CommunityArrowDrawable`
 - `draw(@NonNull Canvas canvas)` -> `void`
@@ -17086,7 +17253,11 @@
 - `updateTops()` -> `void`
 
 ## `org.telegram.ui.community.CommunityUtils`
+- `static buildServiceMessageText(MessageObject messageObject, String communityName, String userName, boolean isChannel, boolean isBot)` -> `CharSequence`
 - `static fillLinkedPeers(int currentAccount, ArrayList<UItem> items, DialogCell.DialogCellDelegate delegate, long communityId, boolean withGap)` -> `void`
+- `static fillPendingRequests(int currentAccount, ArrayList<UItem> items, ArrayList<TL_communities.CommunityPeerRequest> pendingRequests, LongSparseArray<Void> hiddenJoinRequests, CommunityPendingRequestCell.ClickDelegate delegate)` -> `void`
+- `static linkToCommunityAndConvertIfNeeded(BaseFragment baseFragment, int currentAccount, TLRPC.Chat chat, long communityId, boolean isHidden)` -> `void`
+- `static linkToCommunityWithoutConvert(BaseFragment baseFragment, int currentAccount, long chatId, long communityId, boolean isHidden)` -> `void`
 - `static onCommunityLinkSuccess(BaseFragment baseFragment, long groupDialogId, int status)` -> `void`
 - `static showChatsToAddToCommunity(AlertDialog[] progressDialog, BaseFragment baseFragment, int currentAccount, TLRPC.Chat community)` -> `void`
 - `static showCommunityLinkSuccessToast(BulletinFactory bulletinFactory, int status, boolean isChannel)` -> `void`
@@ -17126,12 +17297,14 @@
 - `updateColors()` -> `void`
 
 ## `org.telegram.ui.community.cells.CommunityPendingRequestCell$Factory`
+- `static asPendingRequest(long dialogToAdd, TLRPC.User requestFromUser, boolean isHidden, ClickDelegate delegate, boolean divider)` -> `UItem`
 - `bindView(View view, UItem item, boolean divider, UniversalAdapter adapter, UniversalRecyclerView listView)` -> `void`
 - `createView(Context context, RecyclerListView listView, int currentAccount, int classGuid, Theme.ResourcesProvider resourcesProvider)` -> `CommunityPendingRequestCell`
 - `equals(UItem a, UItem b)` -> `boolean`
 
 ## `org.telegram.ui.community.cells.CommunityRequestsCell`
 - `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `set(int iconColorTop, int iconColorBottom, int icon, CharSequence title, CharSequence value, boolean valueAsUnread)` -> `void`
 - `setTitle(CharSequence title)` -> `void`
 - `setUnreadMode(boolean unreadMode)` -> `void`
 - `setValue(CharSequence value)` -> `void`
@@ -17219,6 +17392,8 @@
 - `setButtonWidth(int width)` -> `void`
 
 ## `org.telegram.ui.iv.RichButtonRowCell$Factory`
+- `bindView(View view, UItem item, boolean divider, UniversalAdapter adapter, UniversalRecyclerView listView)` -> `void`
+- `createView(Context context, RecyclerListView listView, int currentAccount, int classGuid, Theme.ResourcesProvider resourcesProvider)` -> `RichButtonRowCell`
 - `isClickable()` -> `boolean`
 - `static of(BlockRow row, Delegate delegate)` -> `UItem`
 
@@ -17566,6 +17741,8 @@
 - `getLabel()` -> `String`
 - `getType()` -> `TL_keyboard.InlineButtonType`
 - `hideSelectionUi()` -> `void`
+- `showInputDialog(String title, String hint, String initial, boolean showPaste, org.telegram.ui.Components.EditTextCaption.InputDialogCallback callback)` -> `void`
+- `showInputDialog(String title, String hint, String initial, boolean showPaste, boolean adaptive, org.telegram.ui.Components.EditTextCaption.InputDialogCallback callback)` -> `void`
 
 ## `org.telegram.ui.iv.RichEditorToolbar`
 - `getAddButton()` -> `ImageView`
@@ -17580,6 +17757,7 @@
 - `setBackVisible(boolean visible)` -> `void`
 - `setBottomGradientTranslationY(float ty)` -> `void`
 - `setEmojiOpened(boolean opened)` -> `void`
+- `setFormattingState(int appliedMask, boolean linkApplied, boolean dateApplied, boolean inlineEnabled, boolean buttonEnabled, boolean boldItalicEnabled)` -> `void`
 - `setHistoryEnabled(boolean canUndo, boolean canRedo)` -> `void`
 - `setPremiumLocked(boolean locked)` -> `void`
 - `setQuoteState(boolean quoted)` -> `void`
@@ -17599,6 +17777,7 @@
 - `static parse(String html, Map<Long, TL_iv.RichText> outAuthors)` -> `List<BlockRow>`
 - `static preToHtml(CharSequence styled, String language)` -> `String`
 - `static serialize(List<BlockRow> rows, int from, int to, int sOff, int eOff)` -> `String`
+- `static serialize(List<BlockRow> rows, int from, int to, int sOff, int eOff, Map<Long, TL_iv.RichText> authors)` -> `String`
 - `static tableToHtml(TL_iv.pageBlockTable t)` -> `String`
 
 ## `org.telegram.ui.iv.RichHtml$ListState`
@@ -17614,9 +17793,16 @@
 ## `org.telegram.ui.iv.RichHtml$Parser`
 - `parse()` -> `List<Node>`
 
+## `org.telegram.ui.iv.RichInlineButtonEditor`
+- `static show(ItemOptions options, BaseFragment fragment, Context context, Theme.ResourcesProvider resourcesProvider, RichEditorListView.InlineButtonEdit edit)` -> `ItemOptions`
+- `static show(ItemOptions options, BaseFragment fragment, Context context, Theme.ResourcesProvider resourcesProvider, RichEditorListView.InlineButtonEdit edit, boolean inAttachDialog)` -> `ItemOptions`
+- `static showBlock(ItemOptions options, BaseFragment fragment, Context context, Theme.ResourcesProvider resourcesProvider, RichEditorListView.BlockButtonEdit edit)` -> `ItemOptions`
+- `static showBlock(ItemOptions options, BaseFragment fragment, Context context, Theme.ResourcesProvider resourcesProvider, RichEditorListView.BlockButtonEdit edit, boolean inAttachDialog)` -> `ItemOptions`
+
 ## `org.telegram.ui.iv.RichInlineButtonSpan`
 - `bind(View view, int currentAccount, Theme.ResourcesProvider resourcesProvider)` -> `void`
 - `detach(View view)` -> `void`
+- `draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, @NonNull Paint paint)` -> `void`
 - `getButton()` -> `TL_iv.textButton`
 - `getSize(@NonNull Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fm)` -> `int`
 - `setPressed(boolean pressed)` -> `void`
@@ -18015,6 +18201,7 @@
 - `onDetachedFromWindow()` -> `void`
 - `static pushRecentSearch(Context context, String query)` -> `void`
 - `setColors(int backgroundColor, int textColor)` -> `void`
+- `setCurrent(Bitmap favicon, String title, String url, Runnable onCurrentClick, Utilities.Callback<String> onQueryClick, Utilities.Callback<String> onQueryInsertClick, Utilities.Callback<String> onURLClick, View.OnClickListener onCopyClick)` -> `void`
 - `setInput(String input)` -> `void`
 - `setOpenProgress(float progress)` -> `void`
 - `setOpened(boolean value)` -> `void`

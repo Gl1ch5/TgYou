@@ -8,7 +8,7 @@
 | Что такое мод, формат `.mod`, установка | [docs/MODS.md](../docs/MODS.md) |
 | Полный промпт для нейросети (бандлится в приложение) | `TMessagesProj/src/main/assets/mod-sdk/AI_PROMPT.md` |
 | Готовые именованные хуки и каталог мест для новых | [hooks/HOOKS_CATALOG.md](hooks/HOOKS_CATALOG.md) |
-| **Готовый полный каталог** (44 476 методов, json + по категориям) | [hooks/catalog/README.md](hooks/catalog/README.md) |
+| **Готовый полный каталог** (44 781 методов, json + по категориям) | [hooks/catalog/README.md](hooks/catalog/README.md) |
 | Сканер мест для хуков | [hooks/hook_scan.py](hooks/hook_scan.py) |
 | Справочник `api` | [API.md](API.md) |
 | Примеры модов | [examples/](examples/) |

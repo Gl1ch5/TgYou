@@ -27,7 +27,7 @@ SCAN = ["org/telegram"]
 KEYWORDS = {"if", "for", "while", "switch", "catch", "return", "new", "else", "synchronized", "try", "do", "throw", "super", "this"}
 METHOD_RE = re.compile(
     r"^[ \t]*((?:(?:public|protected|private|static|final|synchronized|abstract|native)[ \t]+)*)"
-    r"(?:<[^>\n]+>[ \t]+)?([\w<>\[\],.?]+(?:[ \t]+[\w<>\[\],.?]+)?)[ \t]+(\w+)[ \t]*\(([^)\n]*)\)[ \t]*(?:throws[ \t]+[\w., ]+)?[ \t]*\{",
+    r"(?:<[^>\n]+>[ \t]+)?([\w<>\[\],.?]+(?:[ \t]+[\w<>\[\],.?]+)?)[ \t]+(\w+)[ \t]*\(([^)]{0,800})\)\s*(?:throws[ \t]+[\w., ]+)?\s*\{",
     re.M)
 CLASS_RE = re.compile(r"^[ \t]*(?:public |protected |private |static |final |abstract )*(?:class|interface|enum)\s+(\w+)(?:\s+extends\s+([\w.<>]+))?", re.M)
 

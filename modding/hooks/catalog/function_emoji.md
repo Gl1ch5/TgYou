@@ -1,4 +1,4 @@
-# function / emoji (161 методов)
+# function / emoji (162 методов)
 
 ## `org.telegram.messenger.AnimatedFileDrawableStream`
 - `cancel()` -> `void`
@@ -259,6 +259,7 @@
 - `isAnonymous()` -> `boolean`
 
 ## `org.telegram.ui.Stars.StarsReactionsSheet$Particles`
+- `static isValidPoint(PointF[][] grid, int width, int height, float cellsize, int gwidth, int gheight, PointF p, float radius)` -> `boolean`
 - `process()` -> `boolean`
 - `removeParticlesOutside()` -> `void`
 

@@ -1,4 +1,4 @@
-# function / login (64 методов)
+# function / login (68 методов)
 
 ## `org.telegram.messenger.AuthTokensHelper`
 - `static addLogOutToken(TLRPC.TL_auth_loggedOut response)` -> `void`
@@ -13,10 +13,14 @@
 - `onBind(Intent intent)` -> `IBinder`
 
 ## `org.telegram.messenger.AuthenticatorService$Authenticator`
+- `addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType, String[] requiredFeatures, Bundle options)` -> `Bundle`
 - `confirmCredentials(AccountAuthenticatorResponse response, Account account, Bundle options)` -> `Bundle`
 - `editProperties(AccountAuthenticatorResponse response, String accountType)` -> `Bundle`
 - `getAccountRemovalAllowed(AccountAuthenticatorResponse response, Account account)` -> `Bundle`
+- `getAuthToken(AccountAuthenticatorResponse response, Account account, String authTokenType, Bundle options)` -> `Bundle`
 - `getAuthTokenLabel(String authTokenType)` -> `String`
+- `hasFeatures(AccountAuthenticatorResponse response, Account account, String[] features)` -> `Bundle`
+- `updateCredentials(AccountAuthenticatorResponse response, Account account, String authTokenType, Bundle options)` -> `Bundle`
 
 ## `org.telegram.messenger.RichMessageLayout$RichTextWithAuthorBlock`
 - `appendAccessibilityText(SpannableStringBuilder sb)` -> `void`

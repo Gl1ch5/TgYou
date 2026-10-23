@@ -319,7 +319,8 @@ public class ModsActivity extends BaseFragment {
 
     private void buildCreate() {
         simple(T_HEADER, "Мод с помощью нейросети", null, null);
-        Row copy = simple(T_AI, "Скопировать промпт для нейросети", "Вставьте его в нейросеть и опишите нужный мод", this::copyPrompt);
+        simple(T_ACTION, "Режим промпта", com.tgyou.mods.AiPrompt.title(), this::pickPromptMode);
+        Row copy = simple(T_AI, "Скопировать промпт для нейросети", "Режим: " + com.tgyou.mods.AiPrompt.title() + ". Вставьте его в нейросеть и опишите нужный мод", this::copyPrompt);
         copy.icon = R.drawable.msg_bot;
         copy.color = 0xFF8C58F6;
         Row paste = simple(T_AI, "Вставить мод из буфера", "Готовый файл от нейросети — одним нажатием", this::pasteMod);
@@ -398,13 +399,32 @@ public class ModsActivity extends BaseFragment {
         }
     }
 
+    private void pickPromptMode() {
+        if (getParentActivity() == null) {
+            return;
+        }
+        String[][] modes = com.tgyou.mods.AiPrompt.MODES;
+        CharSequence[] items = new CharSequence[modes.length];
+        for (int i = 0; i < modes.length; i++) {
+            items[i] = modes[i][1] + " — " + modes[i][2];
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(getParentActivity());
+        builder.setTitle("Режим промпта");
+        builder.setItems(items, (d, which) -> {
+            com.tgyou.mods.AiPrompt.select(which);
+            rebuild();
+        });
+        builder.setNegativeButton("Отмена", null);
+        showDialog(builder.create());
+    }
+
     private void copyPrompt() {
         Context context = getParentActivity();
-        try (InputStream in = context.getAssets().open("mod-sdk/AI_PROMPT.md")) {
-            String text = new String(com.tgyou.mods.ModStore.readAll(in), "UTF-8");
+        try {
+            String text = com.tgyou.mods.AiPrompt.build(context);
             android.content.ClipboardManager cm = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
             cm.setPrimaryClip(android.content.ClipData.newPlainText("TgYou prompt", text));
-            toast("Промпт скопирован. Вставьте его в нейросеть и допишите задачу после «ЗАДАЧА:»");
+            toast("Промпт (" + com.tgyou.mods.AiPrompt.title() + ") скопирован. Вставьте его в нейросеть и допишите задачу после «ЗАДАЧА:»");
         } catch (Throwable t) {
             toast("Не удалось скопировать промпт: " + t.getMessage());
         }

@@ -1,4 +1,4 @@
-# function / stories (284 методов)
+# function / stories (286 методов)
 
 ## `org.telegram.messenger.SendMessagesHelper$ImportingHistory`
 - `getTotalCount()` -> `long`
@@ -416,6 +416,10 @@
 
 ## `org.telegram.ui.Stories.recorder.StoryRecorder$WindowView$GestureListener`
 - `hasDoubleTap(MotionEvent e)` -> `boolean`
+
+## `org.telegram.ui.Stories.recorder.TimelineView$WaveformPath`
+- `check(float start, float left, float right, float audioSelected, long scrollDuration, float audioHeight, float maxBar, float bottom, AudioWaveformLoader waveform)` -> `void`
+- `check(float start, float left, float right, float audioSelected, float audioHeight, float maxBar, float bottom, ArrayList<AudioWaveformLoader> waveforms)` -> `void`
 
 ## `org.telegram.ui.Stories.recorder.Weather`
 - `static fetch(boolean withProgress, Utilities.Callback<State> whenFetched)` -> `void`

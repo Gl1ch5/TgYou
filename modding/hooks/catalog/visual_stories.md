@@ -1,4 +1,4 @@
-# visual / stories (2016 методов)
+# visual / stories (2021 методов)
 
 ## `org.telegram.ui.Adapters.MessagesSearchAdapter$StoriesView`
 - `onDraw(Canvas canvas)` -> `void`
@@ -145,6 +145,7 @@
 - `static getDefaultTiers()` -> `int[]`
 - `static getMaxLength(int currentAccount)` -> `int`
 - `static getTierOption(int currentAccount, int stars, int option)` -> `int`
+- `static open(Context context, int currentAccount, long dialogId, String dialogName, TLRPC.TL_textWithEntities text, long minStars, long currentStars, Utilities.Callback<Long> onStarsSelected, Theme.ResourcesProvider resourcesProvider)` -> `void`
 - `static parseTiers(TLRPC.TL_jsonArray arr)` -> `int[]`
 - `static parseTiersString(String str)` -> `int[]`
 - `static tiersEqual(int[] a, int[] b)` -> `boolean`
@@ -201,6 +202,7 @@
 - `onTouchEvent(MotionEvent ev)` -> `boolean`
 - `static openDeleteMessage(Context context, long dialogId, Utilities.Callback3<Boolean, Boolean, Boolean> done)` -> `void`
 - `openStarsSheet(boolean disabledPaidFeatures)` -> `void`
+- `push(int date, int id, boolean fromAdmin, long dialogId, TLRPC.TL_textWithEntities text, long stars, boolean isHistory)` -> `void`
 - `setAllowTouches(boolean allowTouches)` -> `void`
 - `setCollapsed(boolean collapsed, boolean animated)` -> `void`
 - `setKeyboardOffset(float t, float offset, float finalOffset)` -> `void`
@@ -844,6 +846,9 @@
 - `set(TLRPC.TL_error error)` -> `void`
 - `setOnClickListener(@Nullable OnClickListener l)` -> `void`
 
+## `org.telegram.ui.Stories.StoryLinesDrawable`
+- `draw(Canvas canvas, int fullWidth, int index, float progress, int count, float hideInterfaceAlpha, float alpha, boolean buffering, boolean zoom, float zoomProgress)` -> `void`
+
 ## `org.telegram.ui.Stories.StoryMediaAreasView`
 - `closeHint()` -> `void`
 - `drawChild(Canvas canvas, View child, long drawingTime)` -> `boolean`
@@ -1047,6 +1052,10 @@
 - `setList(StoriesController.BotPreviewsList list)` -> `void`
 - `setVisibleHeight(int height)` -> `void`
 - `updateSelection(boolean animated)` -> `void`
+
+## `org.telegram.ui.Stories.bots.BotPreviewsEditContainer$BotPreviewsEditLangContainer$FooterView`
+- `set(CharSequence text, CharSequence buttonText, Runnable buttonListener)` -> `void`
+- `set(CharSequence text, CharSequence buttonText, Runnable buttonListener, CharSequence button2Text, Runnable button2Listener)` -> `void`
 
 ## `org.telegram.ui.Stories.bots.BotPreviewsEditContainer$BotPreviewsEditLangContainer$StoriesAdapter`
 - `getItemCount()` -> `int`

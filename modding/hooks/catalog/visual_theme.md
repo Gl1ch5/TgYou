@@ -1,4 +1,4 @@
-# visual / theme (2698 методов)
+# visual / theme (2710 методов)
 
 ## `org.telegram.messenger.MessagesController$PeerColor`
 - `getColor(int i, Theme.ResourcesProvider resourcesProvider)` -> `int`
@@ -129,6 +129,7 @@
 - `setTranslationY(float translationY)` -> `void`
 - `setUseContainerForTitles()` -> `void`
 - `setupGlass(BlurredBackgroundDrawableViewFactory factory, BlurredBackgroundColorProvider colorProvider)` -> `void`
+- `setupGlass(BlurredBackgroundDrawableViewFactory factory, BlurredBackgroundColorProvider colorProvider, boolean isForum)` -> `void`
 - `shouldClipChild(View child)` -> `boolean`
 - `showActionMode()` -> `void`
 - `showActionMode(boolean animated)` -> `void`
@@ -1543,6 +1544,8 @@
 - `static changeColorAccent(int color)` -> `int`
 - `static changeColorAccent(float[] baseHsv, float[] accentHsv, int color, boolean isDarkTheme, int fallback)` -> `int`
 - `static clearPreviousTheme()` -> `void`
+- `static createBackgroundDrawable(ThemeInfo currentTheme, SparseIntArray currentColors, String wallpaperLink, int prevoiusPhase, boolean local)` -> `BackgroundDrawableSettings`
+- `static createBackgroundDrawable(ThemeInfo currentTheme, OverrideWallpaperInfo overrideWallpaper, SparseIntArray currentColors, File wallpaperFile, String themedWallpaperLink, int themedWallpaperFileOffset, int intensity, int previousPhase, boolean defaultTheme, boolean hasPreviousTheme, boolean isApplyingAccent, boolean wallpaperMotion, TLRPC.Document wallpaperDocument, boolean local)` -> `BackgroundDrawableSettings`
 - `static createChatResources(Context context, boolean fontsOnly)` -> `void`
 - `static createCircleDrawable(int size, int color)` -> `ShapeDrawable`
 - `static createCircleDrawable(int size, int colorTop, int colorBottom)` -> `ShapeDrawable`
@@ -2109,6 +2112,7 @@
 - `onContainerTouchEvent(MotionEvent event)` -> `boolean`
 - `onContainerTranslationYChanged(float y)` -> `void`
 - `onCreate(Bundle savedInstanceState)` -> `void`
+- `static openGalleryForBackground(Activity activity, BaseFragment fragment, long dialogId, Theme.ResourcesProvider resourcesProvider, Utilities.Callback<TLRPC.WallPaper> onSet, ThemePreviewActivity.DayNightSwitchDelegate toggleTheme, TL_stories.TL_premium_boostsStatus cachedBoostsStatus)` -> `void`
 - `setupLightDarkTheme(boolean isDark)` -> `void`
 
 ## `org.telegram.ui.Components.ChatThemeBottomSheet$Adapter`
@@ -2475,6 +2479,7 @@
 
 ## `org.telegram.ui.Components.blur3.BlurredBackgroundWithFadeDrawable`
 - `draw(@NonNull Canvas canvas)` -> `void`
+- `static fillAlphaGradientColors(int[] outColors, int baseColor, int alphaStart, int alphaEnd, Interpolator interpolator)` -> `void`
 - `getAlpha()` -> `int`
 - `getOpacity()` -> `int`
 - `onBoundsChange(@NonNull Rect bounds)` -> `void`
@@ -2509,6 +2514,9 @@
 ## `org.telegram.ui.Components.blur3.DownscaleScrollableNoiseSuppressor$SourcePart`
 - `invalidate()` -> `void`
 
+## `org.telegram.ui.Components.blur3.LiquidGlassEffect`
+- `update(float left, float top, float right, float bottom, float radiusLeftTop, float radiusRightTop, float radiusRightBottom, float radiusLeftBottom, float thickness, float intensity, float index, int foregroundColor)` -> `void`
+
 ## `org.telegram.ui.Components.blur3.RenderNodeWithHash`
 - `invalidate()` -> `void`
 - `updateDisplayListIfNeeded()` -> `void`
@@ -2535,6 +2543,9 @@
 
 ## `org.telegram.ui.Components.blur3.drawable.BlurredBackgroundDrawable`
 - `drawSource(Canvas canvas, BlurredBackgroundSource source)` -> `void`
+- `static drawStroke(Canvas canvas, float left, float top, float right, float bottom, float[] radii, float strokeWidth, boolean isTop, Paint paint)` -> `void`
+- `static drawStroke(Canvas canvas, RectF rect, float radii, float strokeWidth, boolean isTop, Paint paint)` -> `void`
+- `static drawStroke(Canvas canvas, float left, float top, float right, float bottom, float radii, float strokeWidth, boolean isTop, Paint paint)` -> `void`
 - `enableInAppKeyboardOptimization()` -> `void`
 - `getAlpha()` -> `int`
 - `getOpacity()` -> `int`
@@ -2711,7 +2722,10 @@
 - `static wrapCenteredDrawable(Drawable drawable, int w, int h)` -> `Drawable`
 
 ## `org.telegram.ui.Components.blur3.utils.NinePatchBuilder`
+- `static createNinePatch(Bitmap[] bitmapRef, int fillColor, float[] radii, float shadowRadiusPx, int shadowColor, float shadowDxPx, float shadowDyPx, int centralColorHint)` -> `NinePatchDrawable`
+- `static createNinePatch(Bitmap[] bitmapRef, float[] radii, float shadowRadiusPx, float shadowDxPx, float shadowDyPx, int centralColorHint, NinePathRenderer renderer)` -> `NinePatchDrawable`
 - `static createNinePatch(Bitmap bitmap, Rect padding, int centerX, int centerY)` -> `NinePatchDrawable`
+- `static createNinePatchChunk(int x1, int x2, int y1, int y2, int padLeft, int padTop, int padRight, int padBottom, int centralColorHint)` -> `ByteBuffer`
 
 ## `org.telegram.ui.Components.glass.GlassTabView`
 - `static createAttachBotTab(Context context, Theme.ResourcesProvider resourcesProvider)` -> `GlassTabView`

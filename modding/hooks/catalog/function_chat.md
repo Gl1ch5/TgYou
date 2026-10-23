@@ -1,4 +1,4 @@
-# function / chat (755 методов)
+# function / chat (758 методов)
 
 ## `org.telegram.messenger.MessageObject`
 - `addEntitiesToText(CharSequence text, boolean photoViewer, boolean useManualParse)` -> `boolean`
@@ -8,6 +8,7 @@
 - `static addLinks(boolean isOut, CharSequence messageText, boolean botCommands, boolean check)` -> `void`
 - `static addLinks(boolean isOut, CharSequence messageText, boolean botCommands, boolean check, boolean internalOnly)` -> `void`
 - `addPaidReactions(int amount, boolean chosen, long peer)` -> `void`
+- `static addPaidReactions(int currentAccount, TLRPC.MessageReactions reactions, int amount, long peer, boolean chosen)` -> `void`
 - `static addPhoneLinks(CharSequence messageText)` -> `void`
 - `static addUrlsByPattern(boolean isOut, CharSequence charSequence, boolean botCommands, int patternType, int duration, boolean check)` -> `void`
 - `applyMediaExistanceFlags(int flags)` -> `void`
@@ -792,6 +793,7 @@
 ## `org.telegram.ui.Components.ChatAttachAlertGramLayout`
 - `hasCustomBackground()` -> `boolean`
 - `hasQueuedSend()` -> `boolean`
+- `onContainerTranslationUpdated(float currentPanTranslationY, float progress, boolean keyboardVisible)` -> `void`
 - `shouldRestoreKeyboardOnDismiss()` -> `boolean`
 
 ## `org.telegram.ui.Components.ChatAttachAlertLocationLayout`
@@ -866,3 +868,6 @@
 - `requestLayout()` -> `void`
 - `sendSelectedItems(boolean notify, int scheduleDate, int scheduleRepeatPeriod, long effectId, boolean invertMedia)` -> `boolean`
 - `shouldHideBottomButtons()` -> `boolean`
+
+## `org.telegram.ui.recyclerview.ChatListItemAnimator`
+- `setOnSnapMessage(Utilities.Callback0Return<Boolean> supportsThanosEffectContainer, Utilities.Callback0Return<ThanosEffect> getThanosEffectContainer)` -> `void`

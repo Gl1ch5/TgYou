@@ -1,4 +1,4 @@
-# visual / dialogs (399 методов)
+# visual / dialogs (401 методов)
 
 ## `org.telegram.ui.ActionBar.AlertDialog$AlertDialogCell`
 - `getThemedColor(int key)` -> `int`
@@ -462,6 +462,8 @@
 
 ## `org.telegram.ui.community.CommunityUtils$DialogCellFactory`
 - `static asCell(MessagesController.CommunityPeerDialog peerDialog, DialogCell.DialogCellDelegate delegate)` -> `UItem`
+- `static asCell(TLRPC.User user, DialogCell.DialogCellDelegate delegate)` -> `UItem`
+- `static asCell(TLRPC.Chat chat, DialogCell.DialogCellDelegate delegate)` -> `UItem`
 - `bindView(View view, UItem item, boolean divider, UniversalAdapter adapter, UniversalRecyclerView listView)` -> `void`
 - `contentsEquals(UItem a, UItem b)` -> `boolean`
 - `createView(Context context, RecyclerListView listView, int currentAccount, int classGuid, Theme.ResourcesProvider resourcesProvider)` -> `DialogCell`

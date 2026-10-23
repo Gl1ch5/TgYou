@@ -1,4 +1,4 @@
-# function / theme (419 методов)
+# function / theme (421 методов)
 
 ## `org.telegram.messenger.ChatThemeController`
 - `clearCache()` -> `void`
@@ -66,6 +66,7 @@
 
 ## `org.telegram.messenger.MessagesController$PeerColors`
 - `colorsAvailable(int lvl, boolean isGroup)` -> `int`
+- `static fromJSON(int type, TLRPC.TL_jsonObject peer_colors, TLRPC.TL_jsonObject dark_peer_colors, TLRPC.TL_jsonArray peer_colors_available)` -> `PeerColors`
 - `static fromString(int type, String str)` -> `PeerColors`
 - `static fromTL(int type, TLRPC.TL_help_peerColors tl)` -> `PeerColors`
 - `maxLevel()` -> `int`
@@ -660,3 +661,6 @@
 - `removeUnordered(int index)` -> `void`
 - `set(GlassPositionsArray other)` -> `void`
 - `size()` -> `int`
+
+## `org.telegram.utils.glass.positions.GlassPositionsMerger`
+- `merge(GlassPositionsArray positions, GlassPositionsArray output)` -> `void`

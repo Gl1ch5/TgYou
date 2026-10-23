@@ -115,7 +115,7 @@ context = ApplicationLoader.applicationContext
 
 # 4а. КАТАЛОГ ВСЕХ ХУКОВ (используй, если можешь открывать ссылки)
 
-Все 44 476 публичных методов Telegram, за которые можно зацепиться через `api.hook_by_name`, лежат в репозитории (классы с полными именами, параметры, тип возврата, вид и категория). Если у тебя есть доступ в интернет, ОТКРОЙ нужный файл и выбери точные имена, а не придумывай их:
+Все 44 781 публичных методов Telegram, за которые можно зацепиться через `api.hook_by_name`, лежат в репозитории (классы с полными именами, параметры, тип возврата, вид и категория). Если у тебя есть доступ в интернет, ОТКРОЙ нужный файл и выбери точные имена, а не придумывай их:
 - Оглавление и число методов: https://raw.githubusercontent.com/Gl1ch5/TgYou/main/modding/hooks/catalog/README.md
 - Всё одним файлом для программного поиска (JSON; поля `class, method, params, returns, kind, category, static`): https://raw.githubusercontent.com/Gl1ch5/TgYou/main/modding/hooks/catalog/hooks.json
 - По категориям (база для ссылки `https://raw.githubusercontent.com/Gl1ch5/TgYou/main/modding/hooks/catalog/<вид>_<категория>.md`), где `вид` = `visual` (рисование, вёрстка, цвета, тексты в вью) или `function` (логика: отправка, сеть, обновления, настройки), а `категория` = `chat`, `dialogs`, `media`, `call`, `profile`, `settings`, `theme`, `network`, `notifications`, `stories`, `emoji`, `login`, `other`. Например: `.../function_chat.md`, `.../visual_dialogs.md`, `.../function_network.md`.
@@ -304,6 +304,8 @@ def on_load(api):
 def on_load(api):
     ...
 ```
+
+{{MODE}}
 
 # 9. ЗАДАЧА ПОЛЬЗОВАТЕЛЯ
 

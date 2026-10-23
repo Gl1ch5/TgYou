@@ -1,4 +1,4 @@
-# visual / emoji (1383 методов)
+# visual / emoji (1384 методов)
 
 ## `org.telegram.messenger.CompoundEmoji`
 - `static setPlaceholderColor(int color)` -> `void`
@@ -1334,6 +1334,7 @@
 - `static calculateWindowInsets(View view)` -> `WindowInsetsCompat`
 - `static calculateWindowInsets(WindowInsetsCompat rootInsets, View view, View rootView)` -> `WindowInsetsCompat`
 - `onEnd(@NonNull WindowInsetsAnimationCompat animation)` -> `void`
+- `onProgress(@NonNull WindowInsetsCompat insets, @NonNull List<WindowInsetsAnimationCompat> runningAnimations)` -> `WindowInsetsCompat`
 - `subscribeToWindowInsetsAnimation(Listener listener)` -> `void`
 - `unsubscribeFromWindowInsetsAnimation(Listener listener)` -> `void`
 

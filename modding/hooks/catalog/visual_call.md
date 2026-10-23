@@ -1,4 +1,4 @@
-# visual / call (878 методов)
+# visual / call (882 методов)
 
 ## `org.telegram.tgnet.tl.TL_keyboard$TL_inlineButtonTypeCallback`
 - `serializeToStream(OutputSerializedData stream)` -> `void`
@@ -329,6 +329,7 @@
 - `getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull ViewHolder viewHolder)` -> `int`
 - `onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive)` -> `void`
 - `onMove(@NonNull RecyclerView recyclerView, @NonNull ViewHolder viewHolder, @NonNull ViewHolder target)` -> `boolean`
+- `onMoved(@NonNull RecyclerView recyclerView, @NonNull ViewHolder viewHolder, int fromPos, @NonNull ViewHolder target, int toPos, int x, int y)` -> `void`
 - `onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState)` -> `void`
 - `onSwiped(@NonNull ViewHolder viewHolder, int direction)` -> `void`
 
@@ -364,6 +365,9 @@
 ## `org.telegram.ui.Components.conference.message.GroupCallMessageCell$Delegate`
 - `didClickAvatar(GroupCallMessageCell cell, GroupCallMessage message, float x, float y)` -> `default void`
 - `didClickSenderName(GroupCallMessageCell cell, GroupCallMessage message)` -> `default void`
+
+## `org.telegram.ui.Components.conference.message.GroupCallMessageCell$Layout`
+- `static build(int width, int paddingLeft, int paddingRight, SpoilersTextView textView, ReactionsLayoutInBubble.VisibleReaction reaction)` -> `Layout`
 
 ## `org.telegram.ui.Components.conference.message.GroupCallMessagesAdapter`
 - `attach()` -> `void`
@@ -922,6 +926,7 @@
 - `onStateChanged(int state)` -> `void`
 - `openShareConferenceLink()` -> `void`
 - `setAudioOutputValue(int value)` -> `void`
+- `setOldRows(int encryptionRow, int addMemberRow, int usersStartRow, int usersEndRow, int invitedStartRow, int invitedEndRow, int shadyJoinStartRow, int shadyJoinEndRow, int shadyLeftStartRow, int shadyLeftEndRow, int usersVideoStartRow, int usersVideoEndRow, int videoDividerRow, int videoNotAvailableRow, int conferenceAddPeopleRow, int conferenceShareLinkRow)` -> `void`
 - `show()` -> `void`
 
 ## `org.telegram.ui.GroupCallActivity$AvatarUpdaterDelegate`
@@ -1022,6 +1027,7 @@
 ## `org.telegram.ui.GroupCallSheet`
 - `static show(Context context, int currentAccount, long dialogId, String slug, Browser.Progress progress)` -> `void`
 - `static show(Context context, int currentAccount, long dialogId, TLRPC.InputGroupCall inputGroupCall, Browser.Progress progress)` -> `void`
+- `static show(Context context, int currentAccount, long dialogId, TLRPC.InputGroupCall inputGroupCall, TLRPC.GroupCall groupCall, ArrayList<TLRPC.GroupCallParticipant> participants)` -> `void`
 
 ## `org.telegram.ui.GroupCallSheet$UserView`
 - `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`

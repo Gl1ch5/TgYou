@@ -1,4 +1,4 @@
-# function / other (5285 методов)
+# function / other (5339 методов)
 
 ## `org.telegram.DispatchQueuePriority`
 - `cancelRunnable(Runnable runnable)` -> `void`
@@ -168,6 +168,7 @@
 - `static copyFile(InputStream sourceFile, OutputStream out)` -> `boolean`
 - `static copyFile(File sourceFile, File destFile)` -> `boolean`
 - `static copyFileSafe(File sourceFile, File destFile)` -> `boolean`
+- `static createCalendarEvent(Activity activity, long timestampMillis, String title, String description, boolean allDay)` -> `void`
 - `static createEmptyFile(File f)` -> `void`
 - `static decodeQuotedPrintable(final byte[] bytes)` -> `byte[]`
 - `static distance(float x1, float y1, float x2, float y2)` -> `float`
@@ -2662,6 +2663,8 @@
 - `checkQuoteLine(TLRPC.User currentUser, TLRPC.Chat currentChat)` -> `void`
 - `collectMediaBlocks(List<TL_iv.PageBlock> out)` -> `void`
 - `static computeGrouped(float[] ratios)` -> `MessageObject.GroupedMessagePosition[]`
+- `static createEditorButtonSpan(int currentAccount, int maxWidth, Theme.ResourcesProvider resourcesProvider, TL_iv.textButton textButton)` -> `RichButtonSpan`
+- `static createEditorPageButton(int currentAccount, int maxWidth, Theme.ResourcesProvider resourcesProvider, TL_keyboard.PageButton pageButton, Runnable invalidateRunnable)` -> `RichButton`
 - `detach(View view)` -> `void`
 - `findLink(CharacterStyle link)` -> `FoundLink`
 - `findMediaImageReceiver(TL_iv.PageBlock target, int[] outOffset)` -> `ImageReceiver`
@@ -3102,6 +3105,7 @@
 - `createReplyInput(int replyToMsgId)` -> `TLRPC.InputReplyTo`
 - `createReplyInput(TLRPC.InputPeer sendToPeer, int replyToMsgId, int topMessageId, ChatActivity.ReplyQuote replyQuote)` -> `TLRPC.InputReplyTo`
 - `createReplyInput(TLRPC.TL_messageReplyHeader replyHeader)` -> `TLRPC.InputReplyTo`
+- `createSendingGramTransfer(TLRPC.User user, String address, long amount, String comment, boolean commentEncrypted, boolean commentEncryptedPreparing, long randomId)` -> `MessageObject`
 - `static createVideoThumbnail(String filePath, int kind)` -> `Bitmap`
 - `static createVideoThumbnailAtTime(String filePath, long time)` -> `Bitmap`
 - `static createVideoThumbnailAtTime(String filePath, long time, int[] orientation, boolean precise)` -> `Bitmap`
@@ -3181,8 +3185,10 @@
 - `sendGame(TLRPC.InputPeer peer, TLRPC.TL_inputMediaGame game, long random_id, final long taskId)` -> `void`
 - `sendMessage(ArrayList<MessageObject> messages, final long peer, boolean forwardFromMyName, boolean hideCaption, boolean notify, int scheduleDate, long payStars)` -> `int`
 - `sendMessage(ArrayList<MessageObject> messages, final long peer, boolean forwardFromMyName, boolean hideCaption, boolean notify, int scheduleDate, MessageObject replyToTopMsg, int video_timestamp, long payStars)` -> `int`
+- `sendMessage(ArrayList<MessageObject> messages, final long peer, boolean forwardFromMyName, boolean hideCaption, boolean notify, int scheduleDate, int scheduleRepeatPeriod, MessageObject replyToTopMsg, int video_timestamp, long payStars, long monoForumPeerId, MessageSuggestionParams suggestionParams)` -> `int`
 - `sendMessage(SendMessageParams sendMessageParams)` -> `void`
 - `sendNotificationCallback(long dialogId, int msgId, byte[] data)` -> `void`
+- `sendReaction(MessageObject messageObject, ArrayList<ReactionsLayoutInBubble.VisibleReaction> visibleReactions, ReactionsLayoutInBubble.VisibleReaction addedReaction, boolean big, boolean addToRecent, BaseFragment parentFragment, Runnable callback)` -> `void`
 - `sendScreenshotMessage(TLRPC.User user, int messageId, TLRPC.Message resendMessage)` -> `void`
 - `sendSticker(TLRPC.Document document, String query, long peer, MessageObject replyToMsg, MessageObject replyToTopMsg, TL_stories.StoryItem storyItem, ChatActivity.ReplyQuote quote, MessageObject.SendAnimationData sendAnimationData, boolean notify, int scheduleDate, int scheduleRepeatPeriod, boolean updateStickersOrder, Object parentObject, SendMessageChatArguments sendMessageChatArguments, long stars, long monoForumPeerId, MessageSuggestionParams suggestionParams)` -> `void`
 - `sendSticker(TLRPC.Document document, String query, long peer, CharSequence caption, VideoEditedInfo videoEditedInfo, MessageObject replyToMsg, MessageObject replyToTopMsg, TL_stories.StoryItem storyItem, ChatActivity.ReplyQuote quote, MessageObject.SendAnimationData sendAnimationData, boolean notify, int scheduleDate, int scheduleRepeatPeriod, boolean updateStickersOrder, Object parentObject, SendMessageChatArguments sendMessageChatArguments, long stars, long monoForumPeerId, MessageSuggestionParams suggestionParams)` -> `void`
@@ -3858,7 +3864,10 @@
 ## `org.telegram.messenger.support.JobIntentService`
 - `dequeueWork()` -> `GenericWorkItem`
 - `doStopCurrentWork()` -> `boolean`
+- `static enqueueWork(@NonNull Context context, @NonNull Class cls, int jobId, @NonNull Intent work)` -> `void`
+- `static enqueueWork(@NonNull Context context, @NonNull ComponentName component, int jobId, @NonNull Intent work)` -> `void`
 - `ensureProcessorRunningLocked(boolean reportStarted)` -> `void`
+- `static getWorkEnqueuer(Context context, ComponentName cn, boolean hasJobId, int jobId)` -> `WorkEnqueuer`
 - `isStopped()` -> `boolean`
 - `onBind(@NonNull Intent intent)` -> `IBinder`
 - `onCreate()` -> `void`
@@ -3951,6 +3960,7 @@
 - `static connectAndInitialize(Context context, String packageName)` -> `boolean`
 - `extraCommand(String commandName, Bundle args)` -> `Bundle`
 - `static getPackageName(Context context, @Nullable List<String> packages)` -> `String`
+- `static getPackageName(Context context, @Nullable List<String> packages, boolean ignoreDefault)` -> `String`
 - `newSession(final CustomTabsCallback callback)` -> `CustomTabsSession`
 - `warmup(long flags)` -> `boolean`
 
@@ -3964,11 +3974,17 @@
 ## `org.telegram.messenger.support.customtabs.CustomTabsIntent$Builder`
 - `addDefaultShareMenuItem()` -> `Builder`
 - `addMenuItem(@NonNull String label, @NonNull PendingIntent pendingIntent)` -> `Builder`
+- `addToolbarItem(int id, @NonNull Bitmap icon, @NonNull String description, PendingIntent pendingIntent)` -> `Builder`
 - `build()` -> `CustomTabsIntent`
 - `enableUrlBarHiding()` -> `Builder`
+- `setActionButton(@NonNull Bitmap icon, @NonNull String description, @NonNull PendingIntent pendingIntent, boolean shouldTint)` -> `Builder`
+- `setActionButton(@NonNull Bitmap icon, @NonNull String description, @NonNull PendingIntent pendingIntent)` -> `Builder`
 - `setCloseButtonIcon(@NonNull Bitmap icon)` -> `Builder`
+- `setExitAnimations(@NonNull Context context, @AnimRes int enterResId, @AnimRes int exitResId)` -> `Builder`
 - `setInstantAppsEnabled(boolean enabled)` -> `Builder`
+- `setSecondaryToolbarViews(@NonNull RemoteViews remoteViews, @Nullable int[] clickableIDs, @Nullable PendingIntent pendingIntent)` -> `Builder`
 - `setShowTitle(boolean showTitle)` -> `Builder`
+- `setStartAnimations(@NonNull Context context, @AnimRes int enterResId, @AnimRes int exitResId)` -> `Builder`
 
 ## `org.telegram.messenger.support.customtabs.CustomTabsService`
 - `cleanUpSession(CustomTabsSessionToken sessionToken)` -> `boolean`
@@ -3985,6 +4001,7 @@
 - `postMessage(String message, Bundle extras)` -> `int`
 - `requestPostMessageChannel(Uri postMessageOrigin)` -> `boolean`
 - `setActionButton(@NonNull Bitmap icon, @NonNull String description)` -> `boolean`
+- `setSecondaryToolbarViews(@Nullable RemoteViews remoteViews, @Nullable int[] clickableIDs, @Nullable PendingIntent pendingIntent)` -> `boolean`
 - `setToolbarItem(int id, @NonNull Bitmap icon, @NonNull String description)` -> `boolean`
 
 ## `org.telegram.messenger.support.customtabs.CustomTabsSessionToken`
@@ -4048,13 +4065,16 @@
 - `onServiceDisconnected(ComponentName name)` -> `void`
 
 ## `org.telegram.messenger.support.fingerprint.FingerprintManagerCompat`
+- `authenticate(@Nullable CryptoObject crypto, int flags, @Nullable CancellationSignal cancel, @NonNull AuthenticationCallback callback, @Nullable Handler handler)` -> `void`
 - `static from(Context context)` -> `FingerprintManagerCompat`
 - `hasEnrolledFingerprints()` -> `boolean`
 - `isHardwareDetected()` -> `boolean`
 
 ## `org.telegram.messenger.support.fingerprint.FingerprintManagerCompat$Api23FingerprintManagerCompatImpl`
+- `authenticate(Context context, CryptoObject crypto, int flags, CancellationSignal cancel, AuthenticationCallback callback, Handler handler)` -> `void`
 - `hasEnrolledFingerprints(Context context)` -> `boolean`
 - `isHardwareDetected(Context context)` -> `boolean`
+- `static unwrapCryptoObject(FingerprintManagerCompatApi23.CryptoObject cryptoObject)` -> `CryptoObject`
 
 ## `org.telegram.messenger.support.fingerprint.FingerprintManagerCompat$CryptoObject`
 - `getCipher()` -> `Cipher`
@@ -4062,10 +4082,12 @@
 - `getSignature()` -> `Signature`
 
 ## `org.telegram.messenger.support.fingerprint.FingerprintManagerCompat$LegacyFingerprintManagerCompatImpl`
+- `authenticate(Context context, CryptoObject crypto, int flags, CancellationSignal cancel, AuthenticationCallback callback, Handler handler)` -> `void`
 - `hasEnrolledFingerprints(Context context)` -> `boolean`
 - `isHardwareDetected(Context context)` -> `boolean`
 
 ## `org.telegram.messenger.support.fingerprint.FingerprintManagerCompatApi23`
+- `static authenticate(Context context, CryptoObject crypto, int flags, Object cancel, AuthenticationCallback callback, Handler handler)` -> `void`
 - `static hasEnrolledFingerprints(Context context)` -> `boolean`
 - `static isHardwareDetected(Context context)` -> `boolean`
 
@@ -4091,6 +4113,7 @@
 - `static getDateTimeInstance(final int dateStyle, final int timeStyle)` -> `FastDateFormat`
 - `static getDateTimeInstance(final int dateStyle, final int timeStyle, final Locale locale)` -> `FastDateFormat`
 - `static getDateTimeInstance(final int dateStyle, final int timeStyle, final TimeZone timeZone)` -> `FastDateFormat`
+- `static getDateTimeInstance(final int dateStyle, final int timeStyle, final TimeZone timeZone, final Locale locale)` -> `FastDateFormat`
 - `static getInstance()` -> `FastDateFormat`
 - `static getInstance(final String pattern)` -> `FastDateFormat`
 - `static getInstance(final String pattern, final TimeZone timeZone)` -> `FastDateFormat`
@@ -4343,6 +4366,7 @@
 - `quickReject(@NonNull RectF rect)` -> `boolean`
 - `quickReject(@NonNull RectF rect, @NonNull Canvas.EdgeType type)` -> `boolean`
 - `quickReject(float left, float top, float right, float bottom)` -> `boolean`
+- `quickReject(float left, float top, float right, float bottom, @NonNull Canvas.EdgeType type)` -> `boolean`
 - `quickReject(@NonNull Path path)` -> `boolean`
 - `quickReject(@NonNull Path path, @NonNull Canvas.EdgeType type)` -> `boolean`
 - `replayAll(@NonNull Canvas target)` -> `void`
@@ -4371,6 +4395,9 @@
 
 ## `org.telegram.messenger.utils.DrawableUtils`
 - `static setBounds(Drawable drawable, float x, float y, int gravity)` -> `void`
+- `static setBounds(ImageReceiver drawable, float x, float y, int width, int height, int gravity)` -> `void`
+- `static setBounds(Drawable drawable, float x, float y, int width, int height, int gravity)` -> `void`
+- `static setBounds(Rect rect, float x, float y, int width, int height, int gravity)` -> `void`
 - `static setBoundsIncreasePadding(Drawable drawable, RectF bounds)` -> `void`
 - `static setBoundsIncreasePadding(Drawable drawable, Rect bounds)` -> `void`
 - `static setBoundsIncreasePadding(Drawable drawable, int left, int top, int right, int bottom)` -> `void`
@@ -4428,6 +4455,9 @@
 
 ## `org.telegram.messenger.utils.RadiiUtils`
 - `static radiiAreSame(float[] radii)` -> `boolean`
+
+## `org.telegram.messenger.utils.RectFMergeBounding`
+- `static mergeOverlapping(List<RectF> positions, int count, List<RectF> output)` -> `int`
 
 ## `org.telegram.messenger.utils.RefreshRateController`
 - `start()` -> `void`
@@ -4664,6 +4694,9 @@
 - `static cutOfNalData(String outputMimeType, ByteBuffer encodedData, MediaCodec.BufferInfo info)` -> `void`
 - `getLastFrameTimestamp()` -> `long`
 
+## `org.telegram.messenger.video.MediaCodecVideoConvertor$ConvertVideoParams`
+- `static of(String videoPath, File cacheFile, long videoOffset, int rotationValue, boolean isSecret, int originalWidth, int originalHeight, int resultWidth, int resultHeight, int framerate, int bitrate, int originalBitrate, long startTime, long endTime, long avatarStartTime, boolean needCompress, long duration, MediaController.VideoConvertorListener callback, VideoEditedInfo info)` -> `ConvertVideoParams`
+
 ## `org.telegram.messenger.video.MediaCodecVideoConvertor$Muxer`
 - `addTrack(MediaFormat format, boolean isAudio)` -> `int`
 - `finishMovie()` -> `void`
@@ -4734,6 +4767,7 @@
 - `isPopupShown()` -> `boolean`
 - `logSponsoredClicked(TLRPC.TL_sponsoredMessage ad)` -> `void`
 - `logSponsoredShown(TLRPC.TL_sponsoredMessage ad)` -> `void`
+- `static make(int currentAccount, long dialogId, int msg_id, BulletinFactory bulletinFactory)` -> `VideoAds`
 - `setPauseOnPopupCallback(Runnable onPopupCallback)` -> `void`
 - `setWaitingPaused(boolean paused)` -> `void`
 - `stop()` -> `void`
@@ -6352,6 +6386,9 @@
 - `isFinished()` -> `boolean`
 - `isRunning()` -> `boolean`
 
+## `org.telegram.ui.NewContactBottomSheet`
+- `static saveContact(Context context, String phone, String firstName, String lastName, String notes, AccountInfo into)` -> `boolean`
+
 ## `org.telegram.ui.PasskeysActivity`
 - `added(TL_account.Passkey passkey)` -> `void`
 
@@ -6455,6 +6492,7 @@
 - `loadTransactions(int type)` -> `void`
 - `processUpdateMonoForumNoPaidException(long channelId, long userId, boolean nopaidMessagesException)` -> `void`
 - `sendPaidReaction(MessageObject messageObject, ChatActivity chatActivity)` -> `StarsController.PendingPaidReactions`
+- `sendPaidReaction(MessageObject messageObject, ChatActivity chatActivity, long amount, boolean affect, boolean checkBalance, Long peer)` -> `StarsController.PendingPaidReactions`
 
 ## `org.telegram.ui.Stars.StarsController$MessageId`
 - `hashCode()` -> `int`
@@ -6552,6 +6590,8 @@
 - `send(TLRPC.User user, String address, long amount, Utilities.Callback<String> whenSent)` -> `void`
 - `send(TLRPC.User user, String address, long amount, String comment, Utilities.Callback<String> whenSent)` -> `void`
 - `send(TLRPC.User user, String address, long amount, String comment, byte[] comment_recipient_public_key, Utilities.Callback<String> whenSent)` -> `void`
+- `send(TLRPC.User user, String address, long amount, String comment, byte[] commentPublicKey, String domain, Utilities.Callback<String> whenSent)` -> `void`
+- `send(TLRPC.User user, String address, long amount, String comment, byte[] commentPublicKey, String domain, Utilities.Callback<String> whenSent, Utilities.Callback<TL_wallet.walletTransaction> whenQueued)` -> `void`
 - `sendNFT(String address, TL_wallet.nftItem collectible, Utilities.Callback<String> whenSent)` -> `void`
 - `sendNFT(TLRPC.User user, String address, TL_wallet.nftItem collectible, Utilities.Callback<String> whenSent)` -> `void`
 - `sendNFT(TLRPC.User user, String address, TL_wallet.nftItem collectible, String comment, Utilities.Callback<String> whenSent)` -> `void`
@@ -6673,6 +6713,7 @@
 
 ## `org.telegram.ui.bots.BotBiometry`
 - `load()` -> `void`
+- `static removeBot(Context context, int currentAccount, long botId)` -> `void`
 - `requestToken(String reason, Utilities.Callback2<Boolean, String> whenDecrypted)` -> `void`
 - `save()` -> `void`
 
@@ -6922,6 +6963,8 @@
 - `static getHighlighted(CharSequence text, String language)` -> `SpannableString`
 - `static getLanguages()` -> `Set<String>`
 - `static getTextSizeDecrement(int codeLength)` -> `int`
+- `static highlight(Spannable text, int start, int end, String language, int type, TextStyleSpan.TextStyleRun style, boolean smallerSize)` -> `void`
+- `static highlightEditable(CharSequence text, String language, Utilities.Callback<SpannableString> whenDone)` -> `void`
 - `static prepare()` -> `void`
 
 ## `org.telegram.utils.code.highlight.CodeHighlighting$CacheKey`
@@ -7006,6 +7049,7 @@
 - `build()` -> `Localization`
 
 ## `org.telegram.utils.proxy.WebProxyConnectionTester`
+- `checkProxy(ProxySettings settings, RequestTimeDelegate delegate, TestImplementation testImplementation)` -> `void`
 - `static getInstance()` -> `WebProxyConnectionTester`
 
 ## `org.telegram.utils.proxy.WebProxyTransport`
@@ -7025,6 +7069,7 @@
 - `onFrameSubmitted(long presentationTimeUs, long submittedNs)` -> `void`
 - `prepare()` -> `Surface`
 - `requestStop()` -> `long`
+- `startRecording(@NonNull Runnable audioReadyListener, @NonNull Runnable videoReadyListener)` -> `void`
 - `stop()` -> `void`
 
 ## `org.telegram.utils.recorder.round.RoundVideoDiagnostics`
@@ -7034,15 +7079,19 @@
 - `log(@NonNull String message)` -> `void`
 
 ## `org.telegram.utils.recorder.round.RoundVideoGlProcessor`
+- `beginCameraSwitch(@NonNull RoundVideoSession.CameraFacing from, @NonNull RoundVideoSession.CameraFacing to)` -> `void`
+- `configureSecondaryInput(@NonNull Size size, int cropSize, boolean timestampRealtime)` -> `void`
 - `getCameraSurface()` -> `Surface`
 - `getSecondaryCameraSurface()` -> `Surface`
 - `onCameraSessionConfigured()` -> `void`
 - `setFirstFrameListener(@Nullable Runnable listener)` -> `void`
 - `setSecondaryInputActive(boolean secondary)` -> `void`
+- `setSecondaryInputActive(boolean secondary, @Nullable Runnable firstSelectedFrameListener)` -> `void`
 - `start()` -> `Surface`
 - `startRecording(long timeOriginNs)` -> `void`
 - `stop()` -> `void`
 - `stopRecordingAt(long presentationTimeUs)` -> `void`
+- `updateInputConfiguration(@NonNull Size size, int cropSize, boolean timestampRealtime)` -> `void`
 
 ## `org.telegram.utils.recorder.round.RoundVideoMp4Writer`
 - `closeForReplacement()` -> `void`
@@ -7050,6 +7099,7 @@
 - `finish()` -> `void`
 - `getFile()` -> `File`
 - `setTrackFormat(boolean video, @NonNull MediaFormat format)` -> `void`
+- `writeSample(boolean video, @NonNull ByteBuffer source, @NonNull MediaCodec.BufferInfo sourceInfo, long timelineOffsetUs)` -> `void`
 
 ## `org.telegram.utils.recorder.round.RoundVideoMp4Writer$TrackTimeline`
 - `add(long sourcePresentationTimeUs, long outputPresentationTimeUs)` -> `void`
@@ -7057,15 +7107,20 @@
 - `startSegment()` -> `void`
 
 ## `org.telegram.utils.recorder.round.RoundVideoOverlayRenderer`
+- `captureSwitchFrame(int cameraTexture, @NonNull float[] textureMatrix, boolean newFrame)` -> `void`
 - `finishCameraSwitch(long frameTimeNs)` -> `void`
 - `getSwitchTargetBlurRadiusPx()` -> `float`
 - `release()` -> `void`
+- `render(int cameraTexture, @NonNull float[] textureMatrix, long frameTimeNs, int outputWidth, int outputHeight)` -> `void`
+- `renderPreview(int cameraTexture, @NonNull float[] textureMatrix, int outputWidth, int outputHeight)` -> `void`
+- `renderSwitch(float oldBlurRadius, float newBlur, float mix, int outputWidth, int outputHeight)` -> `void`
 - `updateInputConfiguration(@NonNull Size inputSize, int sourceCropSize)` -> `void`
 
 ## `org.telegram.utils.recorder.round.RoundVideoOverlayRenderer$Program`
 - `release()` -> `void`
 
 ## `org.telegram.utils.recorder.round.RoundVideoRemuxer`
+- `static copyRange(@NonNull File source, @NonNull RoundVideoMp4Writer writer, long requestedStartMs, long requestedEndMs, boolean includeAudio)` -> `Result`
 - `static erase(@NonNull File file)` -> `void`
 - `static getDurationMs(@NonNull File file)` -> `long`
 
@@ -7104,7 +7159,10 @@
 - `onStateChanged(@NonNull StateInfo stateInfo)` -> `default void`
 
 ## `org.telegram.utils.recorder.round.RoundVideoSession$OutputListener`
+- `onBytesAvailable(long outputId, @NonNull File file, long offset, long length)` -> `default void`
+- `onOutputCompleted(long outputId, @NonNull File file, long finalSize, long durationMs, boolean hasAudio)` -> `default void`
 - `onOutputError(long outputId, @NonNull Exception error)` -> `default void`
+- `onOutputInvalidated(long outputId, @NonNull OutputInvalidationReason reason)` -> `default void`
 - `onOutputStarted(long outputId, @NonNull File file)` -> `default void`
 
 ## `org.telegram.utils.recorder.round.RoundVideoSession$OutputResolution`
@@ -7130,3 +7188,7 @@
 - `isCameraSwitching()` -> `boolean`
 - `isFlashEnabled()` -> `boolean`
 - `isPreviewPlaying()` -> `boolean`
+
+## `org.telegram.utils.recorder.round.RoundVideoSwitchTimingStore`
+- `static getAverageMs(@NonNull RoundVideoSession.CameraFacing from, @NonNull RoundVideoSession.CameraFacing to)` -> `int`
+- `static recordAndGetAverageMs(@NonNull RoundVideoSession.CameraFacing from, @NonNull RoundVideoSession.CameraFacing to, int durationMs)` -> `int`

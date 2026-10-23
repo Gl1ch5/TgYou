@@ -1,4 +1,4 @@
-# visual / chat (2150 методов)
+# visual / chat (2158 методов)
 
 ## `org.telegram.messenger.MessageObject`
 - `static formatTextWithEntities(TLRPC.TL_textWithEntities text)` -> `CharSequence`
@@ -319,6 +319,8 @@
 - `setInvalidatesParent(boolean value)` -> `void`
 - `setIsUpdating(boolean value)` -> `void`
 - `setLastTouchCoords(float x, float y)` -> `void`
+- `setMessageObject(MessageObject messageObject, MessageObject.GroupedMessages groupedMessages, boolean bottomNear, boolean topNear, boolean firstInChat)` -> `void`
+- `setMessageObject(MessageObject messageObject, MessageObject.GroupedMessages groupedMessages, boolean bottomNear, boolean topNear, boolean firstInChat, boolean lastInChatList)` -> `void`
 - `setOverrideInvalidate(Runnable callback)` -> `void`
 - `setParentBounds(float chatListViewPaddingTop, int blurredViewBottomOffset)` -> `void`
 - `setParentViewSize(int parentW, int parentH)` -> `void`
@@ -333,6 +335,7 @@
 - `setTimeAlpha(float value)` -> `void`
 - `setTranslationX(float translationX)` -> `void`
 - `setVisibleOnScreen(boolean visibleOnScreen, float clipTop, float clipBottom)` -> `void`
+- `setVisiblePart(int position, int height, int parent, float parentOffset, float visibleTop, int parentW, int parentH, int blurredViewTopOffset, int blurredViewBottomOffset, int position2)` -> `void`
 - `setupTextColors()` -> `void`
 - `shakeView()` -> `void`
 - `showHintButton(boolean show, boolean animated, int type)` -> `void`
@@ -529,6 +532,7 @@
 - `fallbackFieldPanel()` -> `void`
 - `static fillActionModeMenu(Menu menu, TLRPC.EncryptedChat encryptedChat, boolean chat, boolean includeLinks)` -> `void`
 - `static fillActionModeMenu(Menu menu, TLRPC.EncryptedChat encryptedChat, boolean chat, boolean includeLinks, boolean includeMono, boolean includeSpoilers)` -> `void`
+- `fillMessageMenu(MessageObject primaryMessage, ArrayList<Integer> icons, ArrayList<CharSequence> items, ArrayList<Integer> options)` -> `void`
 - `findCell(int id, boolean visibleForUser)` -> `View`
 - `findMessageCell(int id, boolean visibleForUser)` -> `BaseCell`
 - `findWalletSendLanding(TL_wallet.walletTransaction transaction)` -> `ChatActionCell`
@@ -2141,6 +2145,8 @@
 - `setup(BlurredBackgroundDrawableViewFactory factory, BlurredBackgroundColorProvider colorProvider)` -> `void`
 
 ## `org.telegram.ui.Components.chat.buttons.ChatActivityBlurredRoundButton`
+- `static create(Context context, BlurredBackgroundDrawableViewFactory factory, BlurredBackgroundColorProvider colorProvider, Theme.ResourcesProvider resourcesProvider)` -> `ChatActivityBlurredRoundButton`
+- `static create(Context context, BlurredBackgroundDrawableViewFactory factory, BlurredBackgroundColorProvider colorProvider, Theme.ResourcesProvider resourcesProvider, @DrawableRes int res, int iconSize)` -> `ChatActivityBlurredRoundButton`
 - `dispatchDraw(@NonNull Canvas canvas)` -> `void`
 - `draw(@NonNull Canvas canvas)` -> `void`
 - `onFactorChanged(int id, float factor, float fraction, FactorAnimator callee)` -> `void`
@@ -2157,6 +2163,7 @@
 - `updateColors()` -> `void`
 
 ## `org.telegram.ui.Components.chat.buttons.ChatActivityBlurredRoundPageDownButton`
+- `static create(Context context, int size, int iconSize, Theme.ResourcesProvider resourcesProvider, BlurredBackgroundDrawableViewFactory factory, BlurredBackgroundColorProvider colorProvider, @DrawableRes int res)` -> `ChatActivityBlurredRoundPageDownButton`
 - `reverseCounter()` -> `void`
 - `reverseIconByY()` -> `void`
 - `setCount(int count, boolean animated)` -> `void`
@@ -2357,6 +2364,7 @@
 - `animateAddImpl(final RecyclerView.ViewHolder holder, int addedItemsHeight)` -> `void`
 - `animateAddImpl(RecyclerView.ViewHolder holder)` -> `void`
 - `animateAppearance(@NonNull RecyclerView.ViewHolder viewHolder, @Nullable ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo)` -> `boolean`
+- `animateChange(RecyclerView.ViewHolder oldHolder, RecyclerView.ViewHolder newHolder, ItemHolderInfo info, int fromX, int fromY, int toX, int toY)` -> `boolean`
 - `animateChangeImpl(final ChangeInfo changeInfo)` -> `void`
 - `animateMove(RecyclerView.ViewHolder holder, ItemHolderInfo info, int fromX, int fromY, int toX, int toY)` -> `boolean`
 - `animateMoveImpl(RecyclerView.ViewHolder holder, MoveInfo moveInfo)` -> `void`

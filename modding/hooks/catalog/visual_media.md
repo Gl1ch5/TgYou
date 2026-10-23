@@ -1,4 +1,4 @@
-# visual / media (2560 методов)
+# visual / media (2575 методов)
 
 ## `org.telegram.messenger.MediaController`
 - `setTextureView(TextureView textureView, AspectRatioFrameLayout aspectRatioFrameLayout, FrameLayout container, boolean set)` -> `void`
@@ -265,6 +265,7 @@
 - `onProgressUpload(String fileName, long uploadedSize, long totalSize, boolean isEncrypted)` -> `void`
 - `onSuccessDownload(String fileName)` -> `void`
 - `onTouchEvent(MotionEvent event)` -> `boolean`
+- `setMessageObject(MessageObject messageObject, boolean reorder, View.OnClickListener onOptions, boolean needDivider, View.OnTouchListener onReorderTouchListener)` -> `void`
 - `updateButtonState(boolean ifSame, boolean animated)` -> `void`
 
 ## `org.telegram.ui.Cells.FeaturedStickerSetCell`
@@ -746,6 +747,7 @@
 - `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
 - `onTouchEvent(MotionEvent event)` -> `boolean`
 - `resetCameraFile()` -> `void`
+- `setButtonsBackground(BlurredBackgroundDrawableViewFactory factory, BlurredBackgroundColorProvider colorProvider)` -> `void`
 - `setInternalPadding(int padding)` -> `void`
 - `setIsMessageTransition(boolean messageTransition)` -> `void`
 - `setVisibility(int visibility)` -> `void`
@@ -758,6 +760,7 @@
 - `setImageReceiver(ImageReceiver imageReceiver)` -> `void`
 
 ## `org.telegram.ui.Components.InstantCameraViewBase`
+- `static create(Context context, InstantCameraView.Delegate delegate, Theme.ResourcesProvider resourcesProvider, boolean isNewDesign)` -> `InstantCameraViewBase`
 - `dispatchAnimationState(boolean open, boolean fromPaused)` -> `void`
 - `dispatchRecordingUiFrame(long durationMs)` -> `void`
 - `dispatchRecordingUiFrameClockActive(boolean active)` -> `void`
@@ -1603,6 +1606,7 @@
 - `onPlaybackParametersChanged(PlaybackParameters playbackParameters)` -> `void`
 - `onPlayerError(PlaybackException error)` -> `void`
 - `onPlayerStateChanged(boolean playWhenReady, int playbackState)` -> `void`
+- `onPositionDiscontinuity(EventTime eventTime, Player.PositionInfo oldPosition, Player.PositionInfo newPosition, int reason)` -> `void`
 - `onPositionDiscontinuity(Player.PositionInfo oldPosition, Player.PositionInfo newPosition, @Player.DiscontinuityReason int reason)` -> `void`
 - `onRenderedFirstFrame(EventTime eventTime, Object output, long renderTimeMs)` -> `void`
 - `onRenderedFirstFrame()` -> `void`
@@ -1642,6 +1646,9 @@
 - `setWorkerQueue(DispatchQueue dispatchQueue)` -> `void`
 - `static supportsHardwareDecoder(String codec)` -> `boolean`
 - `static toMime(String codec)` -> `String`
+
+## `org.telegram.ui.Components.VideoPlayer$AudioVisualizerRenderersFactory`
+- `buildAudioSink(@NonNull Context context, boolean enableFloatOutput, boolean enableAudioTrackPlaybackParams)` -> `AudioSink`
 
 ## `org.telegram.ui.Components.VideoPlayer$OffsetDataSource`
 - `close()` -> `void`
@@ -1826,6 +1833,7 @@
 - `dismiss()` -> `void`
 - `getTitle()` -> `CharSequence`
 - `static initActionBar(ActionBar actionBar, Context context, Theme.ResourcesProvider resourcesProvider, int currentAccount, TL_stars.StarGift starGift)` -> `void`
+- `static show(Context context, Theme.ResourcesProvider resourcesProvider, int currentAccount, long dialogId, long giftId, Runnable closeParentSheet)` -> `void`
 - `static showMoreInfo(Context context, Theme.ResourcesProvider resourcesProvider, TL_stars.StarGift starGift)` -> `void`
 
 ## `org.telegram.ui.Gifts.AuctionWearingSheet`
@@ -1919,6 +1927,7 @@
 - `setRibbonTextOneOf(int total)` -> `void`
 - `setSelected(boolean selected, boolean animated)` -> `void`
 - `setShowPinIcon(boolean pinIcon, boolean animated)` -> `void`
+- `setStarsGift(TL_stars.StarGift gift, boolean mine, boolean includeUpgradeInPrice, boolean allowResaleInGifts, boolean inResalePage, boolean inCrafting)` -> `boolean`
 - `setStarsGift(TL_stars.SavedStarGift userGift, boolean noprice, boolean inCollection)` -> `boolean`
 
 ## `org.telegram.ui.Gifts.GiftSheet$GiftCell$Factory`
@@ -2150,6 +2159,7 @@
 - `onDraw(@NonNull Canvas canvas)` -> `void`
 - `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
 - `onTouchEvent(MotionEvent event)` -> `boolean`
+- `set(TL_stars.TL_starGiftUnique gift, long fromId, TLRPC.TL_textWithEntities message, String button, boolean animated)` -> `void`
 - `setLayoutBackground(Drawable background)` -> `void`
 - `verifyDrawable(@NonNull Drawable who)` -> `boolean`
 
@@ -2572,6 +2582,7 @@
 
 ## `org.telegram.ui.Stars.ProfileGiftsView$Gift`
 - `copy(Gift b)` -> `void`
+- `draw(Canvas canvas, float cx, float cy, float ascale, float rotate, float alpha, float gradientAlpha)` -> `void`
 - `equals(Gift b)` -> `boolean`
 
 ## `org.telegram.ui.Stars.SellGiftEnterPriceSheet`
@@ -2581,6 +2592,8 @@
 - `static drawPattern(Canvas canvas, Drawable pattern, float w, float h, float alpha, float scale)` -> `void`
 - `static drawPattern(Canvas canvas, int type, Drawable pattern, float w, float h, float alpha, float scale)` -> `void`
 - `static drawPatternBatch(Canvas canvas, int type, Paint paint, Bitmap bitmap, float w, float h, float alpha, float scale)` -> `void`
+- `static drawProfileAnimatedPattern(Canvas canvas, Drawable pattern, int w, float maxExpandY, float diff, View avatarContainer, float _alpha)` -> `void`
+- `static drawProfileAnimatedPattern(Canvas canvas, Drawable pattern, int w, float maxExpandY, float diff, RectF avatarContainer, float _alpha)` -> `void`
 - `static drawProfilePattern(Canvas canvas, Drawable pattern, float w, float h, float alpha, float full)` -> `void`
 
 ## `org.telegram.ui.Stars.StarGiftPreviewSheet`
@@ -2802,6 +2815,7 @@
 - `detach()` -> `void`
 - `invalidate()` -> `void`
 - `preload(ArrayList<TL_stars.StarGiftAttribute> sampleAttributes)` -> `void`
+- `set(TL_stars.TL_starGiftUnique toGift, boolean roll, Runnable whenDone, Runnable whenDone2)` -> `boolean`
 - `skip()` -> `void`
 - `stopPreload()` -> `void`
 - `update()` -> `void`
@@ -2844,11 +2858,13 @@
 - `drawBackgrounds(Canvas canvas, float width, float height, int[] textColors, int[] backgroundColors, int[] patternColors)` -> `void`
 - `hasBackgrounds()` -> `boolean`
 - `resetDrawing()` -> `void`
+- `setDrawing(Roller.Sticker a, float aT, boolean aIsFinish, Roller.Sticker b, float bT, boolean bIsFinish, Roller.Sticker c, float cT, boolean cIsFinish, Roller.Background bgA, float bgAT, boolean bgAIsFinish, Roller.Background bgB, float bgBT, boolean bgBIsFinish, Roller.Background bgC, float bgCT, boolean bgCIsFinish)` -> `void`
 
 ## `org.telegram.ui.Stars.StarGiftSheet$TextViewRoll`
 - `dispatchDraw(@NonNull Canvas canvas)` -> `void`
 - `isRolling()` -> `boolean`
 - `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `update(Roller.Attr prev, float prevT, boolean isPrevFinish, Roller.Attr current, float currentT, boolean isCurrentFinish, Roller.Attr next, float nextT, boolean isNextFinish)` -> `void`
 
 ## `org.telegram.ui.Stars.StarGiftSheet$TextViewRoll$TextView`
 - `set(String name, int rarity_permille, Utilities.Callback3<CharSequence, View, Boolean> showHint)` -> `void`
@@ -2907,6 +2923,7 @@
 - `has()` -> `boolean`
 - `onTouchEvent(float ox, float oy, MotionEvent e)` -> `boolean`
 - `set(MessageObject messageObject, boolean animated)` -> `void`
+- `set(TL_stars.TL_starGiftUnique gift, long fromId, TLRPC.TL_textWithEntities message, String button, boolean animated)` -> `void`
 - `setOnButtonClickListener(Runnable onButtonClick)` -> `void`
 
 ## `org.telegram.ui.Stars.StarGiftUniqueActionLayout$Row`

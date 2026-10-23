@@ -1,4 +1,4 @@
-# visual / settings (361 методов)
+# visual / settings (365 методов)
 
 ## `org.telegram.messenger.SharedConfig`
 - `static measureDevicePerformanceClass()` -> `int`
@@ -352,6 +352,7 @@
 
 ## `org.telegram.ui.SettingsActivity$SettingCell`
 - `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `set(int iconColorTop, int iconColorBottom, int icon, CharSequence title, CharSequence subtitle, CharSequence value)` -> `void`
 - `setValue(CharSequence value)` -> `void`
 - `updateColors()` -> `void`
 
@@ -372,12 +373,14 @@
 - `static ofBot(TLRPC.TL_attachMenuBot attachMenuBot, int iconColorTop, int iconColorBottom, int icon)` -> `UItem`
 
 ## `org.telegram.ui.SettingsActivity$SuggestionCell`
+- `set(CharSequence title, CharSequence text, CharSequence noText, View.OnClickListener noListener, CharSequence yesText, View.OnClickListener yesListener)` -> `void`
 - `updateColors()` -> `void`
 
 ## `org.telegram.ui.SettingsActivity$SuggestionCell$Factory`
 - `bindView(View view, UItem item, boolean divider, UniversalAdapter adapter, UniversalRecyclerView listView)` -> `void`
 - `createView(Context context, RecyclerListView listView, int currentAccount, int classGuid, Theme.ResourcesProvider resourcesProvider)` -> `SuggestionCell`
 - `isClickable()` -> `boolean`
+- `static of(CharSequence title, CharSequence text, CharSequence noText, View.OnClickListener noListener, CharSequence yesText, View.OnClickListener yesListener)` -> `UItem`
 
 ## `org.telegram.ui.ThemeActivity`
 - `createView(Context context)` -> `View`
@@ -477,6 +480,7 @@
 ## `org.telegram.ui.web.WebBrowserSettings$WebsiteView`
 - `dispatchDraw(@NonNull Canvas canvas)` -> `void`
 - `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `set(CharSequence title, String domain, long favicon, boolean divider)` -> `void`
 
 ## `org.telegram.ui.web.WebBrowserSettings$WebsiteView$Factory`
 - `static as(String domain, String title, long favicon)` -> `UItem`

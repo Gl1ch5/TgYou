@@ -25,42 +25,43 @@
 - `message.alpha`
 - `content.allow_copy`
 - `media.keep_ttl`
+- `fragment.created`
 
 ## Сводка найденных мест
 
 ```
-Всего методов с телом: 54353 (публичных/пакетных: 44476)
+Всего методов с телом: 54825 (публичных/пакетных: 44781)
 
-visual: 28226
-   other          14750
-   theme          2698
-   media          2560
-   chat           2150
-   stories        2016
-   emoji          1383
-   call           878
-   profile        615
-   dialogs        399
-   settings       361
-   login          252
+visual: 28447
+   other          14917
+   theme          2710
+   media          2575
+   chat           2158
+   stories        2021
+   emoji          1384
+   call           882
+   profile        617
+   dialogs        401
+   settings       365
+   login          253
    network        100
    notifications  64
-function: 16250
-   network        6357
-   other          5285
-   media          1673
-   chat           755
+function: 16334
+   network        6363
+   other          5339
+   media          1685
+   chat           758
    call           653
-   theme          419
+   theme          421
    settings       322
-   stories        284
-   emoji          161
+   stories        286
+   emoji          162
    notifications  160
    profile        90
-   login          64
+   login          68
    dialogs        27
 
-Готовых именованных хуков (Hooks.java): 20
+Готовых именованных хуков (Hooks.java): 21
 ```
 
 Полный список: `python3 modding/hooks/hook_scan.py --json build/hook_catalog.json` или поиск `--find` / `--kind` / `--cat`.

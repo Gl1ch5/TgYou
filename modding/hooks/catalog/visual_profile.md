@@ -1,4 +1,4 @@
-# visual / profile (615 методов)
+# visual / profile (617 методов)
 
 ## `org.telegram.tgnet.tl.TL_keyboard$TL_inlineButtonTypeUserProfile`
 - `serializeToStream(OutputSerializedData stream)` -> `void`
@@ -279,6 +279,7 @@
 - `static make(TLRPC.User user)` -> `UItem`
 
 ## `org.telegram.ui.Components.ProfileActionsView`
+- `applyCallTransition(View callView, boolean isOpen, float maxBottom, float fraction)` -> `void`
 - `beginApplyingActions()` -> `void`
 - `commitActions()` -> `void`
 - `drawingBlur(boolean drawing)` -> `void`
@@ -464,6 +465,7 @@
 - `setLoadingSpan(CharacterStyle span)` -> `void`
 - `setParentLayout(INavigationLayout layout)` -> `void`
 - `setPlayProfileAnimation(int type)` -> `void`
+- `setUserInfo(TLRPC.UserFull value, ProfileChannelCell.ChannelMessageFetcher channelMessageFetcher, ProfileBirthdayEffect.BirthdayEffectFetcher birthdayAssetsFetcher)` -> `void`
 - `showStatusSelect()` -> `void`
 - `startTabsReorder()` -> `void`
 - `updateCollectibleHint()` -> `void`

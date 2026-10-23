@@ -1,4 +1,4 @@
-# function / network (6357 методов)
+# function / network (6363 методов)
 
 ## `org.telegram.messenger.MessagesController`
 - `addDialogAction(long did, boolean clean)` -> `void`
@@ -10,6 +10,8 @@
 - `addToPollsQueue(long dialogId, ArrayList<MessageObject> visibleObjects)` -> `void`
 - `addToViewsQueue(MessageObject messageObject)` -> `void`
 - `addUserToChat(long chatId, TLRPC.User user, int forwardCount, String botHash, BaseFragment fragment, Runnable onFinishRunnable)` -> `void`
+- `addUserToChat(long chatId, TLRPC.User user, int forwardCount, String botHash, BaseFragment fragment, boolean ignoreIfAlreadyExists, Runnable onFinishRunnable, ErrorDelegate onError)` -> `void`
+- `addUserToChat(long chatId, TLRPC.User user, int forwardCount, String botHash, BaseFragment fragment, boolean ignoreIfAlreadyExists, Runnable onFinishRunnable, ErrorDelegate onError, Utilities.Callback<TLRPC.TL_messages_invitedUsers> processInvitedUsers)` -> `void`
 - `addUsersToChannel(long chatId, ArrayList<TLRPC.InputUser> users, BaseFragment fragment)` -> `void`
 - `addUsersToChat(TLRPC.Chat currentChat, BaseFragment baseFragment, ArrayList<TLRPC.User> users, int fwdCount, Consumer<TLRPC.User> onAddUser, Consumer<TLRPC.User> onRestricted, Runnable onComplete)` -> `void`
 - `addWebBrowserException(String url, boolean open_external_browser)` -> `void`
@@ -88,6 +90,7 @@
 - `static extendUsersFromMessage(long dialogId, ArrayList<TLRPC.User> users, ArrayList<TLRPC.Message> messages)` -> `void`
 - `fetchChatsToAddToCommunity(Utilities.Callback2<ArrayList<TLRPC.Chat>, TLRPC.TL_error> callback)` -> `int`
 - `fetchCommunityJoinedChats(long communityId, long dialogId, Utilities.Callback2<TL_communities.ParticipantJoinedChats, TLRPC.TL_error> callback)` -> `int`
+- `fetchCommunityPendingJoinRequests(long communityId, String nextOffset, Utilities.Callback2<TL_communities.PeerLinkRequests, TLRPC.TL_error> callback)` -> `void`
 - `fetchJoinedCommunities(Utilities.Callback<ArrayList<TLRPC.Chat>> callback, int guid)` -> `void`
 - `filterPremiumStickers(ArrayList<TLRPC.TL_messages_stickerSet> stickerSets)` -> `ArrayList<TLRPC.TL_messages_stickerSet>`
 - `filterPremiumStickers(TLRPC.TL_messages_stickerSet stickerSet)` -> `TLRPC.TL_messages_stickerSet`
@@ -336,6 +339,7 @@
 - `processLoadedDeleteTask(int taskTime, LongSparseArray<ArrayList<Integer>> task, LongSparseArray<ArrayList<Integer>> taskMedia)` -> `void`
 - `processLoadedDialogFilters(ArrayList<DialogFilter> filters, TLRPC.messages_Dialogs pinnedDialogs, TLRPC.messages_Dialogs pinnedRemoteDialogs, ArrayList<TLRPC.User> users, ArrayList<TLRPC.Chat> chats, ArrayList<TLRPC.EncryptedChat> encryptedChats, int remote, Runnable onDone)` -> `void`
 - `processLoadedDialogs(final TLRPC.messages_Dialogs dialogsRes, ArrayList<TLRPC.EncryptedChat> encChats, ArrayList<TLRPC.UserFull> fullUsers, int folderId, int offset, int count, int loadType, boolean resetEnd, boolean migrate, boolean fromCache)` -> `void`
+- `processLoadedMessages(TLRPC.messages_Messages messagesRes, int resCount, long dialogId, long mergeDialogId, int count, int max_id, int offset_date, boolean isCache, int classGuid, int first_unread, int last_message_id, int unread_count, int last_date, int load_type, boolean isEnd, int mode, long threadMessageId, int loadIndex, boolean queryFromServer, int mentionsCount, boolean needProcess, boolean isTopic, Timer loaderLogger)` -> `void`
 - `processNewChannelDifferenceParams(int pts, int pts_count, long channelId)` -> `void`
 - `processNewDifferenceParams(int seq, int pts, int date, int pts_count)` -> `void`
 - `processUpdateArray(ArrayList<TLRPC.Update> updates, ArrayList<TLRPC.User> usersArr, ArrayList<TLRPC.Chat> chatsArr, boolean fromGetDifference, int date)` -> `boolean`
@@ -984,6 +988,7 @@
 - `deserializeResponse(InputSerializedData stream, int constructor, boolean exception)` -> `TLObject`
 
 ## `org.telegram.tgnet.TLObject`
+- `static TLdeserialize(Class<T> tClass, T object, InputSerializedData stream, int constructor, boolean exception)` -> `T`
 - `static deepCopy(T tlObject, Vector.TLDeserializer<T> deserializer)` -> `T`
 - `deserializeResponse(InputSerializedData stream, int constructor, boolean exception)` -> `TLObject`
 - `freeResources()` -> `void`
@@ -8332,6 +8337,7 @@
 - `static TLdeserialize(InputSerializedData stream, int constructor, boolean exception)` -> `upload_File`
 
 ## `org.telegram.tgnet.Vector`
+- `static TLDeserialize(InputSerializedData stream, int constructor, boolean exception, TLDeserializer<T> deserializer)` -> `Vector<T>`
 - `static TLDeserializeInt(InputSerializedData stream, int constructor, boolean exception)` -> `Vector<Int>`
 - `static TLDeserializeLong(InputSerializedData stream, int constructor, boolean exception)` -> `Vector<Int>`
 - `static deserialize(InputSerializedData stream, TLDeserializer<T> deserializer, boolean exception)` -> `ArrayList<T>`

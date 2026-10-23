@@ -1,4 +1,4 @@
-# visual / login (252 методов)
+# visual / login (253 методов)
 
 ## `org.telegram.messenger.RichMessageLayout$RichTextWithAuthorBlock`
 - `forcesTimeToNewLine()` -> `boolean`
@@ -268,6 +268,7 @@
 - `static getBulletinFactory()` -> `BulletinFactory`
 - `static handle(boolean external, int currentAccount, TLRPC.TL_messages_requestUrlAuth request, TLRPC.UrlAuthResult result)` -> `void`
 - `static handle(boolean external, int currentAccount, TLRPC.TL_messages_requestUrlAuth request, TLRPC.UrlAuthResult result, String originUrl, TLRPC.UrlAuthResult prevResult, String matchCode, boolean sentPhoneNumber, BotWebViewContainer webView)` -> `void`
+- `static showMatchCodeSheet(Context context, int currentAccount, ArrayList<String> match_codes, String domain, Utilities.Callback<String> onSelected, boolean cancel, Runnable onCancel, Theme.ResourcesProvider resourcesProvider)` -> `BottomSheet`
 
 ## `org.telegram.ui.PasscodeActivity`
 - `createView(Context context)` -> `View`

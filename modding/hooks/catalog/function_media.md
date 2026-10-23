@@ -1,4 +1,4 @@
-# function / media (1673 методов)
+# function / media (1685 методов)
 
 ## `org.telegram.messenger.AudioRecorderV2Controller`
 - `cancel()` -> `void`
@@ -742,6 +742,7 @@
 - `release()` -> `void`
 
 ## `org.telegram.messenger.pip.utils.PipActions`
+- `static create(Context context, String sourceId, int actionId, String title, String description, Icon icon)` -> `RemoteAction`
 - `static getActionId(Intent intent)` -> `int`
 - `static getSourceId(Intent intent)` -> `String`
 - `static isPipIntent(Intent intent)` -> `boolean`
@@ -783,7 +784,12 @@
 - `static run(Handler handler, Callback action, long timeoutMs)` -> `Trigger`
 - `run()` -> `void`
 
+## `org.telegram.messenger.video.AudioBufferConverter`
+- `calculateRequiredOutputSize(int inputSize, int inputSampleRate, int inputChannelCount, int outputSampleRate, int outputChannelCount)` -> `int`
+- `convert(@NonNull ShortBuffer inputBuffer, int inputSampleRate, int inputChannelCount, int outputSampleRate, int outputChannelCount)` -> `ShortBuffer`
+
 ## `org.telegram.messenger.video.AudioConversions`
+- `static bytesToUs(int bytes , int sampleRate , int channels)` -> `long`
 - `static shortsToUs(int shorts, int sampleRate, int channels)` -> `long`
 - `static usToBytes(long us, int sampleRate, int channels)` -> `int`
 - `static usToShorts(long us, int sampleRate, int channels)` -> `int`
@@ -928,6 +934,9 @@
 - `resample(@NonNull ShortBuffer inputBuffer, int inputSampleRate, @NonNull ShortBuffer outputBuffer, int outputSampleRate, int channels)` -> `void`
 
 ## `org.telegram.messenger.video.resample.DownsampleAudioResampler`
+- `resample(@NonNull ShortBuffer inputBuffer, int inputSampleRate, @NonNull ShortBuffer outputBuffer, int outputSampleRate, int channels)` -> `void`
+
+## `org.telegram.messenger.video.resample.PassThroughAudioResampler`
 - `resample(@NonNull ShortBuffer inputBuffer, int inputSampleRate, @NonNull ShortBuffer outputBuffer, int outputSampleRate, int channels)` -> `void`
 
 ## `org.telegram.messenger.video.resample.UpsampleAudioResampler`
@@ -2401,6 +2410,7 @@
 ## `org.telegram.ui.Components.InstantCameraView2`
 - `cancel(boolean byGesture)` -> `void`
 - `onPanTranslationUpdate(float translationY)` -> `void`
+- `send(int state, boolean notify, int scheduleDate, int scheduleRepeatPeriod, int ttl, long effectId, long stars)` -> `void`
 
 ## `org.telegram.ui.Components.Paint.Views.StickerMakerView`
 - `hasSegmentedBitmap()` -> `boolean`
@@ -2688,6 +2698,7 @@
 - `log(@NonNull String message)` -> `void`
 
 ## `org.telegram.utils.recorder.audio.AudioRecorderNative`
+- `static cropOpusFile(@NonNull String source, @NonNull String destination, long startMs, long endMs)` -> `boolean`
 - `finalize()` -> `void`
 - `finish()` -> `boolean`
 - `flush()` -> `long`
@@ -2714,12 +2725,16 @@
 - `onMaximumDurationReached()` -> `default void`
 - `onPreviewPlaybackChanged(boolean playing)` -> `default void`
 - `onPreviewProgress(long positionMs, long durationMs)` -> `default void`
+- `onPreviewReady(long durationMs, long trimStartMs, long trimEndMs, @Nullable byte[] waveform)` -> `default void`
 - `onRecordingProgress(long durationMs, double amplitude)` -> `default void`
 - `onRecordingTooShort(long durationMs)` -> `default void`
 - `onStateChanged(@NonNull StateInfo stateInfo)` -> `default void`
 
 ## `org.telegram.utils.recorder.audio.AudioRecordingSession$OutputListener`
+- `onBytesAvailable(long outputId, @NonNull File file, long offset, long length)` -> `default void`
+- `onOutputCompleted(long outputId, @NonNull File file, long finalSize, long durationMs)` -> `default void`
 - `onOutputError(long outputId, @NonNull Exception error)` -> `default void`
+- `onOutputInvalidated(long outputId, @NonNull OutputInvalidationReason reason)` -> `default void`
 - `onOutputStarted(long outputId, @NonNull File file)` -> `default void`
 
 ## `org.telegram.utils.recorder.audio.AudioRecordingSession$Result`
@@ -2745,6 +2760,7 @@
 - `setCameraFacing(@NonNull RoundVideoSession.CameraFacing facing)` -> `boolean`
 - `setTorchEnabled(boolean enabled)` -> `boolean`
 - `setZoom(float progress)` -> `boolean`
+- `startSegment(@NonNull RoundVideoMp4Writer writer, long timelineOffsetUs, @NonNull RoundVideoSession.CameraFacing facing)` -> `void`
 - `stopSegment()` -> `boolean`
 
 ## `org.telegram.utils.recorder.round.RoundVideoSession$CameraCapabilities`
