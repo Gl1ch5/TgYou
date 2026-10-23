@@ -218,7 +218,7 @@ public final class GhostModePlugin implements Plugin {
             }
             return false;
         }
-        if (request instanceof TL_stories.TL_stories_readStories) {
+        if (request instanceof TL_stories.TL_stories_readStories || request instanceof TL_stories.TL_stories_incrementStoryViews) {
             return on(NO_STORY);
         }
         return false;

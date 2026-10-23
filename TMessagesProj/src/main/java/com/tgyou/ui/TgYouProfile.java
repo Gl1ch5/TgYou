@@ -40,6 +40,9 @@ public final class TgYouProfile {
 
     /** Bot API form: -100... for channels and supergroups, -... for basic groups. */
     public static String chatIdValue(TLRPC.Chat chat) {
+        if (com.tgyou.core.TgYouHooks.showId() == 1) {
+            return String.valueOf(chat.id);
+        }
         return org.telegram.messenger.ChatObject.isChannel(chat) ? "-100" + chat.id : "-" + chat.id;
     }
 

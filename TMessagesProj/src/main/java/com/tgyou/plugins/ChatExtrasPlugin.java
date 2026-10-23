@@ -108,7 +108,7 @@ public final class ChatExtrasPlugin implements Plugin {
             return;
         }
         if (delBan) {
-            menu.add("Удалить и забанить", R.drawable.msg_block2, () -> {
+            menu.add(ChatObject.isChannel(chat) ? "Удалить и забанить" : "Удалить из группы", R.drawable.msg_block2, () -> {
                 ArrayList<Integer> ids = new ArrayList<>();
                 ids.add(m.getId());
                 if (ChatObject.canUserDoAction(chat, ChatObject.ACTION_DELETE_MESSAGES)) {

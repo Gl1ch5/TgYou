@@ -62,7 +62,7 @@ public class ChatsScreen extends TgYouScreen {
 
         header("Ответы");
         master("replies", "Ответы", TgYouChatTweaks.REPLY_KEYS, new String[]{
-                "Без подсветки при переходе к ответу",
+                "Без подсветки при переходе к сообщению (ответ, закреп, поиск)",
                 "Ответ без цитаты",
                 "Упоминать автора при ответе"}, null);
         info("Подсветка: сообщение не мигает после перехода по ответу. Без цитаты: выделенный фрагмент не прикрепляется. Упоминание: в группах в пустое поле ввода подставляется @имя автора.");
@@ -81,7 +81,7 @@ public class ChatsScreen extends TgYouScreen {
                 "Краткие сводки",
                 "Сводки в Instant View"}, new boolean[]{true, true, true});
         info("Редактор: кнопка ИИ рядом с полем ввода. Краткие сводки: кнопка в длинных сообщениях. Сводки в Instant View: пункт «Краткая сводка страницы» в меню сообщения со ссылкой, делается через Groq с ключом из раздела «ИИ».");
-        value("Модель для сводок", () -> TgYouPrefs.str(TgYouAi.MODEL, TgYouAi.DEFAULT_MODEL), () -> askText("Модель Groq", TgYouPrefs.str(TgYouAi.MODEL, TgYouAi.DEFAULT_MODEL), false, text -> {
+        value("Модель для сводок страниц", () -> TgYouPrefs.str(TgYouAi.MODEL, TgYouAi.DEFAULT_MODEL), () -> askText("Модель Groq", TgYouPrefs.str(TgYouAi.MODEL, TgYouAi.DEFAULT_MODEL), false, text -> {
             TgYouPrefs.setStr(TgYouAi.MODEL, text.isEmpty() ? TgYouAi.DEFAULT_MODEL : text);
             refresh();
         }));

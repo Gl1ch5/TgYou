@@ -41,21 +41,21 @@ public class BasicScreen extends TgYouScreen {
 
         header("Профиль");
         toggle(TgYouTweaks.RELATIVE_ONLINE, "Относительный онлайн", "«был(а) 5 минут назад» вместо «был(а) в 14:05».", false);
-        toggle(TgYouTweaks.HIDE_PHONE, "Скрывать номер телефона", "Номер показывается в виде +7 *** ***-**-45.", false);
+        toggle(TgYouTweaks.HIDE_PHONE, "Скрывать номер телефона", "Номер заменяется на «+••• ••• •• ••» в профиле и настройках.", false);
         choice(TgYouTweaks.SHOW_ID, "Показывать ID и DC", null, 1, "Отключено", "Telegram API", "Bot API");
         info("Строка с ID в профиле. Формат Bot API отличается для групп и каналов (-100…).");
 
         header("Архив");
         toggle(TgYouListTweaks.HIDE_ARCHIVE, "Скрывать архив", "Папка архива пропадает из списка чатов.", false);
         toggle(TgYouListTweaks.PULL_ARCHIVE, "Открывать архив при подтягивании", "Потяните список вниз, чтобы открыть архив.", false);
-        toggle(TgYouListTweaks.NO_SWIPE_BACK, "Отключить жест «Вернуть»", "Свайп вправо в списке чатов не возвращает назад.", false);
+        toggle(TgYouListTweaks.NO_SWIPE_BACK, "Отключить свайп-действия в списке чатов", "Свайп влево по чату (прочитано, заглушить, закрепить, удалить) ничего не делает.", false);
 
         header("Сеть");
         toggle(TgYouVpn.KEY, "Не использовать прокси при VPN", "Пока включён VPN, прокси Telegram временно отключается; после выключения VPN включается снова.", false, v -> TgYouVpn.refresh());
         gap();
 
         header("Перевод");
-        value("Не переводить", () -> "", () -> presentFragment(new RestrictedLanguagesSelectActivity()));
+        value("Не переводить", () -> { java.util.HashSet<String> s = RestrictedLanguagesSelectActivity.getRestrictedLanguages(); return s == null || s.isEmpty() ? "" : String.valueOf(s.size()); }, () -> presentFragment(new RestrictedLanguagesSelectActivity()));
         gap();
     }
 }
