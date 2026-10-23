@@ -207,6 +207,10 @@ public final class TgYouAppearance {
 
     public static void reset() {
         set(100, 100, 100);
+        for (String key : M3_KEYS) {
+            TgYouPrefs.setBool(key, false);
+        }
         setBubbleRadius(17);
+        m3Changed();
     }
 }

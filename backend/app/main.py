@@ -143,7 +143,8 @@ def create_app(settings: Optional[Settings] = None) -> FastAPI:
                 )
             elif existing["author_id"] != developer["id"]:
                 raise HTTPException(403, "this plugin id belongs to another developer")
-            else:
+            elif status == "approved":
+                # only approved versions may change what the public catalogue shows
                 db.execute(
                     "UPDATE plugins SET name = ?, description = ?, category = ?, updated_at = ? WHERE id = ?",
                     (manifest.name, manifest.description, manifest.category, now, manifest.id),

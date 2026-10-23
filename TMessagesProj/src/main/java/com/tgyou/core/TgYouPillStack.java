@@ -73,7 +73,7 @@ public final class TgYouPillStack {
                 return ((r.totalMemory() - r.freeMemory()) / 1024 / 1024) + " МБ";
             }
             case "proxy":
-                return SharedConfig.isProxyEnabled() ? "Прокси вкл." : "Без прокси";
+                return TgYouVpn.suspended() ? "VPN, без прокси" : SharedConfig.isProxyEnabled() ? "Прокси вкл." : "Без прокси";
             case "weather":
                 loadWeather();
                 return weather;

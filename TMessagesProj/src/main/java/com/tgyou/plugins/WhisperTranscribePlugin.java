@@ -36,7 +36,8 @@ import java.util.UUID;
 
 /**
  * Replaces Telegram's Premium voice-to-text with Whisper on Groq, using the user's own API key.
- * The voice file is uploaded to Groq; nothing goes through any server of ours.
+ * By default the request goes through the project's relay (grzxk.ru), which forwards it to Groq without storing it;
+ * the key and the voice file travel with it. Set the address field to api.groq.com to go directly.
  */
 public final class WhisperTranscribePlugin implements Plugin {
 
@@ -62,7 +63,7 @@ public final class WhisperTranscribePlugin implements Plugin {
     @Override
     public String description() {
         return "Расшифровка голосовых через Whisper на Groq вместо Premium-функции Telegram. "
-                + "Нужен свой API-ключ Groq. Голосовое отправляется в Groq.";
+                + "Нужен свой API-ключ Groq. По умолчанию запрос идёт через ретранслятор проекта (grzxk.ru) в Groq, ключ и голосовое проходят через него; чтобы слать напрямую, укажите https://api.groq.com/openai/v1/audio/transcriptions.";
     }
 
     @Override

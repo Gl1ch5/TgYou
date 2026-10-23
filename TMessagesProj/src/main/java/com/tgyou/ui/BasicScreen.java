@@ -3,6 +3,7 @@ package com.tgyou.ui;
 import com.tgyou.core.TgYouListTweaks;
 import com.tgyou.core.TgYouPrefs;
 import com.tgyou.core.TgYouTweaks;
+import com.tgyou.core.TgYouVpn;
 
 import org.telegram.ui.RestrictedLanguagesSelectActivity;
 
@@ -48,6 +49,10 @@ public class BasicScreen extends TgYouScreen {
         toggle(TgYouListTweaks.HIDE_ARCHIVE, "Скрывать архив", "Папка архива пропадает из списка чатов.", false);
         toggle(TgYouListTweaks.PULL_ARCHIVE, "Открывать архив при подтягивании", "Потяните список вниз, чтобы открыть архив.", false);
         toggle(TgYouListTweaks.NO_SWIPE_BACK, "Отключить жест «Вернуть»", "Свайп вправо в списке чатов не возвращает назад.", false);
+
+        header("Сеть");
+        toggle(TgYouVpn.KEY, "Не использовать прокси при VPN", "Пока включён VPN, прокси Telegram временно отключается; после выключения VPN включается снова.", false, v -> TgYouVpn.refresh());
+        gap();
 
         header("Перевод");
         value("Не переводить", () -> "", () -> presentFragment(new RestrictedLanguagesSelectActivity()));

@@ -62,6 +62,7 @@ public final class PluginHost {
                     host.register(plugin);
                 }
                 instance = host;
+                TgYouVpn.start(context);
                 com.tgyou.mods.ModRuntime.loadAll(host, context);
             }
             return instance;
@@ -80,6 +81,9 @@ public final class PluginHost {
             return;
         }
         plugins.remove(old);
+        synchronized (enabled) {
+            enabled.remove(id);
+        }
         synchronized (handlers) {
             for (List<Registration<?, ?>> list : handlers.values()) {
                 for (Registration<?, ?> r : list) {

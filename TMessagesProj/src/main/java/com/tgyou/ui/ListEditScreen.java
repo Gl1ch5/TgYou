@@ -57,6 +57,18 @@ public class ListEditScreen extends TgYouScreen {
                 pickChat(DialogsActivity.DIALOGS_TYPE_USERS_ONLY, id -> TgYouPrefs.listAdd(key, String.valueOf(id)));
             } else {
                 askText("Новый фильтр", "", false, text -> {
+                    if (text.startsWith("re:")) {
+                        try {
+                            java.util.regex.Pattern.compile(text.substring(3));
+                        } catch (Throwable e) {
+                            toast("Некорректное регулярное выражение");
+                            return;
+                        }
+                        if (text.length() > 203) {
+                            toast("Выражение слишком длинное (до 200 символов)");
+                            return;
+                        }
+                    }
                     if (!text.isEmpty()) {
                         TgYouPrefs.listAdd(key, text);
                         refresh();

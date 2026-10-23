@@ -18,7 +18,7 @@
 
 | Поле | По умолчанию | Блокируемые запросы |
 |---|---|---|
-| `no_read` | вкл | `messages.readHistory`, `channels.readHistory`, `messages.readDiscussion`, `messages.readSavedHistory`, `messages.readEncryptedHistory` |
+| `no_read` | выкл (в коде; включается переключателем на экране) | `messages.readHistory`, `channels.readHistory`, `messages.readDiscussion`, `messages.readSavedHistory`, `messages.readEncryptedHistory` |
 | `no_typing` | вкл | `messages.setTyping`, `messages.setEncryptedTyping` |
 | `no_online` | вкл | `account.updateStatus` |
 | `no_content` | выкл | запросы отметки прослушанных голосовых и видео-кружков |
