@@ -53,6 +53,7 @@ public abstract class TgYouScreen extends BaseFragment {
     private static final int T_GAP = 7;
     private static final int T_BUTTON = 8;
     private static final int T_OPTION = 9;
+    private static final int T_TAB = 10;
     private static final int T_CUSTOM = 1000;
 
     public interface Setter<T> {
@@ -101,6 +102,8 @@ public abstract class TgYouScreen extends BaseFragment {
     protected final List<Row> rows = new ArrayList<>();
     private final java.util.Set<String> expanded = new java.util.HashSet<>();
     protected RecyclerListView listView;
+    private final List<String> tabNames = new ArrayList<>();
+    private int selectedTab;
     private ListAdapter adapter;
 
     protected abstract String screenTitle();
@@ -134,13 +137,106 @@ public abstract class TgYouScreen extends BaseFragment {
         listView.setAdapter(adapter = new ListAdapter(context));
         listView.setOnItemClickListener((RecyclerListView.OnItemClickListenerExtended) (view, position, x, y) -> onClick(view, position, x));
         listView.setOnItemLongClickListener((view, position) -> onLongClick(position));
-        frame.addView(listView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
+        if (tabNames.isEmpty()) {
+            frame.addView(listView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
+        } else {
+            android.widget.LinearLayout column = new android.widget.LinearLayout(context);
+            column.setOrientation(android.widget.LinearLayout.VERTICAL);
+            column.addView(tabStrip(context), new android.widget.LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, AndroidUtilities.dp(44)));
+            column.addView(listView, new android.widget.LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+            frame.addView(column, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
+        }
         return fragmentView;
     }
 
     private void rebuildRows() {
         rows.clear();
+        tabNames.clear();
         build();
+        if (tabNames.isEmpty()) {
+            return;
+        }
+        if (selectedTab >= tabNames.size()) {
+            selectedTab = 0;
+        }
+        // keep the rows before the first tab() and the rows of the selected tab only
+        List<Row> kept = new ArrayList<>();
+        int current = -1;
+        for (Row r : rows) {
+            if (r.type == T_TAB) {
+                current++;
+            } else if (current < 0 || current == selectedTab) {
+                kept.add(r);
+            }
+        }
+        rows.clear();
+        rows.addAll(kept);
+    }
+
+    /** Starts a tab: the rows added after it, up to the next tab(), show only while it is selected. */
+    protected void tab(String title) {
+        tabNames.add(title);
+        add(T_TAB);
+    }
+
+    private android.view.View tabStrip(Context context) {
+        android.widget.HorizontalScrollView scroll = new android.widget.HorizontalScrollView(context);
+        scroll.setHorizontalScrollBarEnabled(false);
+        scroll.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundWhite));
+        android.widget.LinearLayout strip = new android.widget.LinearLayout(context);
+        strip.setOrientation(android.widget.LinearLayout.HORIZONTAL);
+        strip.setPadding(AndroidUtilities.dp(8), 0, AndroidUtilities.dp(8), 0);
+        scroll.addView(strip, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, AndroidUtilities.dp(44)));
+        List<android.widget.TextView> labels = new ArrayList<>();
+        for (int i = 0; i < tabNames.size(); i++) {
+            final int index = i;
+            android.widget.TextView t = new android.widget.TextView(context);
+            t.setText(tabNames.get(i));
+            t.setTextSize(15);
+            t.setGravity(android.view.Gravity.CENTER);
+            t.setPadding(AndroidUtilities.dp(14), 0, AndroidUtilities.dp(14), 0);
+            t.setOnClickListener(v -> {
+                if (selectedTab == index) {
+                    return;
+                }
+                selectedTab = index;
+                styleTabs(labels);
+                refresh();
+                if (listView != null) {
+                    listView.scrollToPosition(0);
+                }
+            });
+            labels.add(t);
+            strip.addView(t, new android.widget.LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        }
+        styleTabs(labels);
+        return scroll;
+    }
+
+    private void styleTabs(List<android.widget.TextView> labels) {
+        int accent = Theme.getColor(Theme.key_windowBackgroundWhiteBlueHeader);
+        int plain = Theme.getColor(Theme.key_windowBackgroundWhiteGrayText);
+        for (int i = 0; i < labels.size(); i++) {
+            android.widget.TextView t = labels.get(i);
+            boolean on = i == selectedTab;
+            t.setTextColor(on ? accent : plain);
+            t.setTypeface(on ? AndroidUtilities.bold() : android.graphics.Typeface.DEFAULT);
+            if (on) {
+                android.graphics.drawable.GradientDrawable line = new android.graphics.drawable.GradientDrawable();
+                line.setColor(accent);
+                line.setCornerRadii(new float[]{AndroidUtilities.dp(3), AndroidUtilities.dp(3), AndroidUtilities.dp(3), AndroidUtilities.dp(3), 0, 0, 0, 0});
+                t.setBackground(new android.graphics.drawable.LayerDrawable(new android.graphics.drawable.Drawable[]{line}) {
+                    @Override
+                    public void draw(android.graphics.Canvas canvas) {
+                        android.graphics.Rect b = getBounds();
+                        line.setBounds(b.left + AndroidUtilities.dp(10), b.bottom - AndroidUtilities.dp(3), b.right - AndroidUtilities.dp(10), b.bottom);
+                        line.draw(canvas);
+                    }
+                });
+            } else {
+                t.setBackground(null);
+            }
+        }
     }
 
     /** Rebuilds the rows and redraws the list. */

@@ -17,6 +17,7 @@ public class BasicScreen extends TgYouScreen {
 
     @Override
     protected void build() {
+        tab("Общие");
         header("Общие");
         toggle("media.pip_stay", "Видео остаётся свёрнутым", "Свернули видео и вернулись в приложение: оно остаётся маленьким окошком над чатом, а не разворачивается. Откройте это видео снова, и оно развернётся; другое видео заменит его. Нужно разрешение «поверх других окон».", true);
         toggle(TgYouTweaks.NO_ROUND, "Отключить округление чисел", "Просмотры и счётчики показываются полностью: 1234567 вместо 1,2M.", false);
@@ -26,6 +27,7 @@ public class BasicScreen extends TgYouScreen {
         toggle(TgYouTweaks.ZALGO, "Убирать Zalgo", "Лишние комбинируемые символы в именах и сообщениях убираются, текст становится читаемым.", false);
         gap();
 
+        tab("Загрузки");
         header("Скорость загрузки");
         slider(TgYouTweaks.DOWNLOAD_BOOST, 0, null, "Откл.", "Быстро", "Ультра");
         header("Скорость отправки");
@@ -40,6 +42,7 @@ public class BasicScreen extends TgYouScreen {
         }));
         info("Сохранённые в галерею и загрузки попадают в эту папку вместо «Telegram».");
 
+        tab("Профиль");
         header("Профиль");
         toggle(TgYouTweaks.RELATIVE_ONLINE, "Относительный онлайн", "«был(а) 5 минут назад» вместо «был(а) в 14:05».", false);
         toggle(TgYouTweaks.HIDE_PHONE, "Скрывать номер телефона", "Номер заменяется на «+••• ••• •• ••» в профиле и настройках.", false);
@@ -51,6 +54,7 @@ public class BasicScreen extends TgYouScreen {
         toggle(TgYouListTweaks.PULL_ARCHIVE, "Открывать архив при подтягивании", "Потяните список вниз, чтобы открыть архив.", false);
         toggle(TgYouListTweaks.NO_SWIPE_BACK, "Отключить свайп-действия в списке чатов", "Свайп влево по чату (прочитано, заглушить, закрепить, удалить) ничего не делает.", false);
 
+        tab("Сеть");
         header("Сеть");
         toggle(TgYouVpn.KEY, "Не использовать прокси при VPN", "Пока включён VPN, прокси Telegram временно отключается; после выключения VPN включается снова.", false, v -> TgYouVpn.refresh());
         gap();

@@ -34,11 +34,13 @@ public class SpyScreen extends TgYouScreen {
 
     @Override
     protected void build() {
+        tab("Сохранение");
         toggle(AntiRecallPlugin.KEEP_DELETED, "Сохранять удалённые сообщения", "Удалённое собеседником остаётся в чате с пометкой.", true);
         toggle(AntiRecallPlugin.KEEP_EDITS, "Сохранять историю правок", "Все прежние версии изменённого сообщения доступны из его меню.", true);
         toggle(AntiRecallPlugin.KEEP_READS, "Сохранять дату чтения", "Запоминает, когда собеседник прочитал ваше сообщение, и показывает это в меню сообщения. Работает с момента включения.", true);
         toggle(TgYouSpy.SAVE_LAST_ONLINE, "Сохранять последний онлайн", "Показывает последний известный онлайн, даже если пользователь скрыл его.", false);
         gap();
+        tab("Вложения");
         toggle(TgYouSpy.SAVE_ATTACHMENTS, "Сохранять вложения", "Копирует скачанные вложения в отдельную папку, чтобы они не пропали вместе с сообщением.", false);
         header("Размер папки вложений");
         slider(TgYouSpy.LIMIT, 1, null, TgYouSpy.LIMIT_LABELS);
@@ -48,10 +50,12 @@ public class SpyScreen extends TgYouScreen {
         }));
         info("Папка: Android/data/<приложение>/files/Saved Attachments. Сохраняются документы, фото и видео, которые уже скачаны приложением; стикеры и миниатюры пропускаются.");
         gap();
+        tab("Исключения");
         value("Исключения", () -> String.valueOf(TgYouPrefs.list(AntiRecallPlugin.EXCEPTIONS).size()),
                 () -> presentFragment(new ListEditScreen("Исключения", AntiRecallPlugin.EXCEPTIONS, true,
                         "В этих чатах сохранение удалённых и изменённых сообщений отключено. Удалённые сообщения обычных групп и личных чатов Telegram присылает без указания чата, поэтому для них исключения действуют только на правки.")));
         gap();
+        tab("База");
         header("База данных");
         button("Экспортировать базу", false, this::exportDb);
         button("Импортировать базу", false, () -> {

@@ -33,6 +33,7 @@ public class ChatsScreen extends TgYouScreen {
 
     @Override
     protected void build() {
+        tab("Сообщения");
         header("Сообщения");
         value("Размер текста", () -> String.valueOf(SharedConfig.fontSize), () -> askText("Размер текста (10-40)", String.valueOf(SharedConfig.fontSize), true, text -> {
             try {
@@ -46,6 +47,7 @@ public class ChatsScreen extends TgYouScreen {
         info("Применяется к стикерам и эмодзи-анимациям, которые вы увидите после повторного открытия чата.");
         gap();
 
+        tab("Ввод");
         header("Поле ввода");
         toggle(TgYouChatTweaks.HIDE_KEYBOARD_SCROLL, "Скрывать клавиатуру при прокрутке", "Клавиатура закрывается, когда вы листаете историю чата.", false);
         toggle(TgYouChatTweaks.MENTION_COMMA, "Запятая после упоминания", "После выбора @упоминания вставляется «, » вместо пробела.", false);
@@ -60,6 +62,7 @@ public class ChatsScreen extends TgYouScreen {
         toggle(TgYouChatTweaks.CALC, "Результаты вычислений", "После «=» в конце выражения (2+2=) подставляется результат. Поддерживаются + - * / ^ %, скобки.", false);
         gap();
 
+        tab("Ответы");
         header("Ответы");
         master("replies", "Ответы", TgYouChatTweaks.REPLY_KEYS, new String[]{
                 "Без подсветки при переходе к сообщению (ответ, закреп, поиск)",
@@ -75,6 +78,7 @@ public class ChatsScreen extends TgYouScreen {
         info("Текст постов занимает почти всю ширину экрана. Применяется к сообщениям, загруженным после включения (переоткройте чат).");
         gap();
 
+        tab("ИИ");
         header("ИИ-функции");
         master("ai", "ИИ-функции", TgYouChatTweaks.AI_KEYS, new String[]{
                 "Редактор",
@@ -87,6 +91,7 @@ public class ChatsScreen extends TgYouScreen {
         }));
         gap();
 
+        tab("Админ");
         header("Админ");
         master("admin", "Быстрые админ-действия", TgYouChatTweaks.ADMIN_KEYS, new String[]{
                 "Удалить и забанить",
@@ -95,6 +100,7 @@ public class ChatsScreen extends TgYouScreen {
         info("Пункты появляются в меню сообщения пользователя в группе, если у вас есть право блокировать участников. Заглушение работает в супергруппах.");
         gap();
 
+        tab("Жесты");
         header("Жесты");
         master("swipe", "Быстрый переход свайпом", TgYouGestures.SWIPE_KEYS, new String[]{
                 "Свайп по пузырю: ответ",

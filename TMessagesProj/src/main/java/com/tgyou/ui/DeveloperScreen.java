@@ -26,12 +26,14 @@ public class DeveloperScreen extends TgYouScreen {
 
     @Override
     protected void build() {
+        tab("Отладка");
         header("Режим отладки");
         toggle(TgYouDebug.PREF, "Режим отладки", "Поверх окон появляется панель: «Выбрать» — тапните любой элемент и узнайте его класс, id, текст, "
                 + "обработчик нажатия и данные чата или сообщения; «Границы» — рамки всех элементов.", false, v -> TgYouDebug.set((Boolean) v));
         info("Панель можно перетаскивать, выключается кнопкой «Выкл» на ней или здесь. Диалоги и всплывающие окна Android (отдельные окна) не проверяются, "
                 + "только основное окно приложения. Найденное имя вставляйте в мод «Скрыть кнопки» или в свой мод.");
         gap();
+        tab("Сведения");
         header("Сведения");
         value("Текущий экран", TgYouDebug::currentScreen, () -> { });
         value("Сборка", () -> TgYouVersion.beta() + " · Telegram " + BuildVars.BUILD_VERSION_STRING.replaceAll("-tgyou.*$", ""), () -> { });
@@ -46,6 +48,7 @@ public class DeveloperScreen extends TgYouScreen {
             toast("Скопировано");
         });
         gap();
+        tab("Моды");
         header("Моды");
         button("Журналы модов", false, this::showLogs);
         button("Каталог мест для хуков (GitHub)", false, () -> org.telegram.messenger.browser.Browser.openUrl(getParentActivity(), CATALOG_URL));

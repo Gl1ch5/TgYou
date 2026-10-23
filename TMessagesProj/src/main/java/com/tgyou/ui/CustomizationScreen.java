@@ -105,8 +105,7 @@ public class CustomizationScreen extends TgYouScreen {
         });
     }
 
-    @Override
-    protected void build() {
+    private void previewRows() {
         header("Предпросмотр");
         custom("demo", context -> {
             preview = new CustomizationPreview(context);
@@ -114,7 +113,19 @@ public class CustomizationScreen extends TgYouScreen {
         }, view -> view.invalidate());
         info("Миниатюра интерфейса: меняется сразу, как только вы выбираете цвет или стекло.");
         gap();
+    }
 
+    private void liteToggle(int flag, String title, String sub) {
+        String key = "look.lite." + flag;
+        boolean on = LiteMode.isEnabledSetting(flag);
+        TgYouPrefs.setBool(key, on);
+        toggle(key, title, sub, on, v -> LiteMode.toggleFlag(flag, Boolean.TRUE.equals(v)));
+    }
+
+    @Override
+    protected void build() {
+        tab("Цвета");
+        previewRows();
         header("Свои цвета");
         for (TgYouColors.Entry entry : TgYouColors.ENTRIES) {
             custom("color_" + entry.id, context -> new ColorRow(context, entry, this::colorChanged, () -> askHex(entry)), view -> ((ColorRow) view).sync());
@@ -131,6 +142,8 @@ public class CustomizationScreen extends TgYouScreen {
         }));
         gap();
 
+        tab("Стекло");
+        previewRows();
         header("Стекло");
         slider(GLASS_THICK, 2, v -> glassChanged(), GLASS_LABELS);
         info("Толщина стекла.");
@@ -146,6 +159,29 @@ public class CustomizationScreen extends TgYouScreen {
         toggle(TgYouGlass.FORCE_BLUR, "Принудительное размытие", "Игнорировать серверный запрет размытия в светлой и тёмной теме.", false, v -> TgYouAppearance.reloadUi());
         gap();
 
+        tab("Анимации");
+        header("Анимации Telegram");
+        liteToggle(LiteMode.FLAG_ANIMATED_STICKERS_CHAT, "Анимированные стикеры в чатах", "Стикеры в переписке играют, а не стоят картинкой.");
+        liteToggle(LiteMode.FLAG_ANIMATED_STICKERS_KEYBOARD, "Анимированные стикеры в панели", "Стикеры двигаются в панели выбора.");
+        liteToggle(LiteMode.FLAG_ANIMATED_EMOJI_CHAT, "Анимированные эмодзи в чатах", "Кастомные эмодзи в сообщениях играют.");
+        liteToggle(LiteMode.FLAG_ANIMATED_EMOJI_KEYBOARD, "Анимированные эмодзи в панели", "Эмодзи двигаются в панели выбора.");
+        liteToggle(LiteMode.FLAG_ANIMATED_EMOJI_REACTIONS, "Анимированные реакции", "Реакции под сообщениями и в меню играют.");
+        liteToggle(LiteMode.FLAG_CHAT_SCALE, "Масштаб при открытии чата", "Плавное увеличение при переходе в чат.");
+        liteToggle(LiteMode.FLAG_CHAT_THANOS, "Эффект «Танос»", "Сообщения рассыпаются в пыль при удалении.");
+        liteToggle(LiteMode.FLAG_CHAT_SPOILER, "Анимация спойлеров", "Скрытый текст мерцает частицами.");
+        liteToggle(LiteMode.FLAG_PARTICLES, "Частицы и конфетти", "Праздничные эффекты и частицы в интерфейсе.");
+        liteToggle(LiteMode.FLAG_CALLS_ANIMATIONS, "Анимации звонков", "Фон и волны на экране звонка.");
+        gap();
+
+        header("Фон и воспроизведение");
+        liteToggle(LiteMode.FLAG_CHAT_BACKGROUND, "Анимированный фон чата", "Градиентные обои чата двигаются при прокрутке.");
+        liteToggle(LiteMode.FLAG_CHAT_BLUR, "Размытие в чатах", "Размытие под панелями и в меню чата.");
+        liteToggle(LiteMode.FLAG_AUTOPLAY_VIDEOS, "Автовоспроизведение видео", "Видео в чатах запускаются без нажатия.");
+        liteToggle(LiteMode.FLAG_AUTOPLAY_GIFS, "Автовоспроизведение GIF", "GIF в чатах играют сами.");
+        info("Это те же переключатели, что в «Энергосбережении» Telegram; здесь они собраны рядом.");
+        gap();
+
+        tab("Список");
         header("Аватары и список чатов");
         slider(TgYouListTweaks.AVATAR_ROUND, 4, v -> TgYouAppearance.reloadUi(), TgYouListTweaks.ROUND_LABELS);
         info("Скругление аватаров: 100% круглые, 0% квадратные.");
@@ -168,6 +204,7 @@ public class CustomizationScreen extends TgYouScreen {
         toggle(TgYouFolders.HIDE_ALL, "Скрыть вкладку «Все чаты»", "Вкладка не показывается; при открытии выбирается первая папка. Свайпом влево её всё ещё можно открыть.", false);
         gap();
 
+        tab("Стиль");
         header("Material Design 3");
         master("m3", "Material Design 3", TgYouAppearance.M3_KEYS, new String[]{
                 "Скругление пузырей 20",
@@ -179,7 +216,7 @@ public class CustomizationScreen extends TgYouScreen {
         info("Оттенки берутся из акцентного цвета темы. Каждый пункт работает отдельно.");
         gap();
 
-        header("Оформление");
+        header("Шрифты, эмодзи, пузыри");
         toggle(TgYouChatTweaks.CHAT_THEMES, "Различные темы в чатах", "Показывать темы, которые собеседники ставят в чате. Выключено: везде ваша тема.", true);
         toggle(TgYouListTweaks.STICKY_AVATAR, "Липкая анимация аватарок", "Аватарка в профиле уменьшается и прилипает к шапке при прокрутке. Выключено: остаётся крупной.", true);
         TgYouPrefs.setBool("look.system_font", systemFont());
@@ -201,6 +238,7 @@ public class CustomizationScreen extends TgYouScreen {
         }));
         gap();
 
+        tab("Чаты");
         header("Удалённые сообщения");
         custom("preview", context -> {
             android.widget.TextView t = new android.widget.TextView(context);
@@ -222,6 +260,7 @@ public class CustomizationScreen extends TgYouScreen {
         choice(AntiRecallPlugin.MARK_EDITED, "Метка изменённых", null, 0, "Значок", "Текст", "Нет");
         gap();
 
+        tab("Ещё");
         header("Ссылки");
         link(R.drawable.settings_chat, IconBackgroundColors.BLUE, "Жесты", "свайп по сообщению, двойное касание", () -> presentFragment(new GesturesScreen()));
         link(R.drawable.settings_folders, IconBackgroundColors.PURPLE, "Pill Stack", "таблетки в строке поиска", () -> presentFragment(new PillStackScreen()));

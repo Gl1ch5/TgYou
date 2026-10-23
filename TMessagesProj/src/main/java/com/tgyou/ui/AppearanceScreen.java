@@ -46,6 +46,7 @@ public class AppearanceScreen extends TgYouScreen {
 
     @Override
     protected void build() {
+        tab("Список");
         header("Скругление аватаров");
         slider(TgYouListTweaks.AVATAR_ROUND, 4, v -> TgYouAppearance.reloadUi(), TgYouListTweaks.ROUND_LABELS);
         info("100% даёт круглые аватары, 0% квадратные. Пока картинка грузится, заглушка остаётся круглой.");
@@ -71,6 +72,7 @@ public class AppearanceScreen extends TgYouScreen {
         toggle(TgYouFolders.HIDE_ALL, "Скрыть вкладку «Все чаты»", "Вкладка не показывается; при открытии выбирается первая папка. Свайпом влево её всё ещё можно открыть.", false);
         gap();
 
+        tab("Стиль");
         header("Material Design 3");
         master("m3", "Material Design 3", TgYouAppearance.M3_KEYS, new String[]{
                 "Скругление пузырей 20",
@@ -112,6 +114,7 @@ public class AppearanceScreen extends TgYouScreen {
         }));
         gap();
 
+        tab("Ещё");
         header("Ещё");
         link(R.drawable.settings_folders, IconBackgroundColors.CYAN, "Прозрачность пузырей", "предпросмотр, скругление, размер текста", () -> presentFragment(new AppearanceActivity()));
         link(R.drawable.settings_folders, IconBackgroundColors.PURPLE, "Pill Stack", "таблетки в строке поиска", () -> presentFragment(new PillStackScreen()));
