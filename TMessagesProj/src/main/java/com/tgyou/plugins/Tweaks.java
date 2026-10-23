@@ -15,6 +15,14 @@ final class Tweaks {
     private Tweaks() {
     }
 
+    private static void spoil(TLRPC.InputMedia media) {
+        if (media instanceof TLRPC.TL_inputMediaUploadedPhoto) {
+            ((TLRPC.TL_inputMediaUploadedPhoto) media).spoiler = true;
+        } else if (media instanceof TLRPC.TL_inputMediaPhoto) {
+            ((TLRPC.TL_inputMediaPhoto) media).spoiler = true;
+        }
+    }
+
     static List<Plugin> create() {
         return Arrays.asList(
                 new Tweak("no_link_preview", "Без превью при наборе",
@@ -128,6 +136,28 @@ final class Tweaks {
                 new Tweak("no_recent_stickers", "Не запоминать недавние стикеры",
                         "Отправка стикера не добавляет его в список недавних.",
                         Section.PRIVACY, false, r -> r instanceof TLRPC.TL_messages_saveRecentSticker),
+                new Tweak("delete_for_all", "Удалять у всех по умолчанию",
+                        "Удаление сообщений и переписки в личных чатах всегда идёт «и у собеседника», даже если галочку не ставили.",
+                        Section.MESSAGES, false, r -> {
+                    if (r instanceof TLRPC.TL_messages_deleteMessages) {
+                        ((TLRPC.TL_messages_deleteMessages) r).revoke = true;
+                    } else if (r instanceof TLRPC.TL_messages_deleteHistory) {
+                        ((TLRPC.TL_messages_deleteHistory) r).revoke = true;
+                    }
+                    return false;
+                }),
+                new Tweak("spoiler_photo", "Фото под спойлером",
+                        "Отправляемые фото скрыты размытием, пока собеседник не нажмёт. Видео и файлы не затрагиваются.",
+                        Section.MESSAGES, false, r -> {
+                    if (r instanceof TLRPC.TL_messages_sendMedia) {
+                        spoil(((TLRPC.TL_messages_sendMedia) r).media);
+                    } else if (r instanceof TLRPC.TL_messages_sendMultiMedia) {
+                        for (TLRPC.TL_inputSingleMedia item : ((TLRPC.TL_messages_sendMultiMedia) r).multi_media) {
+                            spoil(item.media);
+                        }
+                    }
+                    return false;
+                }),
                 new Tweak("silent_pin", "Закреплять без уведомления",
                         "Закрепление сообщения не будит участников чата.",
                         Section.MESSAGES, false, r -> {
