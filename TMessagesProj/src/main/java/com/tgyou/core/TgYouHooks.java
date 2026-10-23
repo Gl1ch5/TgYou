@@ -296,6 +296,14 @@ public final class TgYouHooks {
         return TgYouTweaks.vibrationAllowed();
     }
 
+    public static void fragmentViewCreated(org.telegram.ui.ActionBar.BaseFragment fragment, android.view.View view) {
+        com.tgyou.mods.ModButtons.attach(fragment, view);
+        PluginHost host = PluginHost.get();
+        if (host != null) {
+            host.dispatch(Hooks.FRAGMENT_CREATED, new Object[]{fragment, view}, null);
+        }
+    }
+
     public static void viewCreated(android.view.View view) {
         TgYouTweaks.viewCreated(view);
     }

@@ -283,6 +283,7 @@ public abstract class BaseFragment {
     @CallSuper
     protected void onViewCreated(View view) {
         com.tgyou.core.TgYouHooks.viewCreated(view);
+        com.tgyou.core.TgYouHooks.fragmentViewCreated(this, view);
         glassEngine.setRoot(view);
     }
 

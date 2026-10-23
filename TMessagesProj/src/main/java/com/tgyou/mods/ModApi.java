@@ -128,6 +128,42 @@ public final class ModApi {
                     return isNone(r) ? secure : truthy(r);
                 });
                 break;
+            case "fragment.created":
+                context.on(Hooks.FRAGMENT_CREATED, (in, ignored) -> {
+                    fn.call(in[0], in[1]);
+                    return null;
+                });
+                break;
+            case "message.visible":
+                context.on(Hooks.MESSAGE_VISIBLE, (message, visible) -> {
+                    PyObject r = fn.call(message);
+                    return visible && (isNone(r) || r.toBoolean());
+                });
+                break;
+            case "message.alpha":
+                context.on(Hooks.MESSAGE_ALPHA, (message, alpha) -> {
+                    PyObject r = fn.call(message, alpha);
+                    return isNone(r) ? alpha : r.toFloat();
+                });
+                break;
+            case "chat.keep_kicked":
+                context.on(Hooks.KEEP_KICKED_CHAT, (chat, keep) -> keep || truthy(fn.call(chat)));
+                break;
+            case "secret.screenshot_notice":
+                context.on(Hooks.SCREENSHOT_NOTICE, (input, hide) -> hide || truthy(fn.call()));
+                break;
+            case "content.allow_copy":
+                context.on(Hooks.ALLOW_COPY, (input, allow) -> allow || truthy(fn.call()));
+                break;
+            case "media.keep_ttl":
+                context.on(Hooks.KEEP_TTL_MEDIA, (input, keep) -> keep || truthy(fn.call()));
+                break;
+            case "transcribe.available":
+                context.on(Hooks.TRANSCRIBE_AVAILABLE, (message, available) -> available || truthy(fn.call(message)));
+                break;
+            case "transcribe.request":
+                context.on(Hooks.TRANSCRIBE_REQUEST, (message, taken) -> taken || truthy(fn.call(message)));
+                break;
             default:
                 throw new IllegalArgumentException("unknown hook: " + hook);
         }
@@ -165,6 +201,46 @@ public final class ModApi {
         return PineHooks.hook(modId, context, (java.lang.reflect.Member) member, before, after, replace);
     }
 
+    /**
+     * Hooks every method of className whose name matches the regexp {@code methodName} (and, when
+     * paramCount >= 0, that has that many parameters). Returns the number of hooked methods; each
+     * hook calls before/after/replace with a Param, exactly like {@link #hookMethod}.
+     */
+    public int hookByName(String className, String methodName, int paramCount, PyObject before, PyObject after, PyObject replace) {
+        int count = 0;
+        try {
+            Class<?> cls = Class.forName(className, false, ApplicationLoader.applicationContext.getClassLoader());
+            java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(methodName);
+            for (java.lang.reflect.Method m : cls.getDeclaredMethods()) {
+                if (!pattern.matcher(m.getName()).matches() || (paramCount >= 0 && m.getParameterTypes().length != paramCount)
+                        || java.lang.reflect.Modifier.isAbstract(m.getModifiers()) || java.lang.reflect.Modifier.isNative(m.getModifiers())) {
+                    continue;
+                }
+                if (PineHooks.hook(modId, context, m, before, after, replace) != null) {
+                    count++;
+                }
+            }
+        } catch (Throwable t) {
+            ModLog.add(modId, "hook_by_name " + className + "." + methodName + ": " + t);
+        }
+        if (count == 0) {
+            ModLog.add(modId, "hook_by_name " + className + "." + methodName + ": подходящих методов не найдено или хук недоступен");
+        }
+        return count;
+    }
+
+    public int hookByName(String className, String methodName, PyObject before, PyObject after, PyObject replace) {
+        return hookByName(className, methodName, -1, before, after, replace);
+    }
+
+    public int hook_by_name(String className, String methodName, PyObject before, PyObject after, PyObject replace) {
+        return hookByName(className, methodName, -1, before, after, replace);
+    }
+
+    public int hook_by_name(String className, String methodName, int paramCount, PyObject before, PyObject after, PyObject replace) {
+        return hookByName(className, methodName, paramCount, before, after, replace);
+    }
+
     public void unhookMethod(Object handle) {
         PineHooks.unhook(handle);
     }
@@ -178,6 +254,35 @@ public final class ModApi {
                 ModLog.add(modId, "menu " + title + ": " + t);
             }
         });
+    }
+
+    /**
+     * A button on any screen. screen: simple class name ("ChatActivity", "DialogsActivity", "*" for all);
+     * position: top_left, top_right, center_left, center_right, bottom_left, bottom_right, action_bar.
+     * The button appears on screens opened after the mod loaded; fn() runs on the UI thread.
+     */
+    public void addButton(String screen, String title, PyObject fn, String icon, String position) {
+        ModButtons.add(modId, screen, position == null ? "bottom_right" : position, title, icon == null ? 0 : icon(icon), fn);
+    }
+
+    public void addButton(String screen, String title, PyObject fn, String icon) {
+        addButton(screen, title, fn, icon, "bottom_right");
+    }
+
+    public void addButton(String screen, String title, PyObject fn) {
+        addButton(screen, title, fn, "add", "bottom_right");
+    }
+
+    public void add_button(String screen, String title, PyObject fn, String icon, String position) {
+        addButton(screen, title, fn, icon, position);
+    }
+
+    public void add_button(String screen, String title, PyObject fn, String icon) {
+        addButton(screen, title, fn, icon, "bottom_right");
+    }
+
+    public void add_button(String screen, String title, PyObject fn) {
+        addButton(screen, title, fn, "add", "bottom_right");
     }
 
     public void add_page(String title, PyObject fn) {

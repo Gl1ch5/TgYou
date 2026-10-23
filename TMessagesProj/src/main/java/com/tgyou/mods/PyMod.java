@@ -79,6 +79,7 @@ public final class PyMod implements Plugin {
     private void run(PluginContext context) {
         ModPages.removeAll(manifest.id);
         ModActions.clear(manifest.id);
+        ModButtons.removeAll(manifest.id);
         try {
             Python py = Python.getInstance();
             PyObject sys = py.getModule("sys");

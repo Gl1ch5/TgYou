@@ -151,6 +151,7 @@ public final class ModRuntime {
             host.unregister(id);
         }
         ModPages.removeAll(id);
+        ModButtons.removeAll(id);
         store(context).remove(id);
     }
 

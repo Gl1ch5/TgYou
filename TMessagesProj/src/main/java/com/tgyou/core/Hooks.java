@@ -73,6 +73,9 @@ public final class Hooks {
     /** Input: unused. Value: true to treat self-destructing photos and videos as ordinary media. */
     public static final HookPoint<Void, Boolean> KEEP_TTL_MEDIA = new HookPoint<>("media.keep_ttl");
 
+    /** Input: {fragment, view} of a screen whose view was just created. */
+    public static final HookPoint<Object[], Void> FRAGMENT_CREATED = new HookPoint<>("fragment.created");
+
     public static final class DeletedMessages {
         public final int account;
         /** Negative channel id for channels, 0 for private chats and basic groups (ids are global there). */

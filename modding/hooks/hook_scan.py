@@ -8,11 +8,11 @@
 У каждого метода есть подкатегория (chat, message, media, call, network, settings, ...).
 
 Примеры:
-  python3 tools/hook_scan.py --summary
-  python3 tools/hook_scan.py --kind function --find send --limit 30
-  python3 tools/hook_scan.py --kind visual --cat chat --find onDraw
-  python3 tools/hook_scan.py --json build/hook_catalog.json
-  python3 tools/hook_scan.py --markdown docs/HOOKS_CATALOG.md
+  python3 modding/hooks/hook_scan.py --summary
+  python3 modding/hooks/hook_scan.py --kind function --find send --limit 30
+  python3 modding/hooks/hook_scan.py --kind visual --cat chat --find onDraw
+  python3 modding/hooks/hook_scan.py --json build/hook_catalog.json
+  python3 modding/hooks/hook_scan.py --markdown modding/hooks/HOOKS_CATALOG.md
 """
 import argparse
 import collections
@@ -21,7 +21,7 @@ import os
 import re
 import sys
 
-ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "TMessagesProj", "src", "main", "java")
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "TMessagesProj", "src", "main", "java")
 SCAN = ["org/telegram"]
 
 KEYWORDS = {"if", "for", "while", "switch", "catch", "return", "new", "else", "synchronized", "try", "do", "throw", "super", "this"}
@@ -191,12 +191,12 @@ def summary(items):
 def markdown(items):
     pts = existing_hook_points()
     out = ["# Каталог мест для хуков", "",
-           "Сгенерировано `tools/hook_scan.py` (эвристика по regexp, не компилятор: категории и сигнатуры могут быть неточными).",
+           "Сгенерировано `modding/hooks/hook_scan.py` (эвристика по regexp, не компилятор: категории и сигнатуры могут быть неточными).",
            "Любой метод из каталога доступен модам через `hook_method(класс, метод)` (Pine). Готовые именованные хуки — в разделе ниже.", "",
            "## Готовые именованные хуки (`Hooks.java`)", ""]
     out += ["- `%s`" % p for p in pts]
     out += ["", "## Сводка найденных мест", "", "```", summary(items), "```", "",
-            "Полный список: `python3 tools/hook_scan.py --json build/hook_catalog.json` или поиск `--find` / `--kind` / `--cat`.", ""]
+            "Полный список: `python3 modding/hooks/hook_scan.py --json build/hook_catalog.json` или поиск `--find` / `--kind` / `--cat`.", ""]
     return "\n".join(out)
 
 
