@@ -158,6 +158,12 @@ final class Tweaks {
                     }
                     return false;
                 }),
+                new Tweak("no_recent_gifs", "Не запоминать недавние GIF",
+                        "Отправка GIF не добавляет его в список недавних на сервере.",
+                        Section.PRIVACY, false, r -> r instanceof TLRPC.TL_messages_saveGif),
+                new Tweak("no_featured_read", "Не отмечать новые наборы стикеров просмотренными",
+                        "Просмотр рекомендуемых наборов не сообщается серверу.",
+                        Section.PRIVACY, false, r -> r instanceof TLRPC.TL_messages_readFeaturedStickers),
                 new Tweak("silent_pin", "Закреплять без уведомления",
                         "Закрепление сообщения не будит участников чата.",
                         Section.MESSAGES, false, r -> {
