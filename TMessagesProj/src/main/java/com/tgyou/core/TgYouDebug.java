@@ -456,6 +456,10 @@ public final class TgYouDebug {
                         return found;
                     }
                 }
+                // an empty transparent container (a PiP or overlay layer) hides what lies under it: look further down
+                if (g.getBackground() == null && !g.isClickable()) {
+                    return null;
+                }
             }
             return v;
         }
