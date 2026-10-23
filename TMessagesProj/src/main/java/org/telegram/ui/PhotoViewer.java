@@ -23584,6 +23584,7 @@ public class PhotoViewer implements NotificationCenter.NotificationCenterDelegat
         } else if (videoSurfaceView != null) {
             videoPlayer.setSurfaceView(videoSurfaceView);
         }
+        if (com.tgyou.core.TgYouHooks.pipStay()) AndroidUtilities.runOnUIThread(this::onUserLeaveHint, 450);
     }
 
     private void showPhotoQualityHint(boolean highQuality) {

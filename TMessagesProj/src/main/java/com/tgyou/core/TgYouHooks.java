@@ -370,4 +370,9 @@ public final class TgYouHooks {
     public static boolean storySuggest(android.content.Context context, Runnable proceed) {
         return com.tgyou.plugins.GhostModePlugin.suggestForStory(context, proceed);
     }
+
+    /** After returning from system picture-in-picture the video stays a floating mini player over the chat. */
+    public static boolean pipStay() {
+        return TgYouPrefs.bool("media.pip_stay", true);
+    }
 }
