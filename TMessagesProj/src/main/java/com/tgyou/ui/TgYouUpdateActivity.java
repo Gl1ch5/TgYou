@@ -297,10 +297,13 @@ public class TgYouUpdateActivity extends BaseFragment implements UpdateManager.L
         return card;
     }
 
+    private static final int COLLAPSED_ROWS = 5;
+
     /** Turns GitHub release markdown into short bullet rows; the auto «Full Changelog» line becomes a compare link. */
     private void fillNotes(Context context, LinearLayout card, Updater.Release r) {
         String compare = "";
         int rows = 0;
+        java.util.List<View> extra = new java.util.ArrayList<>();
         String body = r.notes == null ? "" : r.notes;
         for (String raw : body.split("\\r?\\n")) {
             String line = raw.trim();
@@ -342,6 +345,26 @@ public class TgYouUpdateActivity extends BaseFragment implements UpdateManager.L
                 row.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
             }
             card.addView(row, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 0, heading ? 6 : 3, 0, 0));
+            if (rows > COLLAPSED_ROWS) {
+                row.setVisibility(View.GONE);
+                extra.add(row);
+            }
+        }
+        if (!extra.isEmpty()) {
+            TextView toggle = new TextView(context);
+            toggle.setText("Показать весь ченджлог (ещё " + extra.size() + ") \u25BE");
+            toggle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+            toggle.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlueText));
+            toggle.setPadding(0, AndroidUtilities.dp(8), 0, 0);
+            boolean[] open = {false};
+            toggle.setOnClickListener(v -> {
+                open[0] = !open[0];
+                for (View e : extra) {
+                    e.setVisibility(open[0] ? View.VISIBLE : View.GONE);
+                }
+                toggle.setText(open[0] ? "Свернуть \u25B4" : "Показать весь ченджлог (ещё " + extra.size() + ") \u25BE");
+            });
+            card.addView(toggle);
         }
         if (rows == 0) {
             TextView row = new TextView(context);
