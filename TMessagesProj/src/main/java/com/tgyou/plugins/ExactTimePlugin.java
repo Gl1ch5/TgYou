@@ -45,10 +45,12 @@ public final class ExactTimePlugin implements Plugin {
             if (!com.tgyou.core.TgYouPrefs.bool(com.tgyou.core.TgYouTweaks.SECONDS, false) || time == null || message == null || message.messageOwner == null) {
                 return time;
             }
-            String text = time.toString();
+            java.util.regex.Matcher m = java.util.regex.Pattern.compile("\\d{1,2}:\\d{2}").matcher(time);
+            if (!m.find()) {
+                return time;
+            }
             String exact = seconds.format(new Date(message.messageOwner.date * 1000L));
-            String replaced = text.replaceFirst("\\d{1,2}:\\d{2}", exact);
-            return replaced;
+            return new android.text.SpannableStringBuilder(time).replace(m.start(), m.end(), exact);
         });
     }
 }

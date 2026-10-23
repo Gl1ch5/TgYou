@@ -91,6 +91,9 @@ public class AppearanceScreen extends TgYouScreen {
         header("Оформление");
         toggle(TgYouChatTweaks.CHAT_THEMES, "Различные темы в чатах", "Показывать темы, которые собеседники ставят в чате. Выключено: везде ваша тема.", true);
         toggle(TgYouListTweaks.STICKY_AVATAR, "Липкая анимация аватарок", "Аватарка в профиле уменьшается и прилипает к шапке при прокрутке. Выключено: остаётся крупной.", true);
+        TgYouPrefs.setBool("look.system_font", systemFont());
+        TgYouPrefs.setBool("look.system_emoji", SharedConfig.useSystemEmoji);
+        TgYouPrefs.setBool("look.glass", org.telegram.messenger.LiteMode.isEnabled(org.telegram.messenger.LiteMode.FLAG_LIQUID_GLASS));
         toggle("look.system_font", "Системные шрифты", "Жирный и курсивный текст рисует системный шрифт вместо шрифтов Telegram. Применяется после перезапуска.", systemFont(), v -> setSystemFont(Boolean.TRUE.equals(v)));
         toggle("look.system_emoji", "Системные эмодзи", "Эмодзи рисует система, а не набор Telegram. Полностью применяется после перезапуска.", SharedConfig.useSystemEmoji, v -> {
             SharedConfig.useSystemEmoji = Boolean.TRUE.equals(v);

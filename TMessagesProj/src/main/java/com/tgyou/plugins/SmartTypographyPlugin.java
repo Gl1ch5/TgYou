@@ -19,6 +19,11 @@ public final class SmartTypographyPlugin implements Plugin {
     private PluginSettings settings;
 
     @Override
+    public boolean enabledByDefault() {
+        return true;
+    }
+
+    @Override
     public String id() {
         return "smart_typography";
     }

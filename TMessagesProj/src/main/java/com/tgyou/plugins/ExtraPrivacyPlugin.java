@@ -23,6 +23,11 @@ public final class ExtraPrivacyPlugin implements Plugin {
     private PluginSettings settings;
 
     @Override
+    public boolean enabledByDefault() {
+        return true;
+    }
+
+    @Override
     public String id() {
         return "extra_privacy";
     }

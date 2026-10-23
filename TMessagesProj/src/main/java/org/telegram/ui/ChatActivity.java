@@ -3173,7 +3173,7 @@ public class ChatActivity extends BaseFragment implements
 
         if (currentUser != null) {
             TLRPC.UserFull userFull = getMessagesController().getUserFull(currentUser.id);
-            if (userFull != null && userFull.theme != null) {
+            if (userFull != null && userFull.theme != null && com.tgyou.core.TgYouChatTweaks.chatThemes()) {
                 ChatThemeController.getInstance(currentAccount).putThemeIfNeeded(userFull.theme);
             }
         }
@@ -43567,7 +43567,7 @@ public class ChatActivity extends BaseFragment implements
         ThemeDelegate() {
             isDark = Theme.getActiveTheme().isDark();
             boolean setup = false;
-            if (isThemeChangeAvailable(false)) {
+            if (isThemeChangeAvailable(false) && com.tgyou.core.TgYouChatTweaks.chatThemes()) {
                 chatTheme = ChatThemeController.getInstance(currentAccount).getDialogTheme(dialog_id);
                 wallpaper = ChatThemeController.getInstance(currentAccount).getDialogWallpaper(dialog_id);
                 if (chatTheme != null || wallpaper != null) {

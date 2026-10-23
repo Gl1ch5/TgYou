@@ -80,7 +80,7 @@ public class ChatsScreen extends TgYouScreen {
                 "Редактор",
                 "Краткие сводки",
                 "Сводки в Instant View"}, new boolean[]{true, true, true});
-        info("Редактор: кнопка ИИ рядом с полем ввода. Краткие сводки: кнопка в длинных сообщениях. Сводки в Instant View: пункт «Краткая сводка страницы» в меню сообщения со ссылкой, делается через Groq с ключом из раздела «ИИ».");
+        info("Редактор и Краткие сводки — функции Telegram, работают на стороне сервера (нужен Premium; локальный Premium не гарантирует ответ сервера). Редактор: кнопка ИИ рядом с полем ввода. Краткие сводки: кнопка в длинных сообщениях. Сводки в Instant View: пункт «Краткая сводка страницы» в меню сообщения со ссылкой, делается через Groq с ключом из раздела «ИИ».");
         value("Модель для сводок страниц", () -> TgYouPrefs.str(TgYouAi.MODEL, TgYouAi.DEFAULT_MODEL), () -> askText("Модель Groq", TgYouPrefs.str(TgYouAi.MODEL, TgYouAi.DEFAULT_MODEL), false, text -> {
             TgYouPrefs.setStr(TgYouAi.MODEL, text.isEmpty() ? TgYouAi.DEFAULT_MODEL : text);
             refresh();

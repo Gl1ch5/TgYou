@@ -35,6 +35,7 @@ public class CustomizationScreen extends TgYouScreen {
             return;
         }
         PluginHost host = PluginHost.get();
+        com.tgyou.core.TgYouPrefs.setBool("custom.plugin." + id, host.isEnabled(p));
         toggle("custom.plugin." + id, title, sub, host.isEnabled(p), v -> host.setEnabled(p, Boolean.TRUE.equals(v)));
     }
 
