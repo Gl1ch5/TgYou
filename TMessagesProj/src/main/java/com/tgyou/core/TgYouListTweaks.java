@@ -45,6 +45,10 @@ public final class TgYouListTweaks {
         return result == null ? radius : result;
     }
 
+    public static boolean snowOn() {
+        return TgYouPrefs.bool(SNOW, false);
+    }
+
     /** Draws falling snow over the title bar of the chat list when forced from settings. */
     public static void snow(android.view.View bar, boolean eligible, android.graphics.Canvas canvas) {
         if (!eligible || !TgYouPrefs.bool(SNOW, false)) {
