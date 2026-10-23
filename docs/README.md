@@ -8,6 +8,7 @@
 | [SETTINGS_SCREENS.md](SETTINGS_SCREENS.md) | экраны «Режим Призрака», «Фильтры», «Шпион», «Основные», «Чаты», «Внешний вид», «Кастомизация», Pill Stack |
 | [APPEARANCE.md](APPEARANCE.md) | внешний вид: прозрачность, скругление, быстрая перезагрузка |
 | [MODS.md](MODS.md), [ICON_PACKS.md](ICON_PACKS.md), [EXTERA_COMPAT.md](EXTERA_COMPAT.md) | моды (.mod), наборы иконок, совместимость с exteraGram |
+| [HOOKS_CATALOG.md](HOOKS_CATALOG.md) | каталог мест для хуков: сканер `tools/hook_scan.py`, готовые хуки, сводка visual/function |
 | [UPDATER.md](UPDATER.md) | обновление из релизов GitHub внутри приложения |
 | [MARKETPLACE.md](MARKETPLACE.md) | маркетплейс плагинов: сервер, формат пакета, API |
 | [../AGENTS.md](../AGENTS.md) | руководство для разработчика и агента: CI, сборка, сервер, подводные камни |
