@@ -144,6 +144,7 @@ public final class TgYouAppearance {
         if (m3Any) {
             color = m3(key, color);
         }
+        color = TgYouColors.apply(key, color);
         int percent;
         if (key == Theme.key_chat_inBubble || key == Theme.key_chat_inBubbleSelected) {
             percent = inAlpha;

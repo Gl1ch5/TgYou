@@ -44,7 +44,6 @@ public class TgYouSettingsActivity extends TgYouScreen {
         item(R.drawable.tgy_filters, "Фильтры", null, () -> presentFragment(new FiltersScreen()));
         item(R.drawable.tgy_basic, "Основные", null, () -> presentFragment(new BasicScreen()));
         item(R.drawable.tgy_chats, "Чаты", null, () -> presentFragment(new ChatsScreen()));
-        item(R.drawable.tgy_theme, "Внешний вид", null, () -> presentFragment(new AppearanceScreen()));
         item(R.drawable.tgy_palette, "Кастомизация", null, () -> presentFragment(new CustomizationScreen()));
         item(R.drawable.tgy_star, "Иконки", null, () -> presentFragment(new IconPacksActivity()));
         item(R.drawable.tgy_phone, "Иконка приложения", null, () -> presentFragment(new TgYouIconsActivity()));
