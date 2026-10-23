@@ -67,7 +67,7 @@ public final class TgYouGlass {
     /** Makes the message context menu translucent. */
     public static void menu(org.telegram.ui.ActionBar.ActionBarPopupWindow.ActionBarPopupWindowLayout layout) {
         if (layout != null && TgYouPrefs.bool(MENU, false)) {
-            layout.setBackgroundColor(androidx.core.graphics.ColorUtils.setAlphaComponent(layout.getBackgroundColor(), 0xA6));
+            layout.setBackAlpha(0xA6);
         }
     }
 }

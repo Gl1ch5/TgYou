@@ -79,7 +79,10 @@ public final class TgYouGestures {
                 return true;
             }
             case 4:
-                if (message.isOutOwner() && message.canEditMessage(fragment.getCurrentChat())) {
+                if (!message.isOutOwner()) {
+                    return false;
+                }
+                if (message.canEditMessage(fragment.getCurrentChat())) {
                     fragment.showFieldPanelForEdit(true, message);
                 }
                 return true;

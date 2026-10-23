@@ -92,12 +92,12 @@ public class AppearanceScreen extends TgYouScreen {
         toggle(TgYouChatTweaks.CHAT_THEMES, "Различные темы в чатах", "Показывать темы, которые собеседники ставят в чате. Выключено: везде ваша тема.", true);
         toggle(TgYouListTweaks.STICKY_AVATAR, "Липкая анимация аватарок", "Аватарка в профиле уменьшается и прилипает к шапке при прокрутке. Выключено: остаётся крупной.", true);
         toggle("look.system_font", "Системные шрифты", "Жирный и курсивный текст рисует системный шрифт вместо шрифтов Telegram. Применяется после перезапуска.", systemFont(), v -> setSystemFont(Boolean.TRUE.equals(v)));
-        toggle("look.system_emoji", "Системные эмодзи", "Эмодзи рисует система, а не набор Telegram.", SharedConfig.useSystemEmoji, v -> {
+        toggle("look.system_emoji", "Системные эмодзи", "Эмодзи рисует система, а не набор Telegram. Полностью применяется после перезапуска.", SharedConfig.useSystemEmoji, v -> {
             SharedConfig.useSystemEmoji = Boolean.TRUE.equals(v);
             ApplicationLoader.applicationContext.getSharedPreferences("mainconfig", Context.MODE_PRIVATE).edit().putBoolean("useSystemEmoji", SharedConfig.useSystemEmoji).apply();
             TgYouAppearance.reloadUi();
         });
-        toggle("look.glass", "Жидкое стекло", "Нативный эффект Liquid Glass Telegram на панелях.", false, v -> TgYouGlass.configure(Boolean.TRUE.equals(v), 1f, 1f, 1f));
+        toggle("look.glass", "Жидкое стекло", "Нативный эффект Liquid Glass Telegram на панелях. Главная панель меняется после перезапуска.", false, v -> TgYouGlass.configure(Boolean.TRUE.equals(v), TgYouGlass.thickness(1f), TgYouGlass.intensity(1f), TgYouGlass.index(1f)));
         value("Скругление пузырей", () -> String.valueOf(TgYouAppearance.bubbleRadius()), () -> askText("Скругление (0-24)", String.valueOf(TgYouAppearance.bubbleRadius()), true, text -> {
             try {
                 TgYouAppearance.setBubbleRadius(Integer.parseInt(text));

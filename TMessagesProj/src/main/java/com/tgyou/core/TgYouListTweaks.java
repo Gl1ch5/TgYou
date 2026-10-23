@@ -118,9 +118,26 @@ public final class TgYouListTweaks {
         return TgYouPrefs.bool(HIDE_FAB, false);
     }
 
+    private static boolean searchHidden;
+
+    /** Re-applies the «hide search» setting to an existing field (on return to the list). */
+    public static void searchVisibility(android.view.View field, boolean onlySelect) {
+        if (field == null || onlySelect) {
+            return;
+        }
+        boolean hide = TgYouPrefs.bool(HIDE_SEARCH, false);
+        if (hide) {
+            field.setVisibility(android.view.View.GONE);
+        } else if (searchHidden && field.getVisibility() == android.view.View.GONE) {
+            field.setVisibility(android.view.View.VISIBLE);
+        }
+        searchHidden = hide;
+    }
+
     public static void searchField(android.view.View field, boolean onlySelect) {
         if (field != null && !onlySelect && TgYouPrefs.bool(HIDE_SEARCH, false)) {
             field.setVisibility(android.view.View.GONE);
+            searchHidden = true;
         }
         if (field instanceof org.telegram.ui.Components.FragmentSearchField && !onlySelect) {
             TgYouPillStack.attach((org.telegram.ui.Components.FragmentSearchField) field);

@@ -7031,6 +7031,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     public void onResume() {
         super.onResume();
         com.tgyou.core.TgYouListTweaks.searchHeight(this, fragmentView, onlySelect, true);
+        com.tgyou.core.TgYouListTweaks.searchVisibility(fragmentSearchField, onlySelect);
+        updateFloatingButtonVisibility(false);
+        if (actionBar != null && statusDrawable != null && folderId == 0 && communityId == 0) actionBar.setTitle(new SpannableStringBuilder(com.tgyou.core.TgYouHooks.dialogsTitle("Telegram You")), statusDrawable);
         if (filterTabsView != null && com.tgyou.core.TgYouFolders.changed()) updateFilterTabs(true, false);
         if (actionBar != null) { boolean c = com.tgyou.core.TgYouListTweaks.centerTitle(folderId, communityId, onlySelect); if (actionBar.tgyouCenter != c) { actionBar.tgyouCenter = c; actionBar.requestLayout(); } }
         if (dialogStoriesCell != null) {
