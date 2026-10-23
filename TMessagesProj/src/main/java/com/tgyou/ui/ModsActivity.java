@@ -164,7 +164,7 @@ public class ModsActivity extends BaseFragment {
 
     private void loadMarket() {
         marketStatus = "Загрузка каталога…";
-        MarketClient.list("", (items, error) -> {
+        MarketClient.list(getParentActivity(), "", (items, error) -> {
             if (error != null) {
                 market = null;
                 marketStatus = "Каталог недоступен: " + error;

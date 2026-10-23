@@ -48,6 +48,7 @@ public class TgYouSettingsActivity extends TgYouScreen {
         item(R.drawable.tgy_star, "Иконки", null, () -> presentFragment(new IconPacksActivity()));
         item(R.drawable.tgy_phone, "Иконка приложения", null, () -> presentFragment(new TgYouIconsActivity()));
         item(R.drawable.tgy_mods, "Моды", null, () -> presentFragment(new ModsActivity()));
+        item(R.drawable.tgy_code, "Для разработчиков", com.tgyou.core.TgYouDebug.enabled() ? "отладка включена" : null, () -> presentFragment(new DeveloperScreen()));
         if (host != null) {
             for (Section section : Section.values()) {
                 int total = 0;
@@ -110,7 +111,7 @@ public class TgYouSettingsActivity extends TgYouScreen {
         box.addView(name, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL, 0, 16, 0, 0));
 
         TextView version = new TextView(context);
-        version.setText(BuildVars.BUILD_VERSION_STRING);
+        version.setText(TgYouVersion.beta() + " \u00b7 на базе Telegram " + BuildVars.BUILD_VERSION_STRING.replaceAll("-tgyou.*$", ""));
         version.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         version.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteGrayText));
         box.addView(version, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL, 0, 4, 0, 18));

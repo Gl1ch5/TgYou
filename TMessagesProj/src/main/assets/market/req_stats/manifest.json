@@ -1,0 +1,1 @@
+{"id":"req_stats","name":"Статистика запросов","version":"1.0.0","api_version":1,"description":"Считает исходящие запросы к серверу Telegram по типам и показывает топ на своей странице в TgYou.","category":"tools","author":"TgYou","entry":"main.py"}

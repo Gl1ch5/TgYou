@@ -116,6 +116,9 @@ public final class TgYouHooks {
     private static boolean started;
 
     public static void appEvent(String event) {
+        if ("app_resume".equals(event)) {
+            TgYouDebug.onResume();
+        }
         PluginHost host = PluginHost.get();
         if (host == null) {
             return;

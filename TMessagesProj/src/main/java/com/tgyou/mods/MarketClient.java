@@ -27,6 +27,8 @@ public final class MarketClient {
         public String changelog;
         public long size;
         public int downloads;
+        /** Shipped inside the app: installs without the server. */
+        public boolean builtin;
     }
 
     public interface ListCallback {
@@ -40,9 +42,9 @@ public final class MarketClient {
     private MarketClient() {
     }
 
-    public static void list(String query, ListCallback callback) {
+    public static void list(android.content.Context context, String query, ListCallback callback) {
         Utilities.globalQueue.postRunnable(() -> {
-            List<Item> items = new ArrayList<>();
+            List<Item> items = new ArrayList<>(BuiltinMods.list(context));
             String error = null;
             try {
                 String url = BASE + "/api/v1/plugins?per_page=50&q=" + URLEncoder.encode(query == null ? "" : query, "UTF-8");
@@ -51,6 +53,13 @@ public final class MarketClient {
                     JSONObject o = array.getJSONObject(i);
                     JSONObject latest = o.optJSONObject("latest");
                     if (latest == null) {
+                        continue;
+                    }
+                    boolean shipped = false;
+                    for (Item b : items) {
+                        shipped |= b.id.equals(o.getString("id"));
+                    }
+                    if (shipped) {
                         continue;
                     }
                     Item item = new Item();
@@ -69,8 +78,9 @@ public final class MarketClient {
             } catch (Throwable t) {
                 error = t.getMessage() != null ? t.getMessage() : t.toString();
             }
+            // the shipped mods stay usable when the server is down
             String err = error;
-            AndroidUtilities.runOnUIThread(() -> callback.done(items, err));
+            AndroidUtilities.runOnUIThread(() -> callback.done(items, items.isEmpty() ? err : null));
         });
     }
 
@@ -80,8 +90,8 @@ public final class MarketClient {
             ModManifest manifest = null;
             String error = null;
             try {
-                byte[] zip = get(BASE + "/api/v1/plugins/" + item.id + "/download?version=" + URLEncoder.encode(item.version, "UTF-8"));
-                manifest = ModRuntime.store(context).install(zip, item.sha256);
+                byte[] zip = item.builtin ? BuiltinMods.pack(context, item.id) : get(BASE + "/api/v1/plugins/" + item.id + "/download?version=" + URLEncoder.encode(item.version, "UTF-8"));
+                manifest = ModRuntime.store(context).install(zip, item.builtin ? null : item.sha256);
                 ModRuntime.activate(context, manifest);
             } catch (Throwable t) {
                 error = t.getMessage() != null ? t.getMessage() : t.toString();

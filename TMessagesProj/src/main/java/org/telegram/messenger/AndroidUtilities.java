@@ -6680,7 +6680,7 @@ public class AndroidUtilities {
                     }
                     break;
             }
-            return formatString("TelegramVersion", R.string.TelegramVersion, String.format(Locale.US, "v%s (%d) %s", pInfo.versionName, code, abi));
+            return com.tgyou.ui.TgYouVersion.full(pInfo.versionName, code, abi);
         } catch (Exception e) {
             FileLog.e(e);
         }
