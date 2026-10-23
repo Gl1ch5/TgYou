@@ -20,6 +20,6 @@ def on_load(api):
         def tap():
             counters["menu"] += 1
             api.toast("Статистика: нажатий %d" % counters["menu"])
-        m.add("Посчитать в статистике", api.icon("msg_stats"), tap)
+        m.add("Посчитать в статистике", api.icon("stats"), tap)
 
     api.hook("message.menu", menu)

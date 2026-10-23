@@ -221,7 +221,7 @@ public final class ModApi {
     /** Resource id of a menu icon by short name, e.g. "info" -> R.drawable.msg_info; 0 if unknown. */
     public int icon(String name) {
         try {
-            return R.drawable.class.getField("msg_" + name).getInt(null);
+            return R.drawable.class.getField("msg_" + (name.startsWith("msg_") ? name.substring(4) : name)).getInt(null);
         } catch (Throwable t) {
             return 0;
         }

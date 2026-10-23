@@ -32,6 +32,7 @@ import org.telegram.ui.ActionBar.AlertDialog;
 import org.telegram.ui.ActionBar.BaseFragment;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Cells.HeaderCell;
+import org.telegram.ui.Cells.TextCell;
 import org.telegram.ui.Cells.TextInfoPrivacyCell;
 import org.telegram.ui.Cells.TextSettingsCell;
 import org.telegram.ui.Components.LayoutHelper;
@@ -57,6 +58,7 @@ public class ModsActivity extends BaseFragment {
     private static final int T_INFO = 1;
     private static final int T_ACTION = 2;
     private static final int T_MOD = 3;
+    private static final int T_AI = 4;
 
     private static final String[] TABS = {"Маркетплейс", "Установленные", "Создать мод"};
 
@@ -71,6 +73,8 @@ public class ModsActivity extends BaseFragment {
         String meta;
         String description;
         String problem;
+        int icon;
+        int color;
         List<ModCell.Button> buttons;
     }
 
@@ -314,6 +318,16 @@ public class ModsActivity extends BaseFragment {
     }
 
     private void buildCreate() {
+        simple(T_HEADER, "Мод с помощью нейросети", null, null);
+        Row copy = simple(T_AI, "Скопировать промпт для нейросети", "Вставьте его в нейросеть и опишите нужный мод", this::copyPrompt);
+        copy.icon = R.drawable.msg_bot;
+        copy.color = 0xFF8C58F6;
+        Row paste = simple(T_AI, "Вставить мод из буфера", "Готовый файл от нейросети — одним нажатием", this::pasteMod);
+        paste.icon = R.drawable.msg_copy;
+        paste.color = 0xFF3FB950;
+        simple(T_INFO, "1. Нажмите «Скопировать промпт» и вставьте его в ChatGPT, Claude или другую нейросеть.\n"
+                + "2. В конце промпта после «ЗАДАЧА:» опишите, какой мод нужен, и отправьте.\n"
+                + "3. Скопируйте весь ответ нейросети целиком и нажмите «Вставить мод из буфера» — мод установится после подтверждения.", null, null);
         simple(T_HEADER, "Свой мод", null, null);
         simple(T_INFO, "Мод — это папка с manifest.json и Python-файлом. Он получает доступ ко всему приложению: "
                 + "подписывается на события, добавляет пункты меню и страницы в TgYou, читает и пишет настройки. "
@@ -382,6 +396,46 @@ public class ModsActivity extends BaseFragment {
         if (getParentActivity() != null) {
             Toast.makeText(getParentActivity(), text, Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void copyPrompt() {
+        Context context = getParentActivity();
+        try (InputStream in = context.getAssets().open("mod-sdk/AI_PROMPT.md")) {
+            String text = new String(com.tgyou.mods.ModStore.readAll(in), "UTF-8");
+            android.content.ClipboardManager cm = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            cm.setPrimaryClip(android.content.ClipData.newPlainText("TgYou prompt", text));
+            toast("Промпт скопирован. Вставьте его в нейросеть и допишите задачу после «ЗАДАЧА:»");
+        } catch (Throwable t) {
+            toast("Не удалось скопировать промпт: " + t.getMessage());
+        }
+    }
+
+    private void pasteMod() {
+        Context context = getParentActivity();
+        CharSequence clip = null;
+        try {
+            android.content.ClipboardManager cm = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            if (cm.hasPrimaryClip() && cm.getPrimaryClip().getItemCount() > 0) {
+                clip = cm.getPrimaryClip().getItemAt(0).coerceToText(context);
+            }
+        } catch (Throwable ignore) {
+        }
+        if (clip == null || clip.toString().trim().isEmpty()) {
+            toast("Буфер обмена пуст. Скопируйте ответ нейросети целиком");
+            return;
+        }
+        final String text = clip.toString();
+        org.telegram.messenger.Utilities.globalQueue.postRunnable(() -> {
+            try {
+                byte[] bytes = com.tgyou.mods.ModBundle.build(text);
+                if (bytes == null) {
+                    bytes = text.getBytes("UTF-8");
+                }
+                ModInstall.offer(context, bytes, this::rebuild);
+            } catch (Throwable t) {
+                AndroidUtilities.runOnUIThread(() -> toast("Не удалось разобрать ответ: " + t.getMessage()));
+            }
+        });
     }
 
     private void pickZip() {
@@ -513,7 +567,7 @@ public class ModsActivity extends BaseFragment {
         @Override
         public boolean isEnabled(RecyclerView.ViewHolder holder) {
             int type = holder.getItemViewType();
-            return type == T_ACTION || type == T_MOD;
+            return type == T_ACTION || type == T_MOD || type == T_AI;
         }
 
         @NonNull
@@ -524,6 +578,8 @@ public class ModsActivity extends BaseFragment {
                 view = new HeaderCell(context);
             } else if (viewType == T_ACTION) {
                 view = new TextSettingsCell(context);
+            } else if (viewType == T_AI) {
+                view = new TextCell(context);
             } else if (viewType == T_MOD) {
                 view = new ModCell(context);
             } else {
@@ -541,6 +597,9 @@ public class ModsActivity extends BaseFragment {
             } else if (row.type == T_ACTION) {
                 holder.itemView.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundWhite));
                 ((TextSettingsCell) holder.itemView).setTextAndValue(row.title, row.value, false);
+            } else if (row.type == T_AI) {
+                holder.itemView.setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundWhite));
+                ((TextCell) holder.itemView).setTextAndValueAndColorfulIcon(row.title, row.value, false, row.icon, row.color, row.color, false);
             } else if (row.type == T_MOD) {
                 ((ModCell) holder.itemView).set(row.name, row.version, row.meta, row.description, row.problem, row.buttons);
             } else {
