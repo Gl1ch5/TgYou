@@ -200,6 +200,38 @@ def markdown(items):
     return "\n".join(out)
 
 
+def write_catalog(items, outdir):
+    """Полный каталог: catalog/hooks.json (компактный) и по markdown-файлу на пару вид+категория."""
+    os.makedirs(outdir, exist_ok=True)
+    pub = [i for i in items if not i["private"]]
+    slim = [[i["class"], i["method"], i["params"], i["returns"], i["kind"], i["category"], int(i["static"])] for i in pub]
+    with open(os.path.join(outdir, "hooks.json"), "w", encoding="utf-8") as f:
+        json.dump({"fields": ["class", "method", "params", "returns", "kind", "category", "static"], "items": slim}, f, ensure_ascii=False, separators=(",", ":"))
+    groups = collections.defaultdict(lambda: collections.defaultdict(list))
+    for i in pub:
+        groups[(i["kind"], i["category"])][i["class"]].append(i)
+    index = ["# Полный каталог мест для хуков", "",
+             "Сгенерировано `hook_scan.py --catalog`. Каждый метод можно перехватить: `api.hook_by_name(класс, имя, before, after, replace)`.",
+             "Для вложенных классов имя через `$` (так его понимает Java). Приватные методы не включены. Классификация эвристическая.", "",
+             "Машинный вид: [hooks.json](hooks.json) (поля: class, method, params, returns, kind, category, static).", "",
+             "| Вид | Категория | Методов | Файл |", "|---|---|---|---|"]
+    for (kind, cat), classes in sorted(groups.items()):
+        name = "%s_%s.md" % (kind, cat)
+        total = sum(len(v) for v in classes.values())
+        index.append("| %s | %s | %d | [%s](%s) |" % (kind, cat, total, name, name))
+        lines = ["# %s / %s (%d методов)" % (kind, cat, total), ""]
+        for cls in sorted(classes):
+            lines.append("## `%s`" % cls)
+            for i in sorted(classes[cls], key=lambda x: x["method"]):
+                lines.append("- `%s%s(%s)` -> `%s`" % ("static " if i["static"] else "", i["method"], i["params"], i["returns"]))
+            lines.append("")
+        with open(os.path.join(outdir, name), "w", encoding="utf-8") as f:
+            f.write("\n".join(lines))
+    with open(os.path.join(outdir, "README.md"), "w", encoding="utf-8") as f:
+        f.write("\n".join(index) + "\n")
+    print("каталог: %d методов в %s" % (len(pub), outdir))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--kind", choices=["visual", "function"])
@@ -210,6 +242,7 @@ def main():
     ap.add_argument("--summary", action="store_true")
     ap.add_argument("--json")
     ap.add_argument("--markdown")
+    ap.add_argument("--catalog", help="папка для полного каталога (json + markdown по категориям)")
     a = ap.parse_args()
 
     items = collect()
@@ -225,7 +258,9 @@ def main():
         with open(a.markdown, "w", encoding="utf-8") as f:
             f.write(markdown(items))
         print("записано " + a.markdown)
-    if a.summary or not (a.json or a.markdown or a.kind or a.cat or a.find):
+    if a.catalog:
+        write_catalog(items, a.catalog)
+    if a.summary or not (a.catalog or a.json or a.markdown or a.kind or a.cat or a.find):
         print(summary(items))
         return 0
     if a.kind or a.cat or a.find:

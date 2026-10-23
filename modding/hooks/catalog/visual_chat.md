@@ -1,0 +1,2385 @@
+# visual / chat (2150 методов)
+
+## `org.telegram.messenger.MessageObject`
+- `static formatTextWithEntities(TLRPC.TL_textWithEntities text)` -> `CharSequence`
+- `static formatTextWithEntities(TLRPC.TL_textWithEntities text, boolean out)` -> `CharSequence`
+- `static formatTextWithEntities(TLRPC.TL_textWithEntities text, boolean out, TextPaint paint)` -> `CharSequence`
+- `getMaxMessageTextWidth()` -> `int`
+- `static makeStaticLayout(CharSequence text_, TextPaint paint, int width, float lineSpacingMult, float lineSpacingAdd, boolean dontIncludePad)` -> `StaticLayout`
+- `measureInlineBotButtons()` -> `void`
+- `measureVoiceTranscriptionHeight()` -> `float`
+
+## `org.telegram.messenger.MessageObject$TextLayoutBlock`
+- `drawCopyCodeButton(Canvas canvas, RectF bounds, int textColor, int backgroundColor, float alpha)` -> `void`
+- `layoutCode(String lng, int codeLength, boolean noforwards)` -> `void`
+
+## `org.telegram.messenger.MessageObject$TextLayoutBlocks`
+- `bounceFrom(TextLayoutBlocks from)` -> `void`
+
+## `org.telegram.ui.Business.ChatAttachAlertQuickRepliesLayout`
+- `didReceivedNotification(int id, int account, Object... args)` -> `void`
+- `getCurrentItemTop()` -> `int`
+- `getFirstOffset()` -> `int`
+- `getListTopPadding()` -> `int`
+- `getSelectedItemsCount()` -> `int`
+- `getThemeDescriptions()` -> `ArrayList<ThemeDescription>`
+- `onDestroy()` -> `void`
+- `onFactorChanged(int id, float factor, float fraction, FactorAnimator callee)` -> `void`
+- `onLayout(boolean changed, int left, int top, int right, int bottom)` -> `void`
+- `onPreMeasure(int availableWidth, int availableHeight)` -> `void`
+- `onShow(ChatAttachAlert.AttachAlertLayout previousLayout)` -> `void`
+- `scrollToTop()` -> `void`
+- `setTranslationY(float translationY)` -> `void`
+- `setupBlurredSearchField(BlurredBackgroundDrawableViewFactory factory)` -> `void`
+
+## `org.telegram.ui.Business.ChatAttachAlertQuickRepliesLayout$ShareAdapter`
+- `getCountForSection(int section)` -> `int`
+- `getItem(int section, int position)` -> `Object`
+- `getItemViewType(int section, int position)` -> `int`
+- `getLetter(int position)` -> `String`
+- `getPositionForScrollProgress(RecyclerListView listView, float progress, int[] position)` -> `void`
+- `getSectionCount()` -> `int`
+- `getSectionHeaderView(int section, View view)` -> `View`
+- `isEnabled(RecyclerView.ViewHolder holder, int section, int row)` -> `boolean`
+- `notifyDataSetChanged()` -> `void`
+- `onBindViewHolder(int section, int position, RecyclerView.ViewHolder holder)` -> `void`
+- `onCreateViewHolder(ViewGroup parent, int viewType)` -> `RecyclerView.ViewHolder`
+
+## `org.telegram.ui.Business.ChatAttachAlertQuickRepliesLayout$ShareSearchAdapter`
+- `getItem(int position)` -> `Object`
+- `getItemCount()` -> `int`
+- `getItemViewType(int position)` -> `int`
+- `isEnabled(RecyclerView.ViewHolder holder)` -> `boolean`
+- `notifyDataSetChanged()` -> `void`
+- `onBindViewHolder(RecyclerView.ViewHolder holder, int position)` -> `void`
+- `onCreateViewHolder(ViewGroup parent, int viewType)` -> `RecyclerView.ViewHolder`
+- `search(final String query)` -> `void`
+
+## `org.telegram.ui.Business.ChatAttachAlertQuickRepliesLayout$UserCell`
+- `getThemedColor(int key)` -> `int`
+- `hasOverlappingRendering()` -> `boolean`
+- `onDraw(Canvas canvas)` -> `void`
+- `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `setChecked(boolean checked, boolean animated)` -> `void`
+- `setCurrentId(int id)` -> `void`
+- `setData(TLRPC.User user, CharSequence name, CharSequence status, boolean divider)` -> `void`
+- `setData(TLRPC.User user, CharSequence name, CharSequenceCallback status, boolean divider)` -> `void`
+- `setStatus(CharSequence status)` -> `void`
+- `update(int mask)` -> `void`
+
+## `org.telegram.ui.Cells.ChatMessageCell`
+- `applyServiceShaderMatrix()` -> `void`
+- `applyServiceShaderMatrix(int measuredWidth, int backgroundHeight, float x, float viewTop)` -> `void`
+- `areTags()` -> `boolean`
+- `captionFlag()` -> `int`
+- `computeHeight(MessageObject object, MessageObject.GroupedMessages groupedMessages, boolean withCaption)` -> `int`
+- `computeScroll()` -> `void`
+- `computeWidth(MessageObject object, MessageObject.GroupedMessages groupedMessages)` -> `int`
+- `copyParamsTo(ChatMessageCell cell)` -> `void`
+- `copySpoilerEffect2AttachIndexFrom(ChatMessageCell cell)` -> `void`
+- `copyVisiblePartTo(ChatMessageCell cell)` -> `void`
+- `createSelectorDrawable(int num)` -> `void`
+- `didPressReactionFromLayout(TLRPC.ReactionCount reaction, boolean longpress, float x, float y)` -> `void`
+- `didPressVoteHint()` -> `void`
+- `didReceivedNotification(int id, int account, Object... args)` -> `void`
+- `didSetImage(ImageReceiver imageReceiver, boolean set, boolean thumb, boolean memCache)` -> `void`
+- `drawAnimatedEmojiCaption(Canvas canvas, float alpha)` -> `void`
+- `drawAnimatedEmojis(Canvas canvas, float alpha)` -> `void`
+- `drawBackground(Canvas canvas, int left, int top, int right, int bottom, boolean pinnedTop, boolean pinnedBottom, boolean selected, int keyboardHeight)` -> `void`
+- `drawBackgroundInParent()` -> `boolean`
+- `drawBackgroundInternal(Canvas canvas, boolean fromParent)` -> `void`
+- `drawBlurredPhoto(Canvas canvas)` -> `void`
+- `drawBlurredPhotoParticles(Canvas canvas)` -> `void`
+- `drawButtonProgress(TL_keyboard.KeyboardButtonProto button)` -> `boolean`
+- `drawCaptionLayout(Canvas canvas, boolean selectionOnly, float alpha)` -> `void`
+- `drawCheckBox(Canvas canvas)` -> `void`
+- `drawCommentButton(Canvas canvas, float alpha)` -> `void`
+- `drawCommentLayout(Canvas canvas, float alpha)` -> `void`
+- `drawContent(Canvas canvas, boolean preview)` -> `void`
+- `drawFactCheck(Canvas canvas, float alpha)` -> `void`
+- `drawFactCheckText(Canvas canvas, float alpha)` -> `void`
+- `drawInternal(Canvas canvas)` -> `void`
+- `drawLinkPreview(Canvas canvas, float alpha)` -> `void`
+- `drawMessageText(Canvas canvas)` -> `void`
+- `drawMessageText(Canvas canvas, ArrayList<MessageObject.TextLayoutBlock> textLayoutBlocks, boolean origin, float alpha, boolean drawOnlyText)` -> `void`
+- `drawMessageText(float textX, float textY, Canvas canvas, ArrayList<MessageObject.TextLayoutBlock> textLayoutBlocks, float rtlOffset, boolean origin, float alpha, boolean drawAllBlocks, boolean drawOnlyText, boolean caption)` -> `void`
+- `drawMessageText(float textX, float textY, Canvas canvas, ArrayList<MessageObject.TextLayoutBlock> textLayoutBlocks, float rtlOffset, boolean origin, float alpha, boolean drawAllBlocks, boolean drawOnlyText, boolean caption, boolean explanation)` -> `void`
+- `drawNamesLayout(Canvas canvas, float alpha)` -> `void`
+- `drawOutboundsContent(Canvas canvas)` -> `void`
+- `drawOverlays(Canvas canvas)` -> `void`
+- `drawPhotoBlurRect(Canvas canvas, RectF rect)` -> `void`
+- `drawPhotoImage(Canvas canvas)` -> `boolean`
+- `drawPinnedBottom()` -> `boolean`
+- `drawPinnedTop()` -> `boolean`
+- `drawProgressLoadingLink(Canvas canvas, int blockNum)` -> `void`
+- `drawRadialProgress(Canvas canvas)` -> `void`
+- `drawReactionsLayout(Canvas canvas, float alpha, Integer only)` -> `void`
+- `drawReactionsLayoutOverlay(Canvas canvas, float alpha)` -> `boolean`
+- `drawRoundProgress(Canvas canvas)` -> `void`
+- `drawScrimReaction(Canvas canvas, Integer scrimViewReaction, float progress, boolean direction)` -> `void`
+- `drawScrimReactionPreview(View view, Canvas canvas, int offset, Integer scrimViewReaction, float progress)` -> `void`
+- `drawServiceBackground(Canvas canvas, RectF rect, float radius, float alpha)` -> `void`
+- `drawServiceBackground(Canvas canvas, Path path, float alpha)` -> `void`
+- `drawSideButton(Canvas canvas)` -> `void`
+- `drawSideButton(Canvas canvas, boolean fromQuickShare)` -> `void`
+- `drawSummarizeButton(Canvas canvas)` -> `void`
+- `drawTime(Canvas canvas, float alpha, boolean fromParent)` -> `void`
+- `drawVideoTimestamps(Canvas canvas, int color)` -> `void`
+- `drawVoiceOnce(Canvas canvas, float progress, Runnable drawRadialProgress)` -> `void`
+- `forceResetMessageObject()` -> `void`
+- `freezeCell(boolean freeze)` -> `void`
+- `static generateStaticLayout(CharSequence text, TextPaint paint, int maxWidth, int smallWidth, int linesCount, int maxLines)` -> `StaticLayout`
+- `getAccessibilityNodeProvider()` -> `AccessibilityNodeProvider`
+- `getAdditionalPaddingHeight()` -> `int`
+- `getAlpha()` -> `float`
+- `getAnimatedEmojiSpans()` -> `AnimatedEmojiSpan[]`
+- `getAnimationOffsetX()` -> `float`
+- `getAvatarImage()` -> `ImageReceiver`
+- `getBackgroundDrawable()` -> `MessageBackgroundDrawable`
+- `getBackgroundDrawableBottom()` -> `int`
+- `getBackgroundDrawableLeft()` -> `int`
+- `getBackgroundDrawableRight()` -> `int`
+- `getBackgroundDrawableTop()` -> `int`
+- `getBackgroundHeight()` -> `int`
+- `getBlurredPhotoImage()` -> `ImageReceiver`
+- `getBottomActionPadding()` -> `int`
+- `getBoundsLeft()` -> `int`
+- `getBoundsRight()` -> `int`
+- `getCaptionLayout()` -> `MessageObject.TextLayoutBlocks`
+- `getCaptionX()` -> `float`
+- `getCaptionY()` -> `float`
+- `getCheckBoxTranslation()` -> `float`
+- `getChecksX()` -> `int`
+- `getChecksY()` -> `int`
+- `getCurrentBackgroundDrawable(boolean update)` -> `MessageDrawable`
+- `getCurrentBackgroundLeft()` -> `int`
+- `getCurrentBackgroundRight()` -> `int`
+- `getCurrentChat()` -> `TLRPC.Chat`
+- `getCurrentMessagesGroup()` -> `MessageObject.GroupedMessages`
+- `getCurrentPosition()` -> `MessageObject.GroupedMessagePosition`
+- `getCurrentUser()` -> `TLRPC.User`
+- `getDelegate()` -> `ChatMessageCellDelegate`
+- `getDeltaBottom()` -> `float`
+- `getDeltaLeft()` -> `float`
+- `getDeltaRight()` -> `float`
+- `getDeltaTop()` -> `float`
+- `getDescriptionLayoutX()` -> `float`
+- `getDescriptionLayoutY()` -> `float`
+- `getDescriptionlayout()` -> `StaticLayout`
+- `getEffect()` -> `TLRPC.TL_availableEffect`
+- `getEventX(MotionEvent event)` -> `float`
+- `getEventY(MotionEvent event)` -> `float`
+- `getExplanationLayout()` -> `MessageObject.TextLayoutBlocks`
+- `getExplanationX()` -> `float`
+- `getExplanationY()` -> `float`
+- `getExtraInsetHeight()` -> `int`
+- `getExtraTextX()` -> `int`
+- `getFactCheckLayout()` -> `StaticLayout`
+- `getFilename()` -> `String`
+- `getForwardNameCenterX()` -> `int`
+- `getHighlightAlpha()` -> `float`
+- `getHighlightAlpha(boolean quote)` -> `float`
+- `getLastTouchX()` -> `float`
+- `getLastTouchY()` -> `float`
+- `getLayoutHeight()` -> `int`
+- `getMaxNameWidth()` -> `int`
+- `getMediaOffsetY()` -> `int`
+- `getMessageObject()` -> `MessageObject`
+- `static getMessageSize(int imageW, int imageH)` -> `PointF`
+- `getNameStatusX()` -> `int`
+- `getNameStatusY()` -> `int`
+- `getNoSoundIconCenterX()` -> `int`
+- `getNonAnimationTranslationX(boolean update)` -> `float`
+- `getObserverTag()` -> `int`
+- `getPaddingTopAnimated()` -> `float`
+- `getParentWidth()` -> `int`
+- `getPhotoBottom()` -> `float`
+- `getPhotoImage()` -> `ImageReceiver`
+- `getPhotoImage(int index)` -> `ImageReceiver`
+- `getPollAddButtonBounds(Rect bounds)` -> `boolean`
+- `getPollButtonBottom(int index)` -> `float`
+- `getPollButtonTop(int index)` -> `float`
+- `getPollButtons()` -> `ArrayList<PollButton>`
+- `getPollButtonsLeft()` -> `float`
+- `getPollButtonsRight()` -> `float`
+- `getPollIndex(byte[] taskId)` -> `int`
+- `getPrimaryMessageObject()` -> `MessageObject`
+- `getRadialProgress()` -> `RadialProgress2`
+- `getReactionButton(ReactionsLayoutInBubble.VisibleReaction visibleReaction)` -> `ReactionsLayoutInBubble.ReactionButton`
+- `getReactionsLayout()` -> `ReactionsLayoutInBubble`
+- `getResourcesProvider()` -> `Theme.ResourcesProvider`
+- `getSeekBarWaveform()` -> `SeekBarWaveform`
+- `getSideButtonStartX()` -> `float`
+- `getSideButtonStartY()` -> `float`
+- `getSlidingOffsetX()` -> `float`
+- `getStarsPrice()` -> `long`
+- `getStarsPriceTopPadding()` -> `int`
+- `getStreamingMedia()` -> `TLRPC.Document`
+- `getTextX()` -> `int`
+- `getTextY()` -> `int`
+- `getThemedColor(int key)` -> `int`
+- `getThemedPaint(String paintKey)` -> `Paint`
+- `getTimeAlpha()` -> `float`
+- `getTimeX()` -> `float`
+- `getTimeY()` -> `float`
+- `getTimeY(float timeYOffset)` -> `float`
+- `getTodoIndex(int taskId)` -> `int`
+- `getTopMediaOffset()` -> `int`
+- `getTopicSeparatorTopPadding()` -> `int`
+- `getTransitionParams()` -> `TransitionParams`
+- `getVideoTranscriptionProgress()` -> `float`
+- `getViewTop()` -> `float`
+- `getWidthForButtons()` -> `int`
+- `hasReactionsToDraw()` -> `boolean`
+- `invalidate()` -> `void`
+- `invalidate(int l, int t, int r, int b)` -> `void`
+- `invalidateDrawable(Drawable drawable)` -> `void`
+- `invalidateLite()` -> `void`
+- `invalidateOutbounds()` -> `void`
+- `isAdminLayoutChanged()` -> `boolean`
+- `isAnimatingPollAnswer()` -> `boolean`
+- `isCellAttachedToWindow()` -> `boolean`
+- `isCheckBoxVisible()` -> `boolean`
+- `isDraggingdAnyMusicSeekBar()` -> `boolean`
+- `isDrawNameLayout()` -> `boolean`
+- `isDrawPinnedBottom()` -> `boolean`
+- `isDrawSelectionBackground()` -> `boolean`
+- `isDrawingSelectionBackground()` -> `boolean`
+- `isFirstInChat()` -> `boolean`
+- `isHighlighted()` -> `boolean`
+- `isHighlightedAnimated()` -> `boolean`
+- `isInsideBackground(float x, float y)` -> `boolean`
+- `isLastInChatList()` -> `boolean`
+- `isNeedAuthorName()` -> `boolean`
+- `isPinnedBottom()` -> `boolean`
+- `isPinnedTop()` -> `boolean`
+- `isPlayingRound()` -> `boolean`
+- `isSeekBarDragAllowed()` -> `boolean`
+- `isUpdating()` -> `boolean`
+- `isWidthAdaptive()` -> `boolean`
+- `layoutTextXY(boolean parent)` -> `void`
+- `makeSpoilerEffect()` -> `SpoilerEffect2`
+- `needDelayRoundProgressDraw()` -> `boolean`
+- `needDrawAvatar()` -> `boolean`
+- `needDrawTime()` -> `boolean`
+- `onAnimationReady(ImageReceiver imageReceiver)` -> `void`
+- `onAttachedToWindow()` -> `void`
+- `onDetachedFromWindow()` -> `void`
+- `onDraw(Canvas canvas)` -> `void`
+- `onFactorChanged(int id, float factor, float fraction, FactorAnimator callee)` -> `void`
+- `onFailedDownload(String fileName, boolean canceled)` -> `void`
+- `onHoverEvent(MotionEvent event)` -> `boolean`
+- `onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info)` -> `void`
+- `onLayout(boolean changed, int left, int top, int right, int bottom)` -> `void`
+- `onLongPress()` -> `boolean`
+- `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `onProgressDownload(String fileName, long downloadedSize, long totalSize)` -> `void`
+- `onProgressUpload(String fileName, long uploadedSize, long totalSize, boolean isEncrypted)` -> `void`
+- `onProvideStructure(ViewStructure structure)` -> `void`
+- `onSeekBarContinuousDrag(float progress)` -> `void`
+- `onSeekBarDrag(float progress)` -> `void`
+- `onSeekBarPressed()` -> `void`
+- `onSeekBarReleased()` -> `void`
+- `onSuccessDownload(String fileName)` -> `void`
+- `onTouchEvent(MotionEvent event)` -> `boolean`
+- `overrideAudioVisualizer(AudioVisualizerDrawable audioVisualizerDrawable)` -> `void`
+- `overrideDuration(long duration)` -> `void`
+- `performAccessibilityAction(int action, Bundle arguments)` -> `boolean`
+- `relayout()` -> `void`
+- `resetPressedLink(int type)` -> `void`
+- `reverseWaveform()` -> `boolean`
+- `setAllowAssistant(boolean value)` -> `void`
+- `setAlpha(float alpha)` -> `void`
+- `setAnimationOffsetX(float offsetX)` -> `void`
+- `setAnimationRunning(boolean animationRunning, boolean willRemoved)` -> `void`
+- `setAvatar(MessageObject messageObject)` -> `void`
+- `setBackgroundTopY(boolean fromParent)` -> `void`
+- `setBackgroundTopY(int offset)` -> `void`
+- `setCheckBoxVisible(boolean visible, boolean animated)` -> `void`
+- `setCheckPressed(boolean value, boolean pressed)` -> `void`
+- `setChecked(boolean checked, boolean allChecked, boolean animated)` -> `void`
+- `setCurrentDiceValue(boolean instant)` -> `boolean`
+- `setDelegate(ChatMessageCellDelegate chatMessageCellDelegate)` -> `void`
+- `setDrawSelectionBackground(boolean value)` -> `void`
+- `setDrawableBoundsInner(Drawable drawable, int x, int y, int w, int h)` -> `void`
+- `setEnterTransitionInProgress(boolean b)` -> `void`
+- `setFullyDraw(boolean draw)` -> `void`
+- `setHideSideButtonByQuickShare(boolean hide)` -> `void`
+- `setHighlighted(boolean value)` -> `void`
+- `setHighlightedAnimated()` -> `void`
+- `setHighlightedPoll(byte[] pollOptionId)` -> `boolean`
+- `setHighlightedSpan(CharacterStyle span)` -> `boolean`
+- `setHighlightedTask(int taskId)` -> `boolean`
+- `setHighlightedText(String text)` -> `boolean`
+- `setHighlightedText(String text, boolean quote, int quote_offset, boolean byClick)` -> `boolean`
+- `setImageCoords(RectF rect)` -> `void`
+- `setImageCoords(float x, float y, float w, float h)` -> `void`
+- `setInvalidateListener(Runnable listener)` -> `void`
+- `setInvalidateSpoilersParent(boolean invalidateSpoilersParent)` -> `void`
+- `setInvalidatesParent(boolean value)` -> `void`
+- `setIsUpdating(boolean value)` -> `void`
+- `setLastTouchCoords(float x, float y)` -> `void`
+- `setOverrideInvalidate(Runnable callback)` -> `void`
+- `setParentBounds(float chatListViewPaddingTop, int blurredViewBottomOffset)` -> `void`
+- `setParentViewSize(int parentW, int parentH)` -> `void`
+- `setPressed(boolean pressed)` -> `void`
+- `setResourcesProvider(Theme.ResourcesProvider resourcesProvider)` -> `void`
+- `setScrimReaction(Integer scrimViewReaction)` -> `void`
+- `setSelectedBackgroundProgress(float value)` -> `void`
+- `setShowTopic(boolean show)` -> `void`
+- `setSlidingOffset(float offsetX)` -> `void`
+- `setSpoilersSuppressed(boolean s)` -> `void`
+- `setSponsoredMessageVisible(boolean isVisible, boolean animated)` -> `void`
+- `setTimeAlpha(float value)` -> `void`
+- `setTranslationX(float translationX)` -> `void`
+- `setVisibleOnScreen(boolean visibleOnScreen, float clipTop, float clipBottom)` -> `void`
+- `setupTextColors()` -> `void`
+- `shakeView()` -> `void`
+- `showHintButton(boolean show, boolean animated, int type)` -> `void`
+- `startRevealMedia()` -> `void`
+- `startRevealMedia(float x, float y)` -> `void`
+- `syncTodoCheck(int index, ChatMessageCell from)` -> `void`
+- `toggleTodoCheck(int index, boolean vibrate)` -> `void`
+- `updateAnimatedEmojis()` -> `void`
+- `updateButtonState(boolean ifSame, boolean animated, boolean fromSet)` -> `void`
+- `updateCaptionLayout()` -> `void`
+- `updatePlayingMessageProgress()` -> `void`
+- `updatePollContentButtonState(boolean ifSame, boolean animated, boolean fromSet)` -> `void`
+- `updateProgressLoadingLink()` -> `void`
+- `updateTranslation()` -> `void`
+- `verifyDrawable(@NonNull Drawable who)` -> `boolean`
+- `willRemovedAfterAnimation()` -> `boolean`
+
+## `org.telegram.ui.Cells.ChatMessageCell$ChatMessageCellDelegate`
+- `allowAddPollOptions()` -> `default boolean`
+- `didLongPress(ChatMessageCell cell, float x, float y)` -> `default void`
+- `didLongPressBotButton(ChatMessageCell cell, TL_keyboard.KeyboardButtonProto button)` -> `default void`
+- `didLongPressChannelAvatar(ChatMessageCell cell, TLRPC.Chat chat, int postId, float touchX, float touchY)` -> `default boolean`
+- `didLongPressCustomBotButton(ChatMessageCell cell, BotInlineKeyboard.ButtonCustom button)` -> `default void`
+- `didLongPressPollOption(ChatMessageCell cell, TLRPC.PollAnswer answer)` -> `default boolean`
+- `didLongPressToDoButton(ChatMessageCell cell, TLRPC.TodoItem task)` -> `default boolean`
+- `didLongPressUserAvatar(ChatMessageCell cell, TLRPC.User user, float touchX, float touchY)` -> `default boolean`
+- `didPressAboutRevenueSharingAds()` -> `default void`
+- `didPressAddPollOptionButton(ChatMessageCell cell)` -> `default void`
+- `didPressAdmin(ChatMessageCell cell)` -> `default void`
+- `didPressAnimatedEmoji(ChatMessageCell cell, AnimatedEmojiSpan span)` -> `default boolean`
+- `didPressAppUpdateButton()` -> `default void`
+- `didPressBoostCounter(ChatMessageCell cell)` -> `default void`
+- `didPressBotButton(ChatMessageCell cell, TL_keyboard.KeyboardButtonProto button)` -> `default void`
+- `didPressCancelSendButton(ChatMessageCell cell)` -> `default void`
+- `didPressChannelAvatar(ChatMessageCell cell, TLRPC.Chat chat, int postId, float touchX, float touchY, boolean asForward)` -> `default void`
+- `didPressChannelRecommendation(ChatMessageCell cell, TLObject chat, boolean longPress)` -> `default void`
+- `didPressChannelRecommendationsClose(ChatMessageCell cell)` -> `default void`
+- `didPressCodeCopy(ChatMessageCell cell, MessageObject.TextLayoutBlock block)` -> `default void`
+- `didPressCommentButton(ChatMessageCell cell)` -> `default void`
+- `didPressCustomBotButton(ChatMessageCell cell, BotInlineKeyboard.ButtonCustom button)` -> `default void`
+- `didPressDialogButton(ChatMessageCell cell)` -> `default void`
+- `didPressEffect(ChatMessageCell cell)` -> `default void`
+- `didPressEmojiStatus()` -> `default void`
+- `didPressExtendedMediaPreview(ChatMessageCell cell, TL_keyboard.KeyboardInlineButton button)` -> `default void`
+- `didPressFactCheck(ChatMessageCell cell)` -> `default void`
+- `didPressFactCheckWhat(ChatMessageCell cell, int cx, int cy)` -> `default void`
+- `didPressGiveawayChatButton(ChatMessageCell cell, int pressedPos)` -> `default void`
+- `didPressGroupImage(ChatMessageCell cell, ImageReceiver imageReceiver, TLRPC.MessageExtendedMedia media, float x, float y)` -> `default void`
+- `didPressHiddenForward(ChatMessageCell cell)` -> `default void`
+- `didPressHint(ChatMessageCell cell, int type)` -> `default void`
+- `didPressImage(ChatMessageCell cell, float x, float y, boolean fullPreview)` -> `default void`
+- `didPressInstantButton(ChatMessageCell cell, int type)` -> `default void`
+- `didPressMoreChannelRecommendations(ChatMessageCell cell)` -> `default void`
+- `didPressOther(ChatMessageCell cell, float otherX, float otherY)` -> `default void`
+- `didPressPollMedia(ChatMessageCell cell, ImageReceiver imageReceiver, TLRPC.PollAnswer answer, TLRPC.MessageMedia media, float x, float y, int unshuffledIndex)` -> `default void`
+- `didPressReaction(ChatMessageCell cell, TLRPC.ReactionCount reaction, boolean longpress, float x, float y)` -> `default void`
+- `didPressReplyMessage(ChatMessageCell cell, int id, float x, float y, boolean longpress)` -> `default void`
+- `didPressRevealSensitiveContent(ChatMessageCell cell)` -> `default void`
+- `didPressRichDocumentOptions(ChatMessageCell cell, TLRPC.Document document, float x, float y)` -> `default void`
+- `didPressShowMore(ChatMessageCell cell)` -> `default void`
+- `didPressSideButton(ChatMessageCell cell)` -> `default void`
+- `didPressSponsoredClose(ChatMessageCell cell)` -> `default void`
+- `didPressSponsoredInfo(ChatMessageCell cell, float x, float y)` -> `default void`
+- `didPressSummarize(ChatMessageCell cell, boolean byReply)` -> `default void`
+- `didPressTime(ChatMessageCell cell)` -> `default void`
+- `didPressToDoButton(ChatMessageCell cell, TLRPC.TodoItem task, boolean enable)` -> `default boolean`
+- `didPressTopicButton(ChatMessageCell cell)` -> `default void`
+- `didPressUrl(ChatMessageCell cell, CharacterStyle url, boolean longPress)` -> `default void`
+- `didPressUserAvatar(ChatMessageCell cell, TLRPC.User user, float touchX, float touchY, boolean asForward)` -> `default void`
+- `didPressUserStatus(ChatMessageCell cell, TLRPC.User user, TLRPC.Document document, String giftSlug)` -> `default void`
+- `didPressViaBot(ChatMessageCell cell, String username)` -> `default void`
+- `didPressViaBotNotInline(ChatMessageCell cell, long botId)` -> `default void`
+- `didPressVoteButtons(ChatMessageCell cell, ArrayList<TLRPC.PollAnswer> buttons, int showCount, int x, int y)` -> `default void`
+- `didPressWebPage(ChatMessageCell cell, TLRPC.WebPage webpage, String url, boolean safe)` -> `default void`
+- `didQuickShareEnd(ChatMessageCell cell, float x, float y)` -> `default void`
+- `didQuickShareMove(ChatMessageCell cell, float x, float y)` -> `default void`
+- `didQuickShareStart(ChatMessageCell cell, float x, float y)` -> `default void`
+- `didStartVideoStream(MessageObject message)` -> `default void`
+- `didTogglePollPreview(ChatMessageCell cell)` -> `default void`
+- `didToggleRichMessageCheckbox(ChatMessageCell cell, boolean checked, Runnable revertOnError)` -> `default void`
+- `doNotShowLoadingReply(MessageObject msg)` -> `default boolean`
+- `drawPollMode(Canvas canvas, ChatMessageCell cell)` -> `default void`
+- `drawingVideoPlayerContainer()` -> `default boolean`
+- `forceUpdate(ChatMessageCell cell, boolean anchorScroll)` -> `default void`
+- `forceUpdate(ChatMessageCell cell, boolean anchorScroll, boolean scrollByTop)` -> `default void`
+- `forceUpdateNoAnimation(ChatMessageCell cell, boolean anchorScroll)` -> `default void`
+- `getAddPollOptionInputFieldHeight(ChatMessageCell cell)` -> `default int`
+- `getAdminRank(long uid)` -> `default String`
+- `getPinchToZoomHelper()` -> `default PinchToZoomHelper`
+- `getProgressLoadingBotButtonUrl(ChatMessageCell cell)` -> `default String`
+- `getProgressLoadingLink(ChatMessageCell cell)` -> `default CharacterStyle`
+- `getTextSelectionHelper()` -> `default TextSelectionHelper.ChatListTextSelectionHelper`
+- `invalidateBlur()` -> `default void`
+- `keyboardIsOpened()` -> `default boolean`
+- `needOpenWebView(MessageObject message, String url, String title, String description, String originalUrl, int w, int h)` -> `default void`
+- `needPlayMessage(ChatMessageCell cell, MessageObject messageObject, boolean muted)` -> `default boolean`
+- `needReloadPolls()` -> `default void`
+- `needShowPremiumBulletin(int type)` -> `default void`
+- `needShowPremiumFeatures(String source)` -> `default void`
+- `onAccessibilityAction(int action, Bundle arguments)` -> `default boolean`
+- `onDiceFinished()` -> `default void`
+- `openArticlePhoto(ChatMessageCell cell, org.telegram.tgnet.tl.TL_iv.PageBlock block)` -> `default boolean`
+- `setShouldNotRepeatSticker(MessageObject message)` -> `default void`
+- `videoTimerReached()` -> `default void`
+
+## `org.telegram.ui.Cells.ChatMessageCell$MaskDrawable`
+- `draw(@NonNull Canvas canvas)` -> `void`
+- `getOpacity()` -> `int`
+- `setAlpha(int alpha)` -> `void`
+- `setColorFilter(ColorFilter colorFilter)` -> `void`
+- `updatePath()` -> `void`
+
+## `org.telegram.ui.Cells.ChatMessageCell$MessageAccessibilityNodeProvider`
+- `createAccessibilityNodeInfo(int virtualViewId)` -> `AccessibilityNodeInfo`
+- `performAction(int virtualViewId, int action, Bundle arguments)` -> `boolean`
+
+## `org.telegram.ui.Cells.ChatMessageCell$MessageAccessibilityNodeProvider$ProfileSpan`
+- `onClick(@NonNull View view)` -> `void`
+
+## `org.telegram.ui.Cells.ChatMessageCell$PollButton`
+- `attach()` -> `void`
+- `destroy()` -> `void`
+- `detach()` -> `void`
+
+## `org.telegram.ui.Cells.ChatMessageCell$TransitionParams`
+- `animateChange()` -> `boolean`
+- `createStatusDrawableParams()` -> `int`
+- `onDetach()` -> `void`
+- `recordDrawingState()` -> `void`
+- `recordDrawingStatePreview()` -> `void`
+- `resetAnimation()` -> `void`
+- `supportChangeAnimation()` -> `boolean`
+
+## `org.telegram.ui.ChannelAdminLogActivity$ChatActivityAdapter`
+- `getItemCount()` -> `int`
+- `getItemId(int position)` -> `long`
+- `getItemViewType(int position)` -> `int`
+- `getMessageObject(int position)` -> `MessageObject`
+- `notifyDataSetChanged()` -> `void`
+- `notifyItemChanged(int position)` -> `void`
+- `notifyItemInserted(int position)` -> `void`
+- `notifyItemMoved(int fromPosition, int toPosition)` -> `void`
+- `notifyItemRangeChanged(int positionStart, int itemCount)` -> `void`
+- `notifyItemRangeInserted(int positionStart, int itemCount)` -> `void`
+- `notifyItemRangeRemoved(int positionStart, int itemCount)` -> `void`
+- `notifyItemRemoved(int position)` -> `void`
+- `onBindViewHolder(RecyclerView.ViewHolder holder, int position)` -> `void`
+- `onCreateViewHolder(ViewGroup parent, int viewType)` -> `RecyclerView.ViewHolder`
+- `onViewAttachedToWindow(RecyclerView.ViewHolder holder)` -> `void`
+- `updateRowWithMessageObject(MessageObject messageObject)` -> `void`
+- `updateRows()` -> `void`
+- `updateRows(boolean animated)` -> `void`
+
+## `org.telegram.ui.ChannelAdminLogActivity$ChatActivityFragmentView`
+- `drawList(Canvas blurCanvas, RectF position)` -> `void`
+
+## `org.telegram.ui.ChatActivity`
+- `allowFinishFragmentInsteadOfRemoveFromStack()` -> `boolean`
+- `allowGroupPhotos()` -> `boolean`
+- `allowPresentFragment()` -> `boolean`
+- `allowSendGifs()` -> `boolean`
+- `allowSendPhotos()` -> `boolean`
+- `applyChatLinkMessageMaybe()` -> `void`
+- `applyDraftMaybe(boolean canClear)` -> `void`
+- `applyDraftMaybe(boolean canClear, boolean forceSet)` -> `void`
+- `clearSearch()` -> `void`
+- `clearSelectionMode()` -> `void`
+- `clearSelectionMode(boolean suppressUpdateMessageObject)` -> `void`
+- `clearTextSelection()` -> `void`
+- `closeMenu()` -> `void`
+- `static createEntriesFromMedia(ArrayList<SendMessagesHelper.SendingMediaInfo> photoPathes, boolean isSecretChat, CharSequence caption)` -> `ArrayList<MediaController.PhotoEntry>`
+- `createThemeDelegate()` -> `ThemeDelegate`
+- `createView(Context context)` -> `View`
+- `didLongPressCard(ChatMessageCell cell, CharacterStyle link, String card)` -> `void`
+- `didLongPressCopyButton(String text)` -> `void`
+- `didLongPressFormattedDate(ChatMessageCell cell, CharacterStyle span, String originalText, TLRPC.TL_messageEntityFormattedDate entity)` -> `void`
+- `didLongPressLink(ChatMessageCell cell, MessageObject messageObject, CharacterStyle span, String str)` -> `void`
+- `didLongPressUsername(ChatMessageCell cell, CharacterStyle link, String username)` -> `void`
+- `didPressPhoneNumber(ChatMessageCell cell, CharacterStyle link, String phone)` -> `void`
+- `didPressReaction(View cell, TLRPC.ReactionCount reaction, boolean longpress, float x, float y)` -> `void`
+- `didPressTonAddress(ChatMessageCell cell, CharacterStyle link, String address)` -> `void`
+- `didReceivedNotification(int id, int account, final Object... args)` -> `void`
+- `didSelectDialogs(DialogsActivity fragment, ArrayList<MessagesStorage.TopicKey> dids, CharSequence message, boolean param, boolean notify, int scheduleDate, int scheduleRepeatPeriod, TopicsFragment topicsFragment)` -> `boolean`
+- `didSelectFiles(ArrayList<String> files, String caption, ArrayList<TLRPC.MessageEntity> captionEntities, ArrayList<MessageObject> fmessages, boolean notify, int scheduleDate, int scheduleRepeatPeriod, long effectId, boolean invertMedia, long payStars)` -> `void`
+- `didSelectLocation(TLRPC.MessageMedia location, int locationType, boolean notify, int scheduleDate, long payStars)` -> `void`
+- `didSelectPhotos(ArrayList<SendMessagesHelper.SendingMediaInfo> photos, boolean notify, int scheduleDate, int scheduleRepeatPeriod, long payStars)` -> `void`
+- `didSelectSearchPhotos(ArrayList<SendMessagesHelper.SendingMediaInfo> photos, boolean notify, int scheduleDate)` -> `void`
+- `dimBehindView(boolean enable)` -> `void`
+- `dismissCurrentDialog()` -> `void`
+- `dismissDialogOnPause(Dialog dialog)` -> `boolean`
+- `doOnIdle(Runnable runnable)` -> `void`
+- `drawEdgeNavigationBar()` -> `boolean`
+- `extendActionMode(Menu menu)` -> `boolean`
+- `fallbackFieldPanel()` -> `void`
+- `static fillActionModeMenu(Menu menu, TLRPC.EncryptedChat encryptedChat, boolean chat, boolean includeLinks)` -> `void`
+- `static fillActionModeMenu(Menu menu, TLRPC.EncryptedChat encryptedChat, boolean chat, boolean includeLinks, boolean includeMono, boolean includeSpoilers)` -> `void`
+- `findCell(int id, boolean visibleForUser)` -> `View`
+- `findMessageCell(int id, boolean visibleForUser)` -> `BaseCell`
+- `findWalletSendLanding(TL_wallet.walletTransaction transaction)` -> `ChatActionCell`
+- `finishFragment()` -> `void`
+- `firstLoadMessages()` -> `void`
+- `forceEmptyHistory()` -> `void`
+- `getAvatarContainer()` -> `ChatAvatarContainer`
+- `getBackButtonState()` -> `INavigationLayout.BackButtonState`
+- `getChatActivityEnterView()` -> `ChatActivityEnterView`
+- `getChatActivityEnterViewForStickers()` -> `ChatActivityEnterView`
+- `getChatListView()` -> `RecyclerListView`
+- `getChatListViewPadding()` -> `float`
+- `getChatMode()` -> `int`
+- `getChatThanosEffect()` -> `ThanosEffect`
+- `getClipBottom()` -> `float`
+- `getClipTop()` -> `float`
+- `getContentView()` -> `SizeNotifierFrameLayout`
+- `getCurrentChat()` -> `TLRPC.Chat`
+- `getCurrentChatInfo()` -> `TLRPC.ChatFull`
+- `getCurrentEncryptedChat()` -> `TLRPC.EncryptedChat`
+- `getCurrentUser()` -> `TLRPC.User`
+- `getCurrentUserInfo()` -> `TLRPC.UserFull`
+- `getDialogFilterId()` -> `int`
+- `getDialogFolderId()` -> `int`
+- `getDialogId()` -> `long`
+- `getDraftThreadId()` -> `long`
+- `getEdgeToEdgeSupportMode()` -> `EdgeToEdgeSupportMode`
+- `getFilterQuery()` -> `String`
+- `getFilterTag()` -> `ReactionsLayoutInBubble.VisibleReaction`
+- `getFilteredMessages()` -> `ArrayList<MessageObject>`
+- `getFragmentContextView()` -> `FragmentContextView`
+- `getGroup(long id)` -> `MessageObject.GroupedMessages`
+- `getGroupCall()` -> `ChatObject.Call`
+- `getHeaderItem()` -> `ActionBarMenuItem`
+- `getInlineReturn()` -> `long`
+- `getInputIslandHeightTarget()` -> `float`
+- `getLinkedMonoForumChat()` -> `TLRPC.Chat`
+- `getMergeDialogId()` -> `long`
+- `static getMessageCaption(MessageObject messageObject, MessageObject.GroupedMessages group, int[] msgId)` -> `CharSequence`
+- `getMessageChatSendParams()` -> `SendMessageChatArguments`
+- `static getMessageContent(MessageObject messageObject, long previousUid, boolean name)` -> `CharSequence`
+- `getOrCreateWebBotTitleView()` -> `TextView`
+- `getOtherSameChatsDiff()` -> `int`
+- `getPreviewHeight()` -> `int`
+- `getPullingDownOffset()` -> `float`
+- `getQuickReplyId()` -> `int`
+- `getReplyMessage()` -> `MessageObject`
+- `getReplyNameTextView()` -> `SimpleTextView`
+- `getReplyObjectTextView()` -> `SimpleTextView`
+- `getReplyQuote()` -> `ChatActivity.ReplyQuote`
+- `getReplyTopMessage()` -> `MessageObject`
+- `getResourceProvider()` -> `Theme.ResourcesProvider`
+- `getSavedDialogId()` -> `long`
+- `getSendMessageSuggestionParams()` -> `MessageSuggestionParams`
+- `getSendMonoForumPeerId()` -> `long`
+- `getServiceHeight(View view)` -> `int`
+- `getStarReactionsOverlay()` -> `StarReactionsOverlay`
+- `getThemeDescriptions()` -> `ArrayList<ThemeDescription>`
+- `getThemedDrawable(String drawableKey)` -> `Drawable`
+- `getThemedPaint(String paintKey)` -> `Paint`
+- `getThreadId()` -> `long`
+- `getThreadMessage()` -> `MessageObject`
+- `getTopicId()` -> `long`
+- `getUndoView()` -> `UndoView`
+- `getValidGroupedMessage(MessageObject message)` -> `MessageObject.GroupedMessages`
+- `groupEmojiPackHintWasVisible()` -> `boolean`
+- `hideFieldPanel(boolean animated)` -> `void`
+- `hideFieldPanel(boolean notify, int scheduleDate, long payStars, boolean animated)` -> `void`
+- `hideKeyboardOnShow()` -> `boolean`
+- `hitSearch()` -> `void`
+- `invalidateMessagesVisiblePart()` -> `void`
+- `isChannel()` -> `boolean`
+- `isClearingHistory()` -> `boolean`
+- `static isClickableLink(String str)` -> `boolean`
+- `isEditingMessageMedia()` -> `boolean`
+- `isFiltered()` -> `boolean`
+- `isForumInViewAsMessagesMode()` -> `boolean`
+- `isInBotForumMode()` -> `boolean`
+- `isInScheduleMode()` -> `boolean`
+- `isKeyboardVisible()` -> `boolean`
+- `isLightStatusBar()` -> `boolean`
+- `isPeerNoForwards()` -> `boolean`
+- `isReplyChatComment()` -> `boolean`
+- `isReport()` -> `boolean`
+- `isSecretChat()` -> `boolean`
+- `isShouldHaveLightNavigationBarIcons()` -> `boolean`
+- `isSupportEdgeToEdge()` -> `boolean`
+- `isSwipeBackEnabled(MotionEvent event)` -> `boolean`
+- `isThreadChat()` -> `boolean`
+- `isTryingTextSelection()` -> `boolean`
+- `jumpToDate(int date)` -> `void`
+- `logSponsoredClicked(MessageObject messageObject, boolean media, boolean fullscreen)` -> `void`
+- `maybePlayVisibleVideo()` -> `boolean`
+- `needDelayOpenAnimation()` -> `boolean`
+- `needEnterText()` -> `boolean`
+- `static of(long dialogId)` -> `ChatActivity`
+- `static of(long dialogId, int messageId)` -> `ChatActivity`
+- `onActivityResultFragment(int requestCode, int resultCode, Intent data)` -> `void`
+- `onBackPressed(boolean invoked)` -> `boolean`
+- `onBecomeFullyHidden()` -> `void`
+- `onBecomeFullyVisible()` -> `void`
+- `onBeginSlide()` -> `void`
+- `onConfigurationChanged(android.content.res.Configuration newConfig)` -> `void`
+- `onCustomTransitionAnimation(boolean isOpen, Runnable callback)` -> `AnimatorSet`
+- `onDialogDismiss(Dialog dialog)` -> `void`
+- `onEditTextDialogClose(boolean resetAdjust, boolean reset)` -> `void`
+- `onFactorChangeFinished(int id, float finalFactor, FactorAnimator callee)` -> `void`
+- `onFactorChanged(int id, float factor, float fraction, FactorAnimator callee)` -> `void`
+- `onFragmentCreate()` -> `boolean`
+- `onFragmentDestroy()` -> `void`
+- `onGetDebugItems()` -> `List<FloatingDebugController.DebugItem>`
+- `onListItemAnimatorTick()` -> `void`
+- `onPageDownClicked()` -> `void`
+- `onPause()` -> `void`
+- `onRemoveFromParent()` -> `void`
+- `onRequestPermissionsResultFragment(int requestCode, String[] permissions, int[] grantResults)` -> `void`
+- `onResume()` -> `void`
+- `onTransitionAnimationEnd(boolean isOpen, boolean backward)` -> `void`
+- `onTransitionAnimationStart(boolean isOpen, boolean backward)` -> `void`
+- `openAttachBotLayout(String botUsername)` -> `void`
+- `openAttachBotLayout(long botId, String startCommand, boolean justAdded)` -> `void`
+- `openAttachMenuForCreatingSticker()` -> `void`
+- `openHashtagSearch(String hashtag)` -> `void`
+- `openHashtagSearch(String hashtag, boolean forcePublic)` -> `void`
+- `openPhotoViewerForMessage(ChatMessageCell cell, MessageObject message)` -> `void`
+- `openPhotosEditor(ArrayList<SendMessagesHelper.SendingMediaInfo> photoPathes, CharSequence caption)` -> `boolean`
+- `openPollCreate(Boolean quiz)` -> `void`
+- `static openReportChat(long dialogId, String title, byte[] option, String message)` -> `ChatActivity`
+- `openSearchWithText(String text)` -> `void`
+- `openThisProfile()` -> `void`
+- `openVCard(TLRPC.User user, String phone, String vcard, String first_name, String last_name)` -> `void`
+- `openVideoEditor(String videoPath, CharSequence caption)` -> `void`
+- `openedInstantly()` -> `void`
+- `openedWithLivestream()` -> `boolean`
+- `performHistoryClear(boolean revoke, boolean canDeleteHistory)` -> `void`
+- `performHistoryClear(long threadId, boolean revoke, boolean canDeleteHistory)` -> `void`
+- `playFirstUnreadVoiceMessage()` -> `boolean`
+- `reloadPinnedMessages()` -> `void`
+- `resetForReload()` -> `void`
+- `restartSticker(ChatMessageCell cell)` -> `void`
+- `restoreSelfArgs(Bundle args)` -> `void`
+- `scrollToLastMessage(boolean skipSponsored, boolean top)` -> `void`
+- `scrollToLastMessage(boolean skipSponsored, boolean top, Runnable inCaseLoading)` -> `void`
+- `scrollToMessageId(int id, int fromMessageId, boolean select, int loadIndex, boolean forceScroll, int forcePinnedMessageId)` -> `void`
+- `scrollToMessageId(int id, int fromMessageId, boolean select, int loadIndex, boolean forceScroll, int forcePinnedMessageId, Integer taskId, Runnable inCaseLoading)` -> `void`
+- `scrollToMessageId(int id, int fromMessageId, boolean select, int loadIndex, boolean forceScroll, int forcePinnedMessageId, Integer taskId, byte[] pollOptionId, Runnable inCaseLoading)` -> `void`
+- `searchLinks(final CharSequence charSequence, final boolean force)` -> `void`
+- `selectReaction(View cell, MessageObject primaryMessage, ReactionsContainerLayout reactionsLayout, View fromView, float x, float y, ReactionsLayoutInBubble.VisibleReaction visibleReaction, boolean fromDoubleTap, boolean bigEmoji, boolean addToRecent, boolean withoutAnimation)` -> `void`
+- `setBotUser(String value)` -> `void`
+- `setChatInvite(TLRPC.ChatInvite invite)` -> `void`
+- `setClearingHistory(long threadId, boolean isClearingHistory)` -> `void`
+- `setHighlightMessageId(int id)` -> `void`
+- `setHighlightQuote(int id, String quote, int quote_offset)` -> `void`
+- `setIgnoreAttachOnPause(boolean value)` -> `void`
+- `setInMenuMode(boolean value)` -> `void`
+- `setInPreviewMode(boolean value)` -> `void`
+- `setMonoForumThreadMessages(int maxInboxReadId, int maxOutboxReadId, TLRPC.TL_forumTopic forumTopic)` -> `void`
+- `setNextChannels(ArrayList<TLRPC.Chat> channels)` -> `void`
+- `setOpenImport()` -> `void`
+- `setPreloadedSticker(TLRPC.Document preloadedSticker, boolean historyEmpty)` -> `void`
+- `setQuickReplyId(long topicId)` -> `void`
+- `setResolvedChatLink(TL_account.resolvedBusinessChatLinks resolvedChatLink)` -> `void`
+- `setSavedDialog(long savedDialogId)` -> `void`
+- `setSearchQuery(String text)` -> `void`
+- `setSwitchFromTopics(boolean switchFromTopics)` -> `void`
+- `setTagFilter(ReactionsLayoutInBubble.VisibleReaction reaction)` -> `void`
+- `setThreadMessages(ArrayList<MessageObject> messageObjects, TLRPC.Chat originalChat, int originalMessage, int maxInboxReadId, int maxOutboxReadId, TLRPC.TL_forumTopic forumTopic)` -> `void`
+- `setupStickerVibrationAndSound(ChatMessageCell cell)` -> `void`
+- `shakeContent()` -> `void`
+- `shareMyContact(int type, MessageObject messageObject)` -> `void`
+- `showAlert(String name, String message)` -> `void`
+- `showBottomOverlayProgress(boolean show, boolean animated)` -> `void`
+- `showEmojiHint()` -> `boolean`
+- `showFieldPanel(boolean show, MessageObject messageObjectToReply, MessageObject messageObjectToEdit, ArrayList<MessageObject> messageObjectsToForward, TLRPC.WebPage webPage, boolean notify, int scheduleDate, ReplyQuote quote, boolean cancel, long payStars, boolean animated)` -> `void`
+- `showFieldPanel(boolean show, MessageObject messageObjectToReply, MessageObject messageObjectToEdit, ArrayList<MessageObject> messageObjectsToForward, TLRPC.WebPage webPage, boolean notify, int scheduleDate, ReplyQuote quote, boolean cancel, long payStars, MessageSuggestionParams suggestionParams, boolean animated)` -> `void`
+- `showFieldPanelForEdit(boolean show, MessageObject messageObjectToEdit)` -> `void`
+- `showFieldPanelForForward(boolean show, ArrayList<MessageObject> messageObjectsToForward)` -> `void`
+- `showFieldPanelForReply(MessageObject messageObjectToReply)` -> `void`
+- `showFieldPanelForReplyQuote(MessageObject messageObjectToReply, ReplyQuote quote)` -> `void`
+- `showFieldPanelForSuggestionParams(MessageSuggestionParams suggestionParams)` -> `void`
+- `showFieldPanelForWebPage(boolean show, TLRPC.WebPage webPage, boolean cancel)` -> `void`
+- `showHeaderItem(boolean show)` -> `void`
+- `showNoQuoteFound()` -> `void`
+- `showOpenGameAlert(final TLRPC.TL_game game, final MessageObject messageObject, final String urlStr, boolean ask, final long uid)` -> `void`
+- `showPremiumFloodWaitBulletin(final boolean isUpload)` -> `void`
+- `showQuoteMessageUpdate()` -> `void`
+- `showRequestUrlAlert(final TLRPC.TL_urlAuthResultRequest request, TLRPC.TL_messages_requestUrlAuth buttonReq, String url, boolean ask)` -> `void`
+- `showSuggestionOfferForEditMessage(MessageSuggestionParams oldParams)` -> `void`
+- `showTimerHint()` -> `void`
+- `startDocumentSelectActivity()` -> `void`
+- `startFireworks()` -> `void`
+- `supportsThanosEffect()` -> `boolean`
+- `updateBottomOverlay()` -> `void`
+- `updateBottomOverlay(boolean animated)` -> `void`
+- `updateMessages(ArrayList<MessageObject> messageObjects, boolean replace)` -> `void`
+- `updateMessagesVisiblePart(boolean inLayout)` -> `void`
+- `updatePinnedTopicStarterMessage()` -> `void`
+- `updateReplyMessageHeader(boolean notify)` -> `void`
+- `updateSearchingHashtag(String hashtag)` -> `void`
+- `updateTextureViewPosition(boolean needVisibleUpdate, boolean needScroll)` -> `void`
+- `updateTitle(boolean animated)` -> `void`
+- `updateTopPanel(boolean animated)` -> `void`
+- `updateTopicTitleIcon()` -> `void`
+- `updateVisibleRows()` -> `void`
+
+## `org.telegram.ui.ChatActivity$ChatActivityAdapter`
+- `getItemCount()` -> `int`
+- `getItemId(int position)` -> `long`
+- `getItemViewType(int position)` -> `int`
+- `invalidateRowWithMessageObject(MessageObject messageObject)` -> `void`
+- `notifyDataSetChanged(boolean animated)` -> `void`
+- `notifyDataSetChanged()` -> `void`
+- `notifyItemChanged(int position)` -> `void`
+- `notifyItemInserted(int position)` -> `void`
+- `notifyItemMoved(int fromPosition, int toPosition)` -> `void`
+- `notifyItemRangeChanged(int positionStart, int itemCount)` -> `void`
+- `notifyItemRangeInserted(int positionStart, int itemCount)` -> `void`
+- `notifyItemRangeRemoved(int positionStart, int itemCount)` -> `void`
+- `notifyItemRemoved(int position)` -> `void`
+- `notifyItemRemoved(int position, boolean thanos)` -> `void`
+- `onBindViewHolder(RecyclerView.ViewHolder holder, int position)` -> `void`
+- `onCreateViewHolder(ViewGroup parent, int viewType)` -> `RecyclerView.ViewHolder`
+- `onViewAttachedToWindow(RecyclerView.ViewHolder holder)` -> `void`
+- `updateRowAtPosition(int index)` -> `void`
+- `updateRowWithMessageObject(MessageObject messageObject, boolean allowInPlace, boolean replace)` -> `View`
+- `updateRowsSafe()` -> `void`
+
+## `org.telegram.ui.ChatActivity$ChatActivityDelegate`
+- `onReport()` -> `default void`
+- `onUnpin(boolean all, boolean hide)` -> `default void`
+- `openHashtagSearch(String hashtag)` -> `default void`
+- `openReplyMessage(int mid)` -> `default void`
+
+## `org.telegram.ui.ChatActivity$ChatActivityEnterViewDelegate`
+- `bottomPanelTranslationYChanged(float translation)` -> `void`
+- `didPressAttachButton()` -> `void`
+- `didPressStreamingStop()` -> `void`
+- `didPressSuggestionButton()` -> `void`
+- `getContentViewHeight()` -> `int`
+- `getReplyQuote()` -> `ReplyQuote`
+- `getSendAsPeers()` -> `TLRPC.TL_channels_sendAsPeers`
+- `measureKeyboardHeight()` -> `int`
+- `needChangeVideoPreviewState(int state, float seekProgress)` -> `void`
+- `needSendTyping()` -> `void`
+- `needShowMediaBanHint()` -> `void`
+- `needStartRecordAudio(int state)` -> `void`
+- `needStartRecordVideo(int state, boolean notify, int scheduleDate, int scheduleRepeatPeriod, int ttl, long effectId, long stars)` -> `void`
+- `onAttachButtonHidden()` -> `void`
+- `onAttachButtonShow()` -> `void`
+- `onContextMenuClose()` -> `void`
+- `onContextMenuOpen()` -> `void`
+- `onEditTextScroll()` -> `void`
+- `onEmojiViewTabChanged()` -> `void`
+- `onKeyboardRequested()` -> `void`
+- `onMessageEditEnd(boolean loading)` -> `void`
+- `onMessageSend(CharSequence message, boolean notify, int scheduleDate, int scheduleRepeatPeriod, long payStars)` -> `void`
+- `onPreAudioVideoRecord()` -> `void`
+- `onSendLongClick()` -> `void`
+- `onStickersExpandedChange()` -> `void`
+- `onStickersTab(boolean opened)` -> `void`
+- `onSwitchRecordMode(boolean video)` -> `void`
+- `onTextChanged(final CharSequence text, boolean bigChange, boolean fromDraft)` -> `void`
+- `onTextSelectionChanged(int start, int end)` -> `void`
+- `onTextSpansChanged(CharSequence text)` -> `void`
+- `onTrendingStickersShowed(boolean show)` -> `void`
+- `onWindowSizeChanged(int size)` -> `void`
+- `onceVoiceAvailable()` -> `boolean`
+- `openScheduledMessages()` -> `void`
+- `prepareMessageSending()` -> `void`
+- `scrollToSendingMessage()` -> `void`
+- `toggleVideoRecordingPause()` -> `void`
+
+## `org.telegram.ui.ChatActivity$ChatActivityFragmentView`
+- `dispatchDraw(Canvas canvas)` -> `void`
+- `dispatchKeyEvent(KeyEvent event)` -> `boolean`
+- `dispatchTouchEvent(MotionEvent ev)` -> `boolean`
+- `drawBlurRect(Canvas canvas, float y, Rect rectTmp, Paint blurScrimPaint, boolean top)` -> `void`
+- `drawChild(Canvas canvas, View child, long drawingTime)` -> `boolean`
+- `drawList(Canvas blurCanvas, RectF position)` -> `void`
+- `getBottomOffset()` -> `float`
+- `getChatActivity()` -> `ChatActivity`
+- `getKeyboardHeight()` -> `int`
+- `getListTranslationY()` -> `float`
+- `getNewDrawable()` -> `Drawable`
+- `getNewDrawableMotion()` -> `boolean`
+- `getScrollOffset()` -> `int`
+- `invalidateBlur()` -> `void`
+- `invalidateOptimized()` -> `boolean`
+- `isActionBarVisible()` -> `boolean`
+- `isStatusBarVisible()` -> `boolean`
+- `measureKeyboardHeight()` -> `int`
+- `onAttachedToWindow()` -> `void`
+- `onDetachedFromWindow()` -> `void`
+- `onDraw(Canvas canvas)` -> `void`
+- `onLayout(boolean changed, int l, int t, int r, int b)` -> `void`
+- `onMeasure(int origWidthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `onSizeChanged(int w, int h, int oldw, int oldh)` -> `void`
+- `setPadding(int left, int top, int right, int bottom)` -> `void`
+- `updateBlurContent()` -> `void`
+
+## `org.telegram.ui.ChatActivity$ChatActivityTextSelectionHelper`
+- `getParentBottomPadding()` -> `int`
+- `getParentTopPadding()` -> `int`
+- `getResourcesProvider()` -> `Theme.ResourcesProvider`
+- `getThemedColor(int key)` -> `int`
+- `onQuoteClick(MessageObject messageObject, int start, int end, CharSequence text)` -> `void`
+
+## `org.telegram.ui.ChatActivity$ChatArticlePageBlocksAdapter`
+- `get(int index)` -> `TL_iv.PageBlock`
+- `getAll()` -> `List<TL_iv.PageBlock>`
+- `getCaption(int index)` -> `CharSequence`
+- `getFile(int index)` -> `File`
+- `getFileLocation(TLObject media, int[] size)` -> `TLRPC.PhotoSize`
+- `getFileName(int index)` -> `String`
+- `getItemsCount()` -> `int`
+- `getMedia(int index)` -> `TLObject`
+- `getParentObject()` -> `Object`
+- `updateSlideshowCell(TL_iv.PageBlock currentPageBlock)` -> `void`
+
+## `org.telegram.ui.ChatActivity$ChatArticlePhotoViewerProvider`
+- `getPlaceForPhoto(MessageObject messageObject, TLRPC.FileLocation fileLocation, int index, boolean needPreview, boolean closing)` -> `PhotoViewer.PlaceProviderObject`
+
+## `org.telegram.ui.ChatActivity$ChatListRecyclerView`
+- `drawChatBackgroundElements(Canvas canvas)` -> `void`
+- `drawChatForegroundElements(Canvas canvas)` -> `void`
+
+## `org.telegram.ui.ChatActivity$ChatMessageCellDelegate`
+- `allowAddPollOptions()` -> `boolean`
+- `didLongPress(ChatMessageCell cell, float x, float y)` -> `void`
+- `didLongPressBotButton(ChatMessageCell cell, TL_keyboard.KeyboardButtonProto button)` -> `void`
+- `didLongPressChannelAvatar(ChatMessageCell cell, TLRPC.Chat chat, int postId, float touchX, float touchY)` -> `boolean`
+- `didLongPressPollOption(ChatMessageCell cell, TLRPC.PollAnswer answer)` -> `boolean`
+- `didLongPressToDoButton(ChatMessageCell cell, TLRPC.TodoItem task)` -> `boolean`
+- `didLongPressUserAvatar(ChatMessageCell cell, TLRPC.User user, float touchX, float touchY)` -> `boolean`
+- `didPressAboutRevenueSharingAds()` -> `void`
+- `didPressAddPollOptionButton(ChatMessageCell cell)` -> `void`
+- `didPressAdmin(ChatMessageCell cell)` -> `void`
+- `didPressAnimatedEmoji(ChatMessageCell cell, AnimatedEmojiSpan span)` -> `boolean`
+- `didPressAppUpdateButton()` -> `void`
+- `didPressBoostCounter(ChatMessageCell cell)` -> `void`
+- `didPressBotButton(ChatMessageCell cell, TL_keyboard.KeyboardButtonProto button)` -> `void`
+- `didPressCancelSendButton(ChatMessageCell cell)` -> `void`
+- `didPressChannelAvatar(ChatMessageCell cell, TLRPC.Chat chat, int postId, float touchX, float touchY, boolean asForward)` -> `void`
+- `didPressChannelRecommendation(ChatMessageCell cell, TLObject peer, boolean longPress)` -> `void`
+- `didPressChannelRecommendationsClose(ChatMessageCell cell)` -> `void`
+- `didPressCodeCopy(ChatMessageCell cell, MessageObject.TextLayoutBlock block)` -> `void`
+- `didPressCommentButton(ChatMessageCell cell)` -> `void`
+- `didPressCustomBotButton(ChatMessageCell cell, BotInlineKeyboard.ButtonCustom button)` -> `void`
+- `didPressDialogButton(ChatMessageCell cell)` -> `void`
+- `didPressEffect(ChatMessageCell cell)` -> `void`
+- `didPressExtendedMediaPreview(ChatMessageCell cell, TL_keyboard.KeyboardInlineButton button)` -> `void`
+- `didPressFactCheck(ChatMessageCell cell)` -> `void`
+- `didPressFactCheckWhat(ChatMessageCell cell, int cx, int cy)` -> `void`
+- `didPressGiveawayChatButton(ChatMessageCell cell, int pressedPos)` -> `void`
+- `didPressGroupImage(ChatMessageCell cell, ImageReceiver imageReceiver, TLRPC.MessageExtendedMedia media, float x, float y)` -> `void`
+- `didPressHiddenForward(ChatMessageCell cell)` -> `void`
+- `didPressHint(ChatMessageCell cell, int type)` -> `void`
+- `didPressImage(ChatMessageCell cell, float x, float y, boolean fullPreview)` -> `void`
+- `didPressInstantButton(ChatMessageCell cell, int type)` -> `void`
+- `didPressMoreChannelRecommendations(ChatMessageCell cell)` -> `void`
+- `didPressOther(ChatMessageCell cell, float otherX, float otherY)` -> `void`
+- `didPressPollMedia(ChatMessageCell cell, ImageReceiver imageReceiver, TLRPC.PollAnswer answer, TLRPC.MessageMedia media, float x, float y, int unshuffledIndex)` -> `void`
+- `didPressReaction(ChatMessageCell cell, TLRPC.ReactionCount reaction, boolean longpress, float x, float y)` -> `void`
+- `didPressReplyMessage(ChatMessageCell cell, int id, float x, float y, boolean longpress)` -> `void`
+- `didPressRevealSensitiveContent(ChatMessageCell cell)` -> `void`
+- `didPressRichDocumentOptions(ChatMessageCell cell, TLRPC.Document document, float x, float y)` -> `void`
+- `didPressShowMore(ChatMessageCell cell)` -> `void`
+- `didPressSideButton(ChatMessageCell cell)` -> `void`
+- `didPressSponsoredClose(ChatMessageCell cell)` -> `void`
+- `didPressSponsoredInfo(ChatMessageCell cell, float x, float y)` -> `void`
+- `didPressSummarize(ChatMessageCell cell, boolean byReply)` -> `void`
+- `didPressTime(ChatMessageCell cell)` -> `void`
+- `didPressToDoButton(ChatMessageCell cell, TLRPC.TodoItem task, boolean enable)` -> `boolean`
+- `didPressTopicButton(ChatMessageCell cell)` -> `void`
+- `didPressUrl(ChatMessageCell cell, final CharacterStyle url, boolean longPress)` -> `void`
+- `didPressUserAvatar(ChatMessageCell cell, TLRPC.User user, float touchX, float touchY, boolean asForward)` -> `void`
+- `didPressUserStatus(ChatMessageCell cell, TLRPC.User user, TLRPC.Document document, String giftSlug)` -> `void`
+- `didPressViaBot(ChatMessageCell cell, String username)` -> `void`
+- `didPressViaBotNotInline(ChatMessageCell cell, long botId)` -> `void`
+- `didPressVoteButtons(ChatMessageCell cell, ArrayList<TLRPC.PollAnswer> buttons, int showCount, int x, int y)` -> `void`
+- `didPressWebPage(ChatMessageCell cell, TLRPC.WebPage webpage, String url, boolean safe)` -> `void`
+- `didQuickShareEnd(ChatMessageCell cell, float x, float y)` -> `void`
+- `didQuickShareMove(ChatMessageCell cell, float x, float y)` -> `void`
+- `didQuickShareStart(ChatMessageCell cell, float x, float y)` -> `void`
+- `didStartVideoStream(MessageObject message)` -> `void`
+- `didTogglePollPreview(ChatMessageCell cell)` -> `void`
+- `didToggleRichMessageCheckbox(ChatMessageCell cell, boolean checked, Runnable revertOnError)` -> `void`
+- `doNotShowLoadingReply(MessageObject msg)` -> `boolean`
+- `drawPollMode(Canvas canvas, ChatMessageCell cell)` -> `void`
+- `forceUpdate(ChatMessageCell cell, boolean anchorScroll)` -> `void`
+- `forceUpdate(ChatMessageCell cell, boolean anchorScroll, boolean scrollByTop)` -> `void`
+- `forceUpdate(ChatMessageCell cell, boolean anchorScroll, boolean withoutAnimation, boolean scrollByTop)` -> `void`
+- `forceUpdateNoAnimation(ChatMessageCell cell, boolean anchorScroll)` -> `void`
+- `getAddPollOptionInputFieldHeight(ChatMessageCell cell)` -> `int`
+- `getAdminRank(long uid)` -> `String`
+- `getPinchToZoomHelper()` -> `PinchToZoomHelper`
+- `getProgressLoadingBotButtonUrl(ChatMessageCell cell)` -> `String`
+- `getProgressLoadingLink(ChatMessageCell cell)` -> `CharacterStyle`
+- `getTextSelectionHelper()` -> `TextSelectionHelper.ChatListTextSelectionHelper`
+- `invalidateBlur()` -> `void`
+- `keyboardIsOpened()` -> `boolean`
+- `needOpenWebView(MessageObject message, String url, String title, String description, String originalUrl, int w, int h)` -> `void`
+- `needPlayMessage(ChatMessageCell cell, MessageObject messageObject, boolean muted)` -> `boolean`
+- `needReloadPolls()` -> `void`
+- `needShowPremiumBulletin(int type)` -> `void`
+- `needShowPremiumFeatures(String source)` -> `void`
+- `onAccessibilityAction(int action, Bundle arguments)` -> `boolean`
+- `onDiceFinished()` -> `void`
+- `openArticlePhoto(ChatMessageCell cell, TL_iv.PageBlock block)` -> `boolean`
+- `setShouldNotRepeatSticker(MessageObject message)` -> `void`
+- `videoTimerReached()` -> `void`
+
+## `org.telegram.ui.ChatActivity$ChatScrollCallback`
+- `onEndAnimation()` -> `void`
+- `onStartAnimation()` -> `void`
+- `recycleView(View view)` -> `void`
+
+## `org.telegram.ui.ChatActivity$FirstViewPage`
+- `dispatchTouchEvent(MotionEvent event)` -> `boolean`
+- `onAttachedToWindow()` -> `void`
+- `onDetachedFromWindow()` -> `void`
+- `setTranslationX(float translationX)` -> `void`
+
+## `org.telegram.ui.ChatActivity$PinnedMessageButton`
+- `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+
+## `org.telegram.ui.ChatActivity$RecyclerListViewInternal`
+- `updateClip(int[] clip)` -> `void`
+
+## `org.telegram.ui.ChatActivity$ReplyQuote`
+- `static from(MessageObject messageObject, String text, int offset)` -> `ReplyQuote`
+- `static from(MessageObject messageObject, int task_id)` -> `ReplyQuote`
+- `static from(MessageObject messageObject)` -> `ReplyQuote`
+- `static from(MessageObject messageObject, int start, int end)` -> `ReplyQuote`
+- `static fromPollOption(MessageObject messageObject, byte[] task_id)` -> `ReplyQuote`
+- `getEntities()` -> `ArrayList<TLRPC.MessageEntity>`
+- `getText()` -> `String`
+- `limited()` -> `boolean`
+
+## `org.telegram.ui.ChatActivity$SearchItemListener`
+- `forceShowClear()` -> `boolean`
+- `onCaptionCleared()` -> `void`
+- `onSearchCollapse()` -> `void`
+- `onSearchExpand()` -> `void`
+- `onSearchFilterCleared(FiltersView.MediaFilterData filterData)` -> `void`
+- `onSearchPressed(EditText editText)` -> `void`
+- `onTextChanged(EditText editText)` -> `void`
+- `setSearchAnimationProgress(float progress)` -> `void`
+- `showClearForCaption()` -> `boolean`
+
+## `org.telegram.ui.ChatActivity$ThemeDelegate`
+- `applyServiceShaderMatrix(int w, int h, float translationX, float translationY)` -> `void`
+- `getColor(int key)` -> `int`
+- `getCurrentColor(int key)` -> `int`
+- `getCurrentColor(int key, boolean ignoreAnimation)` -> `int`
+- `getCurrentColor()` -> `int`
+- `getCurrentTheme()` -> `EmojiThemes`
+- `getCurrentWallpaper()` -> `TLRPC.WallPaper`
+- `getDrawable(String drawableKey)` -> `Drawable`
+- `getPaint(String paintKey)` -> `Paint`
+- `getWallpaperDrawable()` -> `Drawable`
+- `hasGradientService()` -> `boolean`
+- `setAnimatedColor(int key, int color)` -> `void`
+- `setCurrentTheme(final EmojiThemes chatTheme, TLRPC.WallPaper newWallpaper, boolean animated, Boolean forceDark)` -> `void`
+- `setCurrentTheme(final EmojiThemes chatTheme, TLRPC.WallPaper newWallpaper, boolean animated, Boolean forceDark, boolean force)` -> `void`
+
+## `org.telegram.ui.ChatActivity$TrackingWidthSimpleTextView`
+- `createLayout(int width)` -> `boolean`
+- `getTrackWidth()` -> `boolean`
+- `setTrackWidth(boolean value)` -> `void`
+
+## `org.telegram.ui.ChatActivityContainer`
+- `initChatActivity()` -> `void`
+- `onAttachedToWindow()` -> `void`
+- `onDetachedFromWindow()` -> `void`
+- `onPause()` -> `void`
+- `onResume()` -> `void`
+- `setTopPadding(int topPadding)` -> `void`
+
+## `org.telegram.ui.Components.ChatActivityEnterTopView`
+- `getEditView()` -> `EditView`
+- `getReplyView()` -> `View`
+- `isEditMode()` -> `boolean`
+- `setEditMode(boolean editMode)` -> `void`
+- `setEditSuggestionMode(boolean editMode)` -> `void`
+
+## `org.telegram.ui.Components.ChatActivityEnterTopView$EditView`
+- `getButtons()` -> `EditViewButton[]`
+- `updateColors()` -> `void`
+
+## `org.telegram.ui.Components.ChatActivityEnterTopView$EditViewButton`
+- `getImageView()` -> `ImageView`
+- `getTextView()` -> `TextView`
+- `isEditButton()` -> `boolean`
+- `setEditButton(boolean editButton)` -> `void`
+- `setOnlyIconMode(boolean onlyIconMode)` -> `void`
+
+## `org.telegram.ui.Components.ChatActivityEnterView`
+- `animateSendButton(boolean show)` -> `ValueAnimator`
+- `applyConvertedSimpleDraft(CharSequence simple)` -> `void`
+- `static applyMessageEntities(ArrayList<TLRPC.MessageEntity> entities, CharSequence text, Paint.FontMetricsInt fontMetricsInt)` -> `CharSequence`
+- `areLiveCommentsFree()` -> `boolean`
+- `botCommandsMenuIsShowing()` -> `boolean`
+- `businessLinkHasChanges()` -> `boolean`
+- `checkAnimation()` -> `void`
+- `clearRichDraft()` -> `void`
+- `closeCreationLinkDialog(boolean invoked)` -> `boolean`
+- `closeKeyboard()` -> `void`
+- `createEmojiView()` -> `void`
+- `createSuggestionButton()` -> `void`
+- `didPressedBotButton(final TL_keyboard.KeyboardButtonProto button, final MessageObject replyMessageObject, final MessageObject messageObject)` -> `boolean`
+- `didPressedBotButton(final TL_keyboard.KeyboardButtonProto button, final MessageObject replyMessageObject, final MessageObject messageObject, final Browser.Progress progress)` -> `boolean`
+- `didReceivedNotification(int id, int account, Object... args)` -> `void`
+- `static disableNewLines(EditText editText)` -> `void`
+- `dispatchDraw(Canvas canvas)` -> `void`
+- `doneEditingMessage()` -> `void`
+- `drawBackground(Canvas canvas, boolean withComposeShadowDrawable)` -> `void`
+- `drawChild(Canvas canvas, View child, long drawingTime)` -> `boolean`
+- `drawMessageEditText(Canvas canvas, Utilities.Callback0Return<Boolean> drawChild)` -> `boolean`
+- `drawRecordedPannel(Canvas canvas)` -> `void`
+- `extendActionMode(Menu menu)` -> `void`
+- `forceSmoothKeyboard(boolean smoothKeyboard)` -> `void`
+- `freezeEmojiView(boolean freeze)` -> `void`
+- `getAdjustPanLayoutHelper()` -> `AdjustPanLayoutHelper`
+- `getAnimatedTop()` -> `int`
+- `getAttachButton()` -> `ImageView`
+- `getAudioVideoButtonContainer()` -> `View`
+- `getBackgroundTop()` -> `int`
+- `getBotWebViewButton()` -> `ChatActivityBotWebViewButton`
+- `getCursorPosition()` -> `int`
+- `getDraftMessage()` -> `CharSequence`
+- `getEditField()` -> `EditTextCaption`
+- `getEditText()` -> `Editable`
+- `getEditingMessageObject()` -> `MessageObject`
+- `getEffectId()` -> `long`
+- `getEmojiButton()` -> `View`
+- `getEmojiPadding()` -> `int`
+- `getEmojiView()` -> `EmojiView`
+- `getExitTransition()` -> `float`
+- `getFieldText()` -> `CharSequence`
+- `getHeightWithTopView()` -> `int`
+- `getIslandTotalHeight(boolean target)` -> `float`
+- `getLockAnimatedTranslation()` -> `float`
+- `getMessagesCount()` -> `int`
+- `getParentFragment()` -> `ChatActivity`
+- `getPopupViewHeight(View view)` -> `int`
+- `getRecordCircle()` -> `RecordCircle`
+- `getReplyingMessageObject()` -> `MessageObject`
+- `getSelectionLength()` -> `int`
+- `getSendButton()` -> `View`
+- `getSendButtonInternal()` -> `View`
+- `getSendMessageSuggestionParams()` -> `MessageSuggestionParams`
+- `getSendMonoForumPeerId()` -> `long`
+- `getSenderSelectView()` -> `SenderSelectView`
+- `getSizeNotifierLayout()` -> `SizeNotifierFrameLayout`
+- `getSlideToCancelProgress()` -> `float`
+- `getSlowModeTimer()` -> `CharSequence`
+- `getStarsPrice()` -> `long`
+- `getStickersArrowDrawable()` -> `Drawable`
+- `getStickersExpandedHeight()` -> `int`
+- `getSuggestButton()` -> `ImageView`
+- `getTextWithEntities()` -> `TLRPC.TL_textWithEntities`
+- `getTopViewEnterProgress()` -> `float`
+- `getTopViewHeight()` -> `float`
+- `getTopViewTranslation()` -> `float`
+- `getTrendingStickersAlert()` -> `TrendingStickersAlert`
+- `getVisibleEmojiPadding()` -> `int`
+- `getVisualHeight()` -> `float`
+- `hideBotCommands()` -> `void`
+- `hideEmojiView()` -> `void`
+- `hideHints()` -> `void`
+- `hidePopup(boolean byBackButton)` -> `boolean`
+- `hidePopup(boolean byBackButton, boolean forceAnimate)` -> `boolean`
+- `hidePopup(boolean byBackButton, boolean forceAnimate, boolean waitKeyboardOpen)` -> `boolean`
+- `hideTopView(final boolean animated)` -> `void`
+- `isCurrentPageEmoji()` -> `boolean`
+- `isEditingCaption()` -> `boolean`
+- `isEditingMessage()` -> `boolean`
+- `isEphemeralMessageVisible()` -> `boolean`
+- `isInScheduleMode()` -> `boolean`
+- `isInTopViewVisibilityAnimating()` -> `boolean`
+- `isInVideoMode()` -> `boolean`
+- `isKeyboardVisible()` -> `boolean`
+- `isMessageWebPageSearchEnabled()` -> `boolean`
+- `isPopupShowing()` -> `boolean`
+- `isPopupView(View view)` -> `boolean`
+- `isRecordCircle(View view)` -> `boolean`
+- `isRecordCircleOrControlsView(View view)` -> `boolean`
+- `isRecordLocked()` -> `boolean`
+- `isRecordingAudioVideo()` -> `boolean`
+- `isRecordingStateChanged()` -> `void`
+- `isRichDraftActive()` -> `boolean`
+- `isRtlText()` -> `boolean`
+- `isSendButtonVisible()` -> `boolean`
+- `isStickersExpanded()` -> `boolean`
+- `isTopViewVisible()` -> `boolean`
+- `isWaitingForKeyboard()` -> `boolean`
+- `onAdjustPanTransitionEnd()` -> `void`
+- `onAdjustPanTransitionStart(boolean keyboardVisible, int contentHeight)` -> `void`
+- `onBeginHide()` -> `void`
+- `onBotWebViewBackPressed()` -> `boolean`
+- `onChangedIslandTotalHeight(float newTotalHeight)` -> `void`
+- `onConfigurationChanged(Configuration newConfig)` -> `void`
+- `onDestroy()` -> `void`
+- `onDraw(Canvas canvas)` -> `void`
+- `onEditTimeExpired()` -> `void`
+- `onEmojiIconChanged(ChatActivityEnterViewAnimatedIconView.State currentIcon)` -> `void`
+- `onFactorChanged(int id, float factor, float fraction, FactorAnimator callee)` -> `void`
+- `onInterceptTouchEvent(MotionEvent ev)` -> `boolean`
+- `onKeyboardShown()` -> `void`
+- `onLayout(boolean changed, int left, int top, int right, int bottom)` -> `void`
+- `onLineCountChanged(int oldLineCount, int newLineCount)` -> `void`
+- `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `onOverrideAnimationEnd()` -> `void`
+- `onPause()` -> `void`
+- `onRequestPermissionsResultFragment(int requestCode, String[] permissions, int[] grantResults)` -> `void`
+- `onResume()` -> `void`
+- `onRoundVideoUiFrame(long durationMs)` -> `void`
+- `onSizeChanged(int w, int h, int oldw, int oldh)` -> `void`
+- `onSizeChanged(int height, boolean isWidthGreater)` -> `void`
+- `onStickerSelected(TLRPC.Document sticker, String query, Object parent, MessageObject.SendAnimationData sendAnimationData, boolean clearsInputField, boolean notify, int scheduleDate, int scheduleRepeatPeriod)` -> `void`
+- `openKeyboard()` -> `void`
+- `openKeyboardInternal()` -> `void`
+- `openRichEditor()` -> `void`
+- `openRichEditorWithHtml(CharSequence before, String html, CharSequence after)` -> `void`
+- `overrideEditTextView(EditTextBoldCursor editText)` -> `void`
+- `panelAnimationInProgress()` -> `boolean`
+- `pannelAnimationEnabled()` -> `boolean`
+- `replaceWithText(int start, int len, CharSequence text, boolean parseEmoji)` -> `void`
+- `reset()` -> `void`
+- `runEmojiPanelAnimation()` -> `void`
+- `seekbarVisible()` -> `boolean`
+- `setAdjustPanLayoutHelper(AdjustPanLayoutHelper adjustPanLayoutHelper)` -> `void`
+- `setAllowStickersAndGifs(boolean needAnimatedEmoji, boolean needStickers, boolean needGifs)` -> `void`
+- `setAllowStickersAndGifs(boolean needAnimatedEmoji, boolean needStickers, boolean needGifs, boolean waitingForKeyboardOpen)` -> `void`
+- `setAnimatedTop(int animatedTop)` -> `void`
+- `setBlockedByStreaming(BotForumHelper.SteamingSendButtonState state, boolean animated)` -> `void`
+- `setBotInfo(LongSparseArray<TL_bots.BotInfo> botInfo)` -> `void`
+- `setBotInfo(LongSparseArray<TL_bots.BotInfo> botInfo, boolean animate)` -> `void`
+- `setBotWebViewButtonOffsetX(float offset)` -> `void`
+- `setBotsCount(int count, boolean hasCommands, boolean hasQuickReplies, boolean animated)` -> `void`
+- `setButtons(MessageObject messageObject)` -> `void`
+- `setButtons(MessageObject messageObject, boolean openKeyboard)` -> `void`
+- `setButtons(MessageObject messageObject, boolean openBotKeyboard, boolean openKeyboard)` -> `void`
+- `setCaption(String caption)` -> `void`
+- `setChatInfo(TLRPC.ChatFull chatInfo)` -> `void`
+- `setCommand(MessageObject messageObject, String command, boolean longPress, boolean username)` -> `void`
+- `setComposeShadowAlpha(float alpha)` -> `void`
+- `setCustomWindowView(View v)` -> `void`
+- `setDelegate(ChatActivityEnterViewDelegate chatActivityEnterViewDelegate)` -> `void`
+- `setDialogId(long id, int account)` -> `void`
+- `setEditingBusinessLink(TL_account.TL_businessChatLink businessLink)` -> `void`
+- `setEditingMessageObject(MessageObject messageObject, MessageObject.GroupedMessages groupedMessages, boolean caption)` -> `void`
+- `setEffectId(long effectId)` -> `void`
+- `setExitTransition(float value)` -> `void`
+- `setFieldFocused()` -> `void`
+- `setFieldFocused(boolean focus)` -> `void`
+- `setFieldText(CharSequence text)` -> `void`
+- `setFieldText(CharSequence text, boolean ignoreChange)` -> `void`
+- `setFieldText(CharSequence text, boolean ignoreChange, boolean fromDraft)` -> `void`
+- `setForceShowSendButton(boolean value, boolean animated)` -> `void`
+- `setHorizontalPadding(float leftPadding, float rightPadding, float progress, boolean allowShare)` -> `void`
+- `setInAppInsetsController(WindowInsetsInAppController inAppInsetsController)` -> `void`
+- `setLiveComment(boolean isLiveComment, boolean isAdmin)` -> `void`
+- `setLockAnimatedTranslation(float value)` -> `void`
+- `setOnSendButtonLongClick(OnLongClickListener listener)` -> `void`
+- `setOpenGifsTabFirst()` -> `void`
+- `setOverrideHint(CharSequence overrideHint)` -> `void`
+- `setOverrideHint(CharSequence overrideHint, boolean animated)` -> `void`
+- `setOverrideHint(CharSequence overrideHint, CharSequence overrideHint2, boolean animated)` -> `void`
+- `setOverrideKeyboardAnimation(boolean overrideKeyboardAnimation)` -> `void`
+- `setReplyingMessageObject(MessageObject messageObject, ChatActivity.ReplyQuote quote)` -> `void`
+- `setReplyingMessageObject(MessageObject messageObject, ChatActivity.ReplyQuote quote, MessageObject replyingTopMessage)` -> `void`
+- `setRichDraftPreview(TL_iv.RichMessage rich)` -> `void`
+- `setRoundVideoUiFrameClockActive(boolean active)` -> `void`
+- `setSelection(int start)` -> `void`
+- `setSideButtonsForAttach(ChatActivitySideControlsButtonsLayout sideButtons)` -> `void`
+- `setSlideToCancelProgress(float value)` -> `void`
+- `setSlowModeTimer(int time)` -> `void`
+- `setSnapAnimationProgress(float value)` -> `void`
+- `setStickersExpanded(boolean expanded, boolean animated, boolean byDrag)` -> `void`
+- `setStickersExpanded(boolean expanded, boolean animated, boolean byDrag, boolean stopAllHeavy)` -> `void`
+- `setSuggestionButtonVisible(boolean visible, boolean animated)` -> `void`
+- `setTextTransitionIsRunning(boolean b)` -> `void`
+- `setVideoTimelineTrim(float start, float end)` -> `void`
+- `setViewParentForEmoji(ViewGroup viewParent)` -> `void`
+- `setVisibility(int visibility)` -> `void`
+- `setVoiceDraft(MediaDataController.DraftVoice draft)` -> `void`
+- `setWebPage(TLRPC.WebPage webPage, boolean searchWebPages)` -> `void`
+- `showConfirmAlert(Runnable onConfirmed)` -> `boolean`
+- `showContextProgress(boolean show)` -> `void`
+- `showEditDoneProgress(final boolean show, boolean animated)` -> `void`
+- `showEmojiView()` -> `void`
+- `showSendSuggestionHint()` -> `boolean`
+- `showTopView(boolean animated, final boolean openKeyboard)` -> `void`
+- `startMessageTransition()` -> `void`
+- `swipeToBackEnabled()` -> `boolean`
+- `topViewVisible()` -> `float`
+- `updateBotWebView(boolean animated)` -> `void`
+- `updateColors()` -> `void`
+- `updateFieldHint(boolean animated)` -> `void`
+- `updateGiftButton(boolean animated)` -> `void`
+- `updateRecordButton(TLRPC.Chat chat, TLRPC.UserFull userFull)` -> `void`
+- `updateRecordInterface(int recordState, boolean animated)` -> `void`
+- `updateScheduleButton(boolean animated)` -> `void`
+- `updateSendAsButton()` -> `void`
+- `updateSendAsButton(boolean animated)` -> `void`
+- `updateSendAsButton(boolean forceHide, boolean animated)` -> `void`
+- `updateSendButtonPaid()` -> `void`
+
+## `org.telegram.ui.Components.ChatActivityEnterView$ChatActivityEditTextCaption`
+- `dispatchKeyEvent(KeyEvent event)` -> `boolean`
+- `extendActionMode(ActionMode actionMode, Menu menu)` -> `void`
+- `getResourcesProvider()` -> `Theme.ResourcesProvider`
+- `onContextMenuClose()` -> `void`
+- `onContextMenuOpen()` -> `void`
+- `onCreateInputConnection(EditorInfo editorInfo)` -> `InputConnection`
+- `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `onScrollChanged(int horiz, int vert, int oldHoriz, int oldVert)` -> `void`
+- `onSelectionChanged(int selStart, int selEnd)` -> `void`
+- `onTextContextMenuItem(int id)` -> `boolean`
+- `onTouchEvent(MotionEvent event)` -> `boolean`
+- `setOffsetY(float offset)` -> `void`
+
+## `org.telegram.ui.Components.ChatActivityEnterView$ChatActivityEnterViewDelegate`
+- `bottomPanelTranslationYChanged(float translation)` -> `default void`
+- `didPressStreamingStop()` -> `default void`
+- `didPressSuggestionButton()` -> `default void`
+- `getContentViewHeight()` -> `default int`
+- `getDefaultSendAs()` -> `default TLRPC.Peer`
+- `getReplyQuote()` -> `default ChatActivity.ReplyQuote`
+- `getReplyToStory()` -> `default TL_stories.StoryItem`
+- `getSendAsPeers()` -> `default TLRPC.TL_channels_sendAsPeers`
+- `measureKeyboardHeight()` -> `default int`
+- `onContextMenuClose()` -> `default void`
+- `onContextMenuOpen()` -> `default void`
+- `onEditTextScroll()` -> `default void`
+- `onEmojiViewTabChanged()` -> `default void`
+- `onKeyboardRequested()` -> `default void`
+- `onTrendingStickersShowed(boolean show)` -> `default void`
+- `onceVoiceAvailable()` -> `default boolean`
+- `openScheduledMessages()` -> `default void`
+- `prepareMessageSending()` -> `default void`
+- `scrollToSendingMessage()` -> `default void`
+- `setDefaultSendAs(long dialogId, long newPeer)` -> `default boolean`
+
+## `org.telegram.ui.Components.ChatActivityEnterView$ControlsView`
+- `dispatchHoverEvent(MotionEvent event)` -> `boolean`
+- `hideHintView()` -> `void`
+- `onDraw(Canvas canvas)` -> `void`
+- `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `onSetAlpha(int alpha)` -> `boolean`
+- `onTouchEvent(MotionEvent event)` -> `boolean`
+- `setAlpha(float alpha)` -> `void`
+- `setBlurredBackgroundFactory(BlurredBackgroundDrawableViewFactory factory)` -> `void`
+- `showOnceHint()` -> `void`
+- `showPauseHint()` -> `void`
+- `showTooltipIfNeed()` -> `void`
+- `updateColors()` -> `void`
+- `verifyDrawable(@NonNull Drawable who)` -> `boolean`
+
+## `org.telegram.ui.Components.ChatActivityEnterView$ControlsView$VirtualViewHelper`
+- `getVirtualViewAt(float x, float y)` -> `int`
+- `getVisibleVirtualViews(List<Integer> list)` -> `void`
+- `onPerformActionForVirtualView(int id, int action, @Nullable Bundle args)` -> `boolean`
+- `onPopulateNodeForVirtualView(int id, @NonNull AccessibilityNodeInfoCompat info)` -> `void`
+
+## `org.telegram.ui.Components.ChatActivityEnterView$RecordCircle`
+- `dispatchHoverEvent(MotionEvent event)` -> `boolean`
+- `drawIcon(Canvas canvas, int cx, int cy, float alpha)` -> `void`
+- `drawWaves(Canvas canvas, float cx, float cy, float additionalScale)` -> `void`
+- `getControlsScale()` -> `float`
+- `getScale()` -> `float`
+- `getTransformToSeekbarProgressStep3()` -> `float`
+- `invalidate()` -> `void`
+- `isSendButtonVisible()` -> `boolean`
+- `onDraw(Canvas canvas)` -> `void`
+- `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `resetLockTranslation(boolean toLock)` -> `void`
+- `setAmplitude(double value)` -> `void`
+- `setControlsScale(float value)` -> `void`
+- `setLockTranslation(float value)` -> `int`
+- `setMovingCords(float x, float y)` -> `void`
+- `setScale(float value)` -> `void`
+- `setSendButtonInvisible()` -> `void`
+- `setTransformToSeekbar(float value)` -> `void`
+- `showWaves(boolean b, boolean animated)` -> `void`
+- `updateColors()` -> `void`
+
+## `org.telegram.ui.Components.ChatActivityEnterView$RecordCircle$VirtualViewHelper`
+- `getVirtualViewAt(float x, float y)` -> `int`
+- `getVisibleVirtualViews(List<Integer> list)` -> `void`
+- `onPerformActionForVirtualView(int id, int action, @Nullable Bundle args)` -> `boolean`
+- `onPopulateNodeForVirtualView(int id, @NonNull AccessibilityNodeInfoCompat info)` -> `void`
+
+## `org.telegram.ui.Components.ChatActivityEnterView$RecordDot`
+- `onAttachedToWindow()` -> `void`
+- `onDetachedFromWindow()` -> `void`
+- `onDraw(Canvas canvas)` -> `void`
+- `onExternalFrame(long durationMs)` -> `void`
+- `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `playDeleteAnimation()` -> `void`
+- `resetAlpha()` -> `void`
+- `setExternalFrameClock(boolean enabled)` -> `void`
+- `updateColors()` -> `void`
+
+## `org.telegram.ui.Components.ChatActivityEnterView$ScrimDrawable`
+- `draw(Canvas canvas)` -> `void`
+- `getOpacity()` -> `int`
+- `setAlpha(int alpha)` -> `void`
+- `setColorFilter(ColorFilter colorFilter)` -> `void`
+
+## `org.telegram.ui.Components.ChatActivityEnterView$SendButton`
+- `appear()` -> `void`
+- `bounceCount()` -> `void`
+- `copyTo(SendButton btn)` -> `void`
+- `draw(@NonNull Canvas canvas)` -> `void`
+- `drawScrim(Canvas canvas, float progress)` -> `void`
+- `getBounds(RectF bounds)` -> `void`
+- `getCircleHeight()` -> `int`
+- `getCircleWidth()` -> `int`
+- `getFillColor()` -> `int`
+- `height()` -> `int`
+- `height(int h)` -> `int`
+- `isInScheduleMode()` -> `boolean`
+- `isInactive()` -> `boolean`
+- `isOpen()` -> `boolean`
+- `onDraw(@NonNull Canvas canvas)` -> `void`
+- `onTouchEvent(MotionEvent event)` -> `boolean`
+- `setBlurredBackgroundDrawable(BlurredBackgroundDrawable blurredBackgroundDrawable)` -> `void`
+- `setCirclePadding(float x, float y)` -> `void`
+- `setCircleSize(int size)` -> `void`
+- `setCircleSize(int width, int height)` -> `void`
+- `setCount(int count, boolean animated)` -> `void`
+- `setEffect(long effectId)` -> `void`
+- `setEmoji(Drawable drawable)` -> `void`
+- `setEphemeralFactor(float factor)` -> `void`
+- `setLoading(boolean shown, float progress)` -> `void`
+- `setLocked(boolean locked)` -> `void`
+- `setPressed(boolean pressed)` -> `void`
+- `setResourceId(int resId)` -> `void`
+- `setSameWidthFactor(float factor)` -> `void`
+- `setScrimViewBackgroundColor(int color)` -> `void`
+- `setStarsPrice(long price, int count)` -> `void`
+- `setStarsPrice(long price, int count, boolean animated)` -> `void`
+- `updateColors()` -> `void`
+- `verifyDrawable(@NonNull Drawable who)` -> `boolean`
+- `width()` -> `int`
+- `width(int h)` -> `int`
+
+## `org.telegram.ui.Components.ChatActivityEnterView$SlideTextView`
+- `drawableStateChanged()` -> `void`
+- `getSlideToCancelWidth()` -> `float`
+- `jumpDrawablesToCurrentState()` -> `void`
+- `onCancelButtonPressed()` -> `void`
+- `onDraw(Canvas canvas)` -> `void`
+- `onExternalFrame()` -> `void`
+- `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `onTouchEvent(MotionEvent event)` -> `boolean`
+- `setCancelToProgress(float cancelToProgress)` -> `void`
+- `setExternalFrameClock(boolean enabled)` -> `void`
+- `setSlideX(float v)` -> `void`
+- `updateColors()` -> `void`
+- `verifyDrawable(Drawable drawable)` -> `boolean`
+
+## `org.telegram.ui.Components.ChatActivityEnterView$SlowModeBtn`
+- `drawChild(Canvas canvas, View child, long drawingTime)` -> `boolean`
+- `getText()` -> `CharSequence`
+- `onDraw(Canvas canvas)` -> `void`
+- `onLayout(boolean changed, int left, int top, int right, int bottom)` -> `void`
+- `setGravity(int gravity)` -> `void`
+- `setPremiumMode(boolean premiumMode)` -> `void`
+- `setText(CharSequence text)` -> `void`
+- `setTextColor(int color)` -> `void`
+- `setTextSize(int size)` -> `void`
+
+## `org.telegram.ui.Components.ChatActivityEnterView$TimerView`
+- `getLeftProperty()` -> `float`
+- `onDraw(Canvas canvas)` -> `void`
+- `onExternalFrame(long durationMs)` -> `void`
+- `reset()` -> `void`
+- `setExternalFrameClock(boolean enabled)` -> `void`
+- `start(long milliseconds)` -> `void`
+- `stop()` -> `void`
+- `updateColors()` -> `void`
+
+## `org.telegram.ui.Components.ChatActivityEnterViewAnimatedIconView`
+- `getCurrentState()` -> `State`
+- `setState(State state, boolean animate)` -> `void`
+
+## `org.telegram.ui.Components.ChatActivityInterface`
+- `getGroupCall()` -> `default ChatObject.Call`
+- `getTopicId()` -> `default long`
+- `openedWithLivestream()` -> `default boolean`
+- `scrollToMessageId(int id, int i, boolean b, int i1, boolean b1, int i2)` -> `default void`
+
+## `org.telegram.ui.Components.ChatActivityTopPanelLayout`
+- `dispatchDraw(@NonNull Canvas canvas)` -> `void`
+- `dispatchTouchEvent(MotionEvent ev)` -> `boolean`
+- `onItemsChanged()` -> `void`
+- `onLayout(boolean changed, int l, int t, int r, int b)` -> `void`
+- `setBlurredBackground(BlurredBackgroundDrawable background)` -> `void`
+- `setCallFragmentContextView(FragmentContextView fragmentContextView)` -> `void`
+- `setPadding(int left, int top, int right, int bottom)` -> `void`
+- `updateColors()` -> `void`
+- `verifyDrawable(@NonNull Drawable who)` -> `boolean`
+
+## `org.telegram.ui.Components.ChatAttachAlert`
+- `applyCaption()` -> `void`
+- `avatarFor(ImageUpdater.AvatarFor avatarFor)` -> `void`
+- `blur3_InvalidateBlur()` -> `void`
+- `didReceivedNotification(int id, int account, Object... args)` -> `void`
+- `dismiss(boolean passConfirmationAlert)` -> `void`
+- `dismiss()` -> `void`
+- `dismissInternal()` -> `void`
+- `dismissWithButtonClick(int item)` -> `void`
+- `enableDefaultMode()` -> `void`
+- `enablePollAttachMode(int allowedLayouts)` -> `void`
+- `enableStickerMode(Utilities.Callback2<String, TLRPC.InputDocument> customStickerHandler)` -> `void`
+- `getAdditionalMessagesCount()` -> `int`
+- `getAvatarFor()` -> `ImageUpdater.AvatarFor`
+- `getBaseFragment()` -> `BaseFragment`
+- `getChat()` -> `TLRPC.Chat`
+- `getClipLayoutBottom()` -> `float`
+- `getCommentTextView()` -> `EditTextEmoji`
+- `getCommentTextViewTop()` -> `int`
+- `getCommentView()` -> `EditTextEmoji`
+- `getCurrentAttachLayout()` -> `AttachAlertLayout`
+- `getDialogId()` -> `long`
+- `getDocumentLayout()` -> `ChatAttachAlertDocumentLayout`
+- `getEditingMessageObject()` -> `MessageObject`
+- `getGramSendExitTranslationY()` -> `float`
+- `getLocationLayout()` -> `ChatAttachAlertLocationLayout`
+- `getPhotoLayout()` -> `ChatAttachAlertPhotoLayout`
+- `getPhotoPreviewLayout()` -> `ChatAttachAlertPhotoLayoutPreview`
+- `getSelectedTextView()` -> `TextView`
+- `getThemeDescriptions()` -> `ArrayList<ThemeDescription>`
+- `getTypeButtonsHeight()` -> `int`
+- `init()` -> `void`
+- `isCaptionAbove()` -> `boolean`
+- `isGramSendDismissalInProgress()` -> `boolean`
+- `makeFocusable(EditTextBoldCursor editText, boolean showKeyboard)` -> `void`
+- `onActivityResultFragment(int requestCode, Intent data, String currentPicturePath)` -> `void`
+- `onBackPressed()` -> `void`
+- `onContainerTouchEvent(MotionEvent event)` -> `boolean`
+- `onCreate(Bundle savedInstanceState)` -> `void`
+- `onCustomCloseAnimation()` -> `boolean`
+- `onCustomLayout(View view, int left, int top, int right, int bottom)` -> `boolean`
+- `onCustomMeasure(View view, int width, int height)` -> `boolean`
+- `onCustomOpenAnimation()` -> `boolean`
+- `onDestroy()` -> `void`
+- `onDismissWithTouchOutside()` -> `void`
+- `onFactorChanged(int id, float factor, float fraction, FactorAnimator callee)` -> `void`
+- `onKeyDown(int keyCode, KeyEvent event)` -> `boolean`
+- `onLongClickBotButton(TLRPC.TL_attachMenuBot attachMenuBot, TLRPC.User currentUser)` -> `void`
+- `onOpenAnimationEnd()` -> `void`
+- `onOpenAnimationStart()` -> `void`
+- `onPause()` -> `void`
+- `onPollAttachFilePicker(Intent data)` -> `void`
+- `onRequestPermissionsResultFragment(int requestCode, String[] permissions, int[] grantResults)` -> `void`
+- `onResume()` -> `void`
+- `onStart()` -> `void`
+- `onStop()` -> `void`
+- `openAttachLayoutForType(int layoutType)` -> `void`
+- `openColorsLayout()` -> `void`
+- `presentFragment(PhotoPickerActivity fragment)` -> `void`
+- `setAllowDrawContent(boolean value)` -> `void`
+- `setAllowEnterCaption(boolean allowEnterCaption)` -> `void`
+- `setAllowNestedScroll(boolean allowNestedScroll)` -> `void`
+- `setAudioSelectDelegate(ChatAttachAlertAudioLayout.AudioSelectDelegate audioSelectDelegate)` -> `void`
+- `setAvatarPicker(int type, boolean search, Utilities.Callback0Return<PhotoViewer.PlaceProviderObject> withBulletinClosingAnimation)` -> `void`
+- `setBusinessLocationPicker()` -> `void`
+- `setButtonPressed(boolean pressed)` -> `void`
+- `setCanOpenPreview(boolean canOpenPreview)` -> `void`
+- `setCaptionAbove(boolean above)` -> `void`
+- `setCaptionAbove(boolean above, boolean animated)` -> `void`
+- `setDelegate(ChatAttachViewDelegate chatAttachViewDelegate)` -> `void`
+- `setDialogId(long dialogId)` -> `void`
+- `setDocumentsDelegate(ChatAttachAlertDocumentLayout.DocumentSelectActivityDelegate documentsDelegate)` -> `void`
+- `setEditingMessageObject(int type, MessageObject messageObject)` -> `void`
+- `setEmojiViewDelegate(EmojiView.EmojiViewDelegate delegate)` -> `void`
+- `setGramSendTransitionProgress(float progress)` -> `void`
+- `setImageUpdater(ImageUpdater imageUpdater)` -> `void`
+- `setLocationActivityDelegate(ChatAttachAlertLocationLayout.LocationActivityDelegate locationActivityDelegate)` -> `void`
+- `setLocationPicker()` -> `void`
+- `setMaxSelectedPhotos(int value, boolean order)` -> `void`
+- `setOpenWithFrontFaceCamera(boolean value)` -> `void`
+- `setSoundPicker()` -> `void`
+- `setStories(boolean value)` -> `void`
+- `setStoryAudioPicker()` -> `void`
+- `setStoryLocationPicker()` -> `void`
+- `setStoryLocationPicker(boolean isVideo, File photo)` -> `void`
+- `setStoryLocationPicker(double lat, double lon)` -> `void`
+- `setStoryMediaPicker()` -> `void`
+- `setTypeButtonsHidden(boolean hidden, boolean animated)` -> `void`
+- `setupMentionContainer(MentionsContainerView mentionContainer)` -> `void`
+- `setupPhotoPicker(String title)` -> `void`
+- `setupPoll(Boolean quiz)` -> `void`
+- `show()` -> `void`
+- `showBotLayout(long id, boolean animated)` -> `void`
+- `showBotLayout(long id, String startCommand, boolean justAdded, boolean animated)` -> `void`
+- `showLayout(AttachAlertLayout layout)` -> `void`
+- `showSendButtonOnly(boolean show, boolean animated)` -> `boolean`
+- `updateCommentTextViewPosition()` -> `void`
+- `updateCountButton(int animated)` -> `void`
+- `updateDoneItemEnabled()` -> `void`
+- `updateLayout(AttachAlertLayout layout, boolean animated, int dy)` -> `void`
+- `updatePhotoPreview(boolean show)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlert$AttachAlertLayout`
+- `applyCaption(CharSequence text)` -> `void`
+- `disableBottomFade()` -> `boolean`
+- `disableTopFade()` -> `boolean`
+- `getButtonsHideOffset()` -> `int`
+- `getCurrentItemTop()` -> `int`
+- `getCustomActionBarBackground()` -> `int`
+- `getCustomBackground()` -> `int`
+- `getFirstOffset()` -> `int`
+- `getIBlur3Capture()` -> `IBlur3Capture`
+- `getListTopPadding()` -> `int`
+- `getSelectedItemsCount()` -> `int`
+- `getThemeDescriptions()` -> `ArrayList<ThemeDescription>`
+- `getThemedColor(int key)` -> `int`
+- `isDoneItemEnabled()` -> `boolean`
+- `needsActionBar()` -> `int`
+- `onBackPressed()` -> `boolean`
+- `onContainerViewTouchEvent(MotionEvent event)` -> `boolean`
+- `onCustomLayout(View view, int left, int top, int right, int bottom)` -> `boolean`
+- `onCustomMeasure(View view, int width, int height)` -> `boolean`
+- `onDestroy()` -> `void`
+- `onDismiss()` -> `boolean`
+- `onDismissWithButtonClick(int item)` -> `void`
+- `onDismissWithTouchOutside()` -> `boolean`
+- `onHidden()` -> `void`
+- `onHide()` -> `void`
+- `onHideShowProgress(float progress)` -> `void`
+- `onInit(boolean hasVideo, boolean hasPhoto, boolean hasDocuments)` -> `void`
+- `onMenuItemClick(int id)` -> `void`
+- `onOpenAnimationEnd()` -> `void`
+- `onPanTransitionEnd()` -> `void`
+- `onPanTransitionStart(boolean keyboardVisible, int contentHeight)` -> `void`
+- `onPause()` -> `void`
+- `onPreMeasure(int availableWidth, int availableHeight)` -> `void`
+- `onResume()` -> `void`
+- `onSelectedItemsCountChanged(int count)` -> `void`
+- `onSheetKeyDown(int keyCode, KeyEvent event)` -> `boolean`
+- `onShow(AttachAlertLayout previousLayout)` -> `void`
+- `onShown()` -> `void`
+- `scrollToTop()` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlert$AttachBotButton`
+- `onAttachedToWindow()` -> `void`
+- `setAttachBot(TLRPC.User user, TLRPC.TL_attachMenuBot bot)` -> `void`
+- `setUser(TLRPC.User user)` -> `void`
+- `updateCheckedState(boolean animate)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlert$AttachButton`
+- `onAttachedToWindow()` -> `void`
+- `setTextAndIcon(int id, CharSequence text, GlassTabView.TabAnimation tabAnimation)` -> `void`
+- `updateCheckedState(boolean animate)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlert$AttachSearchField`
+- `onInterceptTouchEvent(MotionEvent ev)` -> `boolean`
+
+## `org.telegram.ui.Components.ChatAttachAlert$ButtonsAdapter`
+- `getButtonsCount()` -> `int`
+- `getItemCount()` -> `int`
+- `getItemViewType(int position)` -> `int`
+- `isEnabled(RecyclerView.ViewHolder holder)` -> `boolean`
+- `notifyDataSetChanged()` -> `void`
+- `onBindViewHolder(RecyclerView.ViewHolder holder, int position)` -> `void`
+- `onCreateViewHolder(@NonNull ViewGroup parent, int viewType)` -> `RecyclerView.ViewHolder`
+- `onViewAttachedToWindow(RecyclerView.ViewHolder holder)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlert$ChatAttachViewDelegate`
+- `didSelectBot(TLRPC.User user)` -> `default void`
+- `doOnIdle(Runnable runnable)` -> `default void`
+- `getRevealView()` -> `default View`
+- `needEnterComment()` -> `default boolean`
+- `onCameraOpened()` -> `default void`
+- `onWallpaperSelected(Object object)` -> `default void`
+- `openAvatarsSearch()` -> `default void`
+- `selectItemOnClicking()` -> `default boolean`
+
+## `org.telegram.ui.Components.ChatAttachAlert$SearchFadeView`
+- `onDraw(@NonNull Canvas canvas)` -> `void`
+- `onSizeChanged(int w, int h, int oldw, int oldh)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertAudioLayout`
+- `didReceivedNotification(int id, int account, Object... args)` -> `void`
+- `getCurrentItemTop()` -> `int`
+- `getFirstOffset()` -> `int`
+- `getListTopPadding()` -> `int`
+- `getSelected()` -> `ArrayList<MessageObject>`
+- `getSelectedItemsCount()` -> `int`
+- `getThemeDescriptions()` -> `ArrayList<ThemeDescription>`
+- `onDestroy()` -> `void`
+- `onDismiss()` -> `boolean`
+- `onFactorChanged(int id, float factor, float fraction, FactorAnimator callee)` -> `void`
+- `onHidden()` -> `void`
+- `onHide()` -> `void`
+- `onPreMeasure(int availableWidth, int availableHeight)` -> `void`
+- `onShow(ChatAttachAlert.AttachAlertLayout previousLayout)` -> `void`
+- `scrollToTop()` -> `void`
+- `setDelegate(AudioSelectDelegate audioSelectDelegate)` -> `void`
+- `setMaxSelectedFiles(int value)` -> `void`
+- `setTranslationY(float translationY)` -> `void`
+- `setupBlurredSearchField(BlurredBackgroundDrawableViewFactory factory)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertAudioLayout$EmptyView`
+- `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `set(CharSequence title, CharSequence subtitle)` -> `void`
+- `updateColors()` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertAudioLayout$EmptyView$Factory`
+- `static as(CharSequence title, CharSequence subtitle)` -> `UItem`
+- `bindView(View view, UItem item, boolean divider, UniversalAdapter adapter, UniversalRecyclerView listView)` -> `void`
+- `createView(Context context, RecyclerListView listView, int currentAccount, int classGuid, Theme.ResourcesProvider resourcesProvider)` -> `EmptyView`
+- `isClickable()` -> `boolean`
+- `isShadow()` -> `boolean`
+
+## `org.telegram.ui.Components.ChatAttachAlertColorsLayout`
+- `getCurrentItemTop()` -> `int`
+- `getFirstOffset()` -> `int`
+- `getListTopPadding()` -> `int`
+- `needsActionBar()` -> `int`
+- `onPreMeasure(int availableWidth, int availableHeight)` -> `void`
+- `onShow(ChatAttachAlert.AttachAlertLayout previousLayout)` -> `void`
+- `scrollToTop()` -> `void`
+- `setDelegate(Consumer<Object> wallpaperConsumer)` -> `void`
+- `setTranslationY(float translationY)` -> `void`
+- `updateColors(boolean isDark)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertColorsLayout$Adapter`
+- `getItemCount()` -> `int`
+- `getItemViewType(int position)` -> `int`
+- `isEnabled(RecyclerView.ViewHolder holder)` -> `boolean`
+- `onBindViewHolder(RecyclerView.ViewHolder holder, int position)` -> `void`
+- `onCreateViewHolder(ViewGroup parent, int viewType)` -> `RecyclerView.ViewHolder`
+
+## `org.telegram.ui.Components.ChatAttachAlertContactsLayout`
+- `didReceivedNotification(int id, int account, Object... args)` -> `void`
+- `getCurrentItemTop()` -> `int`
+- `getFirstOffset()` -> `int`
+- `getListTopPadding()` -> `int`
+- `getSelected()` -> `ArrayList<TLRPC.User>`
+- `getSelectedItemsCount()` -> `int`
+- `getThemeDescriptions()` -> `ArrayList<ThemeDescription>`
+- `onDestroy()` -> `void`
+- `onFactorChanged(int id, float factor, float fraction, FactorAnimator callee)` -> `void`
+- `onLayout(boolean changed, int left, int top, int right, int bottom)` -> `void`
+- `onPreMeasure(int availableWidth, int availableHeight)` -> `void`
+- `onShow(ChatAttachAlert.AttachAlertLayout previousLayout)` -> `void`
+- `scrollToTop()` -> `void`
+- `setDelegate(PhonebookShareAlertDelegate phonebookShareAlertDelegate)` -> `void`
+- `setMultipleSelectionAllowed(boolean multipleSelectionAllowed)` -> `void`
+- `setTranslationY(float translationY)` -> `void`
+- `setupBlurredSearchField(BlurredBackgroundDrawableViewFactory factory)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertContactsLayout$ListItemID`
+- `equals(Object o)` -> `boolean`
+- `getId()` -> `long`
+- `getType()` -> `Type`
+- `static of(Object object)` -> `ListItemID`
+
+## `org.telegram.ui.Components.ChatAttachAlertContactsLayout$PhonebookShareAlertDelegate`
+- `didSelectContacts(ArrayList<TLRPC.User> users, String caption, boolean notify, int scheduleDate, long effectId, boolean invertMedia, long payStars)` -> `default void`
+
+## `org.telegram.ui.Components.ChatAttachAlertContactsLayout$ShareAdapter`
+- `getCountForSection(int section)` -> `int`
+- `getItem(int section, int position)` -> `Object`
+- `getItemViewType(int section, int position)` -> `int`
+- `getLetter(int position)` -> `String`
+- `getPositionForScrollProgress(RecyclerListView listView, float progress, int[] position)` -> `void`
+- `getSectionCount()` -> `int`
+- `getSectionHeaderView(int section, View view)` -> `View`
+- `isEnabled(RecyclerView.ViewHolder holder, int section, int row)` -> `boolean`
+- `notifyDataSetChanged()` -> `void`
+- `onBindViewHolder(int section, int position, RecyclerView.ViewHolder holder)` -> `void`
+- `onCreateViewHolder(ViewGroup parent, int viewType)` -> `RecyclerView.ViewHolder`
+
+## `org.telegram.ui.Components.ChatAttachAlertContactsLayout$ShareSearchAdapter`
+- `getItem(int position)` -> `Object`
+- `getItemCount()` -> `int`
+- `getItemViewType(int position)` -> `int`
+- `isEnabled(RecyclerView.ViewHolder holder)` -> `boolean`
+- `notifyDataSetChanged()` -> `void`
+- `onBindViewHolder(RecyclerView.ViewHolder holder, int position)` -> `void`
+- `onCreateViewHolder(ViewGroup parent, int viewType)` -> `RecyclerView.ViewHolder`
+- `search(final String query)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertContactsLayout$UserCell`
+- `getThemedColor(int key)` -> `int`
+- `hasOverlappingRendering()` -> `boolean`
+- `onDraw(Canvas canvas)` -> `void`
+- `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `setChecked(boolean checked, boolean animated)` -> `void`
+- `setCurrentId(int id)` -> `void`
+- `setData(TLRPC.User user, CharSequence name, CharSequence status, boolean divider)` -> `void`
+- `setData(TLRPC.User user, CharSequence name, CharSequenceCallback status, boolean divider)` -> `void`
+- `setStatus(CharSequence status)` -> `void`
+- `update(int mask)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertDocumentLayout`
+- `getButtonsHideOffset()` -> `int`
+- `getCurrentItemTop()` -> `int`
+- `getFirstOffset()` -> `int`
+- `getListTopPadding()` -> `int`
+- `getSelectedItemsCount()` -> `int`
+- `getThemeDescriptions()` -> `ArrayList<ThemeDescription>`
+- `isRingtone(File file)` -> `boolean`
+- `needsActionBar()` -> `int`
+- `onBackPressed()` -> `boolean`
+- `onDestroy()` -> `void`
+- `onHide()` -> `void`
+- `onLayout(boolean changed, int left, int top, int right, int bottom)` -> `void`
+- `onMenuItemClick(int id)` -> `void`
+- `onPreMeasure(int availableWidth, int availableHeight)` -> `void`
+- `onResume()` -> `void`
+- `onShow(ChatAttachAlert.AttachAlertLayout previousLayout)` -> `void`
+- `scrollToTop()` -> `void`
+- `setCanSelectOnlyImageFiles(boolean value)` -> `void`
+- `setDelegate(DocumentSelectActivityDelegate documentSelectActivityDelegate)` -> `void`
+- `setMaxSelectedFiles(int value)` -> `void`
+- `setTranslationY(float translationY)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertDocumentLayout$DocumentSelectActivityDelegate`
+- `didSelectPhotos(ArrayList<SendMessagesHelper.SendingMediaInfo> photos, boolean notify, int scheduleDate, int scheduleRepeatPeriod, long payStars)` -> `default void`
+- `startDocumentSelectActivity()` -> `default void`
+- `startMusicSelectActivity()` -> `default void`
+
+## `org.telegram.ui.Components.ChatAttachAlertDocumentLayout$ListAdapter`
+- `getItem(int position)` -> `ListItem`
+- `getItemCount()` -> `int`
+- `getItemViewType(int position)` -> `int`
+- `isEnabled(RecyclerView.ViewHolder holder)` -> `boolean`
+- `notifyDataSetChanged()` -> `void`
+- `onBindViewHolder(RecyclerView.ViewHolder holder, int position)` -> `void`
+- `onCreateViewHolder(ViewGroup parent, int viewType)` -> `RecyclerView.ViewHolder`
+
+## `org.telegram.ui.Components.ChatAttachAlertDocumentLayout$SearchAdapter`
+- `clear()` -> `void`
+- `getCountForSection(int section)` -> `int`
+- `getItem(int section, int position)` -> `Object`
+- `getItemViewType(int section, int position)` -> `int`
+- `getLetter(int position)` -> `String`
+- `getPositionForScrollProgress(RecyclerListView listView, float progress, int[] position)` -> `void`
+- `getSectionCount()` -> `int`
+- `getSectionHeaderView(int section, View view)` -> `View`
+- `isEnabled(RecyclerView.ViewHolder holder, int section, int row)` -> `boolean`
+- `notifyDataSetChanged()` -> `void`
+- `onBindViewHolder(int section, int position, RecyclerView.ViewHolder holder)` -> `void`
+- `onCreateViewHolder(ViewGroup parent, int viewType)` -> `RecyclerView.ViewHolder`
+- `search(final String query, boolean reset)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertEmojiLayout`
+- `getCurrentItemTop()` -> `int`
+- `getFirstOffset()` -> `int`
+- `getListTopPadding()` -> `int`
+- `needsActionBar()` -> `int`
+- `onLayout(boolean changed, int left, int top, int right, int bottom)` -> `void`
+- `onPreMeasure(int availableWidth, int availableHeight)` -> `void`
+- `onShow(ChatAttachAlert.AttachAlertLayout previousLayout)` -> `void`
+- `scrollToTop()` -> `void`
+- `setDelegate(EmojiView.EmojiViewDelegate delegate)` -> `void`
+- `setTranslationY(float translationY)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertGramLayout`
+- `createSendTransition(Runnable completion)` -> `AnimatorSet`
+- `didReceivedNotification(int id, int account, Object... args)` -> `void`
+- `disableBottomFade()` -> `boolean`
+- `disableTopFade()` -> `boolean`
+- `dispatchDraw(Canvas canvas)` -> `void`
+- `getButtonsHideOffset()` -> `int`
+- `getCurrentItemTop()` -> `int`
+- `getCustomBackground()` -> `int`
+- `getFirstOffset()` -> `int`
+- `getListTopPadding()` -> `int`
+- `getPublicKey()` -> `byte[]`
+- `needsActionBar()` -> `int`
+- `onBackPressed()` -> `boolean`
+- `onDestroy()` -> `void`
+- `onHide()` -> `void`
+- `onLayout(boolean changed, int left, int top, int right, int bottom)` -> `void`
+- `onMenuItemClick(int id)` -> `void`
+- `onPanTransitionEnd()` -> `void`
+- `onPanTransitionStart(boolean keyboardVisible, int contentHeight)` -> `void`
+- `onPause()` -> `void`
+- `onPreMeasure(int availableWidth, int availableHeight)` -> `void`
+- `onShow(ChatAttachAlert.AttachAlertLayout previousLayout)` -> `void`
+- `onShown()` -> `void`
+- `onWindowFocusChanged(boolean hasWindowFocus)` -> `void`
+- `setSendTransitionProgress(float progress)` -> `void`
+- `setTranslationY(float translationY)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertLocationLayout`
+- `didReceivedNotification(int id, int account, Object... args)` -> `void`
+- `getButtonsHideOffset()` -> `int`
+- `getCurrentItemTop()` -> `int`
+- `getFirstOffset()` -> `int`
+- `getListTopPadding()` -> `int`
+- `getThemeDescriptions()` -> `ArrayList<ThemeDescription>`
+- `needsActionBar()` -> `int`
+- `onDestroy()` -> `void`
+- `onDismiss()` -> `boolean`
+- `onHide()` -> `void`
+- `onLayout(boolean changed, int left, int top, int right, int bottom)` -> `void`
+- `onPanTransitionEnd()` -> `void`
+- `onPanTransitionStart(boolean keyboardVisible, int contentHeight)` -> `void`
+- `onPause()` -> `void`
+- `onPreMeasure(int availableWidth, int availableHeight)` -> `void`
+- `onResume()` -> `void`
+- `onShow(ChatAttachAlert.AttachAlertLayout previousLayout)` -> `void`
+- `openShareLiveLocation()` -> `void`
+- `scrollToTop()` -> `void`
+- `setDelegate(LocationActivityDelegate delegate)` -> `void`
+- `setTranslationY(float translationY)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertLocationLayout$MapOverlayView`
+- `updatePositions()` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertLocationLayout$SearchButton`
+- `getTranslationX()` -> `float`
+- `setTranslation(float value)` -> `void`
+- `setTranslationX(float translationX)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertPhotoLayout`
+- `applyCaption(CharSequence text)` -> `void`
+- `areLivePhotosEnabled()` -> `boolean`
+- `captionForAllMedia()` -> `boolean`
+- `clearSelectedPhotos()` -> `void`
+- `closeCamera(boolean animated)` -> `void`
+- `didReceivedNotification(int id, int account, Object... args)` -> `void`
+- `getAllPhotosArray()` -> `ArrayList<Object>`
+- `getButtonsHideOffset()` -> `int`
+- `getCameraOpenProgress()` -> `float`
+- `getCurrentItemTop()` -> `int`
+- `getFirstOffset()` -> `int`
+- `getListTopPadding()` -> `int`
+- `getSelectedItemsCount()` -> `int`
+- `getSelectedPhotos()` -> `HashMap<Object, Object>`
+- `getSelectedPhotosCount()` -> `int`
+- `getSelectedPhotosHighQualityCount()` -> `int`
+- `getSelectedPhotosOrder()` -> `ArrayList<Object>`
+- `getStarsPrice()` -> `long`
+- `hideCamera(boolean async)` -> `void`
+- `needsActionBar()` -> `int`
+- `onActivityResultFragment(int requestCode, Intent data, String currentPicturePath)` -> `void`
+- `onContainerViewTouchEvent(MotionEvent event)` -> `boolean`
+- `onCustomLayout(View view, int left, int top, int right, int bottom)` -> `boolean`
+- `onCustomMeasure(View view, int width, int height)` -> `boolean`
+- `onDestroy()` -> `void`
+- `onDismiss()` -> `boolean`
+- `onDismissWithButtonClick(int item)` -> `void`
+- `onHidden()` -> `void`
+- `onHide()` -> `void`
+- `onHideShowProgress(float progress)` -> `void`
+- `onInit(boolean hasVideo, boolean hasPhoto, boolean hasDocuments)` -> `void`
+- `onLayout(boolean changed, int left, int top, int right, int bottom)` -> `void`
+- `onMenuItemClick(int id)` -> `void`
+- `onOpenAnimationEnd()` -> `void`
+- `onPanTransitionStart(boolean keyboardVisible, int contentHeight)` -> `void`
+- `onPause()` -> `void`
+- `onPreMeasure(int availableWidth, int availableHeight)` -> `void`
+- `onResume()` -> `void`
+- `onSelectedItemsCountChanged(int count)` -> `void`
+- `onSheetKeyDown(int keyCode, KeyEvent event)` -> `boolean`
+- `onShow(ChatAttachAlert.AttachAlertLayout previousLayout)` -> `void`
+- `onShown()` -> `void`
+- `openPhotoViewer(MediaController.PhotoEntry entry, final boolean sameTakePictureOrientation, boolean external)` -> `void`
+- `pauseCamera(boolean pause)` -> `void`
+- `scrollToTop()` -> `void`
+- `setCameraOpenProgress(float value)` -> `void`
+- `setCheckCameraWhenShown(boolean checkCameraWhenShown)` -> `void`
+- `setIncludeVideosInGallery(boolean includeVideosInGallery)` -> `void`
+- `setStarsPrice(long stars)` -> `void`
+- `setTranslationY(float translationY)` -> `void`
+- `showAvatarConstructorFragment(AvatarConstructorPreviewCell view, TLRPC.VideoSize emojiMarkupStrat)` -> `void`
+- `showAvatarConstructorFragment(AvatarConstructorPreviewCell view, TLRPC.VideoSize emojiMarkupStrat, long docId)` -> `void`
+- `showCamera()` -> `void`
+- `toggleLivePhotos(boolean enable)` -> `void`
+- `updateAvatarPicker()` -> `void`
+- `updateCheckedPhotoIndices()` -> `void`
+- `updateCheckedPhotos()` -> `void`
+- `updatePhotosCounter(boolean added)` -> `void`
+- `updateSelected(HashMap<Object, Object> newSelectedPhotos, ArrayList<Object> newPhotosOrder, boolean updateLayout)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertPhotoLayout$BasePhotoProvider`
+- `allowLivePhotos()` -> `boolean`
+- `getPhotoIndex(int index)` -> `int`
+- `getSelectedCount()` -> `int`
+- `getSelectedPhotos()` -> `HashMap<Object, Object>`
+- `getSelectedPhotosOrder()` -> `ArrayList<Object>`
+- `isPhotoChecked(int index)` -> `boolean`
+- `setPhotoChecked(int index, VideoEditedInfo videoEditedInfo)` -> `int`
+- `updatedLivePhotos()` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertPhotoLayout$CameraViewInternal`
+- `dispatchDraw(Canvas canvas)` -> `void`
+- `onAttachedToWindow()` -> `void`
+- `onDetachedFromWindow()` -> `void`
+- `setVisibility(int visibility)` -> `void`
+- `showTexture(boolean show, boolean animated)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertPhotoLayout$CameraViewItemDecoration`
+- `capture(Canvas canvas, RectF position)` -> `void`
+- `captureCalculateHash(IBlur3Hash builder, RectF position)` -> `void`
+- `onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state)` -> `void`
+- `updateBitmap()` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertPhotoLayout$PhotoAttachAdapter`
+- `createCache()` -> `void`
+- `createHolder()` -> `RecyclerListView.Holder`
+- `fastScrollIsVisible(RecyclerListView listView)` -> `boolean`
+- `getItemCount()` -> `int`
+- `getItemViewType(int position)` -> `int`
+- `getLetter(int position)` -> `String`
+- `getPositionForScrollProgress(RecyclerListView listView, float progress, int[] position)` -> `void`
+- `getScrollProgress(RecyclerListView listView)` -> `float`
+- `isEnabled(RecyclerView.ViewHolder holder)` -> `boolean`
+- `isInFastScroll()` -> `boolean`
+- `notifyDataSetChanged()` -> `void`
+- `onBindViewHolder(RecyclerView.ViewHolder holder, int position)` -> `void`
+- `onCreateViewHolder(ViewGroup parent, int viewType)` -> `RecyclerView.ViewHolder`
+- `onFinishFastScroll(RecyclerListView listView)` -> `void`
+- `onStartFastScroll()` -> `void`
+- `onViewAttachedToWindow(RecyclerView.ViewHolder holder)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertPhotoLayoutPreview`
+- `applyCaption(CharSequence text)` -> `void`
+- `dispatchDraw(Canvas canvas)` -> `void`
+- `getCurrentItemTop()` -> `int`
+- `getFirstOffset()` -> `int`
+- `getListTopPadding()` -> `int`
+- `getPreviewScale()` -> `float`
+- `getSelectedItemsCount()` -> `int`
+- `getThemedDrawable(String drawableKey)` -> `Drawable`
+- `invalidateGroupsView()` -> `void`
+- `needsActionBar()` -> `int`
+- `onBackPressed()` -> `boolean`
+- `onHidden()` -> `void`
+- `onHide()` -> `void`
+- `onLayout(boolean changed, int left, int top, int right, int bottom)` -> `void`
+- `onMenuItemClick(int id)` -> `void`
+- `onPreMeasure(int availableWidth, int availableHeight)` -> `void`
+- `onSelectedItemsCountChanged(int count)` -> `void`
+- `onShow(ChatAttachAlert.AttachAlertLayout previousLayout)` -> `void`
+- `requestLayout()` -> `void`
+- `scrollToTop()` -> `void`
+- `startMediaCrossfade()` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertPhotoLayoutPreview$GroupCalculator`
+- `calculate(ArrayList<MediaController.PhotoEntry> photos)` -> `void`
+- `calculate()` -> `void`
+- `getHeight()` -> `float`
+- `getWidth()` -> `int`
+
+## `org.telegram.ui.Components.ChatAttachAlertPhotoLayoutPreview$PreviewGroupsView`
+- `calcPhotoArrays()` -> `void`
+- `dragTranslate()` -> `PointF`
+- `drawChild(Canvas canvas, View child, long drawingTime)` -> `boolean`
+- `fromPhotoArrays()` -> `void`
+- `fromPhotoLayout(ChatAttachAlertPhotoLayout photoLayout)` -> `void`
+- `getPhotos()` -> `ArrayList<MediaController.PhotoEntry>`
+- `getPhotosCount()` -> `int`
+- `invalidate()` -> `void`
+- `isSeen(float fromY, float toY)` -> `boolean`
+- `onDraw(Canvas canvas)` -> `void`
+- `onLayout(boolean b, int i, int i1, int i2, int i3)` -> `void`
+- `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `onScroll()` -> `void`
+- `onTouchEvent(MotionEvent event)` -> `boolean`
+- `remeasure()` -> `void`
+- `startDragging(PreviewGroupCell.MediaCell cell)` -> `void`
+- `stopDragging()` -> `void`
+- `toPhotoLayout(ChatAttachAlertPhotoLayout photoLayout, boolean updateLayout)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertPhotoLayoutPreview$PreviewGroupsView$GroupingPhotoViewerProvider`
+- `getPhotoIndex(int index)` -> `int`
+- `getPlaceForPhoto(MessageObject messageObject, TLRPC.FileLocation fileLocation, int index, boolean needPreview, boolean closing)` -> `PhotoViewer.PlaceProviderObject`
+- `getSelectedCount()` -> `int`
+- `getSelectedPhotos()` -> `HashMap<Object, Object>`
+- `getSelectedPhotosOrder()` -> `ArrayList<Object>`
+- `init(ArrayList<MediaController.PhotoEntry> photos)` -> `void`
+- `isPhotoChecked(int index)` -> `boolean`
+- `onClose()` -> `void`
+- `setPhotoChecked(int index, VideoEditedInfo videoEditedInfo)` -> `int`
+- `setPhotoUnchecked(Object entry)` -> `int`
+- `updatePhotoAtIndex(int index)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertPhotoLayoutPreview$PreviewGroupsView$PreviewGroupCell`
+- `detach()` -> `void`
+- `draw(Canvas canvas)` -> `boolean`
+- `drawStarsButton(Canvas canvas)` -> `void`
+- `getT()` -> `float`
+- `maxHeight()` -> `float`
+- `measure()` -> `float`
+
+## `org.telegram.ui.Components.ChatAttachAlertPhotoLayoutPreview$PreviewGroupsView$PreviewGroupCell$MediaCell`
+- `clone()` -> `MediaCell`
+- `detach()` -> `void`
+- `draw(Canvas canvas)` -> `boolean`
+- `draw(Canvas canvas, boolean ignoreBounds)` -> `boolean`
+- `draw(Canvas canvas, float t, boolean ignoreBounds)` -> `boolean`
+- `drawingRect()` -> `RectF`
+- `getT()` -> `float`
+- `rect()` -> `RectF`
+- `rect(float t)` -> `RectF`
+- `startCrossfade()` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertPollLayout`
+- `didReceivedNotification(int id, int account, Object... args)` -> `void`
+- `static getAllowedLayoutsForIndex(int index)` -> `int`
+- `getButtonsHideOffset()` -> `int`
+- `getCurrentItemTop()` -> `int`
+- `getEmojiPadding()` -> `int`
+- `getFirstOffset()` -> `int`
+- `static getFixedString(CharSequence text)` -> `CharSequence`
+- `getListTopPadding()` -> `int`
+- `static getStartLayoutForMedia(PollAttachedMedia attachedMedia)` -> `int`
+- `getThemeDescriptions()` -> `ArrayList<ThemeDescription>`
+- `hideEmojiView()` -> `void`
+- `isAnimatePopupClosing()` -> `boolean`
+- `isDoneItemEnabled()` -> `boolean`
+- `isPopupShowing()` -> `boolean`
+- `isPopupVisible()` -> `boolean`
+- `isWaitingForKeyboardOpen()` -> `boolean`
+- `needsActionBar()` -> `int`
+- `onBackPressed()` -> `boolean`
+- `onDestroy()` -> `void`
+- `onDismissWithTouchOutside()` -> `boolean`
+- `onHidden()` -> `void`
+- `onHideShowProgress(float progress)` -> `void`
+- `onMenuItemClick(int id)` -> `void`
+- `onPause()` -> `void`
+- `onPollAttachFilePicker(Intent data)` -> `void`
+- `onPreMeasure(int availableWidth, int availableHeight)` -> `void`
+- `onShow(ChatAttachAlert.AttachAlertLayout previousLayout)` -> `void`
+- `onSizeChanged(int height, boolean isWidthGreater)` -> `void`
+- `static openPollAttachMenu(BaseFragment fragment, int layoutToShow, int allowedLayouts, Utilities.Callback<PollAttachedMedia> callback, Runnable onDismiss)` -> `ChatAttachAlert`
+- `scrollToTop()` -> `void`
+- `setDelegate(PollCreateActivityDelegate pollCreateActivityDelegate)` -> `void`
+- `setTranslationY(float translationY)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertPollLayout$ListAdapter`
+- `getItemCount()` -> `int`
+- `getItemViewType(int position)` -> `int`
+- `isEnabled(RecyclerView.ViewHolder holder)` -> `boolean`
+- `onBindViewHolder(RecyclerView.ViewHolder holder, int position)` -> `void`
+- `onCreateViewHolder(ViewGroup parent, int viewType)` -> `RecyclerView.ViewHolder`
+- `onViewAttachedToWindow(RecyclerView.ViewHolder holder)` -> `void`
+- `onViewDetachedFromWindow(RecyclerView.ViewHolder holder)` -> `void`
+- `swapElements(int fromIndex, int toIndex)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertPollLayout$ToggleRow`
+- `setDivider(boolean divider)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachAlertPollLayout$TouchHelperCallback`
+- `clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder)` -> `void`
+- `getMovementFlags(@NonNull RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder)` -> `int`
+- `onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive)` -> `void`
+- `onMove(@NonNull RecyclerView recyclerView, RecyclerView.ViewHolder source, RecyclerView.ViewHolder target)` -> `boolean`
+- `onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState)` -> `void`
+- `onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction)` -> `void`
+
+## `org.telegram.ui.Components.ChatAttachRestrictedLayout`
+- `getCurrentItemTop()` -> `int`
+- `getFirstOffset()` -> `int`
+- `getListTopPadding()` -> `int`
+- `onPreMeasure(int availableWidth, int availableHeight)` -> `void`
+- `setTranslationY(float translationY)` -> `void`
+
+## `org.telegram.ui.Components.chat.ChatActivityBottomViewsVisibilityController`
+- `getCurrentPriorityContainerId()` -> `int`
+- `getVisibility(int containerId)` -> `float`
+- `onForceApplyChanges(ReplaceAnimator<?> animator)` -> `void`
+- `onItemChanged(ReplaceAnimator<?> animator)` -> `void`
+- `setViewVisible(int containerId, boolean isVisible, boolean animated)` -> `void`
+
+## `org.telegram.ui.Components.chat.ChatActivityDraftMessageMeasureController`
+- `filter(View view)` -> `boolean`
+- `filter(MessageObject messageObject)` -> `boolean`
+- `getOverrideMeasureHeight(MessageObject messageObject, int measuredHeight)` -> `int`
+- `onMessageIdChanged(int oldMessageId, int newMessageId, long groupId)` -> `boolean`
+- `onRequestLayout()` -> `void`
+- `onScroll()` -> `void`
+- `setRecyclerView(RecyclerView recyclerView)` -> `void`
+
+## `org.telegram.ui.Components.chat.ChatActivityMessageMetricsView`
+- `finish()` -> `void`
+- `init(int currentAccount, long dialogId, ViewGroup root, ViewGroup list)` -> `void`
+- `onAttachedToWindow()` -> `void`
+- `onDetachedFromWindow()` -> `void`
+- `onDraw(@NonNull Canvas canvas)` -> `void`
+- `onGlobalLayout()` -> `void`
+- `onLayout(boolean changed, int left, int top, int right, int bottom)` -> `void`
+- `onPreDraw()` -> `boolean`
+- `onScrollChanged()` -> `void`
+- `setIsUserActive()` -> `void`
+- `setViewportPadding(float left, float top, float right, float bottom)` -> `void`
+
+## `org.telegram.ui.Components.chat.ChatActivityMessageMetricsView$MessageWatcher`
+- `buildMetrics()` -> `TLRPC.TL_inputMessageReadMetric`
+- `getHeightToViewportRatioPermille()` -> `int`
+- `getSeenRangeRatioPermille()` -> `int`
+
+## `org.telegram.ui.Components.chat.ChatActivitySearchContainer`
+- `onViewAdded(View child)` -> `void`
+- `setFade(int top, int bottom)` -> `void`
+- `setup(BlurredBackgroundDrawableViewFactory factory, BlurredBackgroundColorProvider colorProvider)` -> `void`
+
+## `org.telegram.ui.Components.chat.buttons.ChatActivityBlurredRoundButton`
+- `dispatchDraw(@NonNull Canvas canvas)` -> `void`
+- `draw(@NonNull Canvas canvas)` -> `void`
+- `onFactorChanged(int id, float factor, float fraction, FactorAnimator callee)` -> `void`
+- `onSizeChanged(int w, int h, int oldw, int oldh)` -> `void`
+- `reverseIconByY()` -> `void`
+- `setBlurredBackgroundDrawable(BlurredBackgroundDrawable drawable)` -> `void`
+- `setEnabled(boolean enabled)` -> `void`
+- `setEnabled(boolean enabled, boolean animated)` -> `void`
+- `setIcon(@DrawableRes int resId)` -> `void`
+- `setIcon(@DrawableRes int resId, int size)` -> `void`
+- `setIconColor(int color)` -> `void`
+- `setIconPadding(int paddingTop)` -> `void`
+- `showLoading(boolean loading, boolean animated)` -> `void`
+- `updateColors()` -> `void`
+
+## `org.telegram.ui.Components.chat.buttons.ChatActivityBlurredRoundPageDownButton`
+- `reverseCounter()` -> `void`
+- `reverseIconByY()` -> `void`
+- `setCount(int count, boolean animated)` -> `void`
+- `setEnabled(boolean enabled)` -> `void`
+- `setEnabled(boolean enabled, boolean animated)` -> `void`
+- `showLoading(boolean loading, boolean animated)` -> `void`
+- `updateColors()` -> `void`
+
+## `org.telegram.ui.Components.chat.layouts.ChatActivityActionsButtonsLayout`
+- `getForwardButton()` -> `View`
+- `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `setForwardButtonEnabled(boolean enabled, boolean animated)` -> `void`
+- `setForwardButtonOnClickListener(View.OnClickListener listener)` -> `void`
+- `setReplyButtonEnabled(boolean enabled, boolean animated)` -> `void`
+- `setReplyButtonOnClickListener(View.OnClickListener listener)` -> `void`
+- `setTotalVisibilityFactor(float factor)` -> `void`
+- `showForwardButton(boolean visible, boolean animated)` -> `void`
+- `showReplyButton(boolean visible, boolean animated)` -> `void`
+- `updateColors()` -> `void`
+
+## `org.telegram.ui.Components.chat.layouts.ChatActivityActionsButtonsLayout$ButtonHolder`
+- `onFactorChanged(int id, float factor, float fraction, FactorAnimator callee)` -> `void`
+
+## `org.telegram.ui.Components.chat.layouts.ChatActivityChannelButtonsLayout`
+- `dispatchDraw(@NonNull Canvas canvas)` -> `void`
+- `drawChild(@NonNull Canvas canvas, View child, long drawingTime)` -> `boolean`
+- `getContainer()` -> `FrameLayout`
+- `isButtonVisible(final int buttonId)` -> `boolean`
+- `makeViewWrapContent(View view)` -> `void`
+- `onFactorChangeFinished(int id, float finalFactor, FactorAnimator callee)` -> `void`
+- `onFactorChanged(int id, float factor, float fraction, FactorAnimator callee)` -> `void`
+- `onLayout(boolean changed, int left, int top, int right, int bottom)` -> `void`
+- `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `setAccentColor(int accentColor)` -> `void`
+- `setButtonOnClickListener(int buttonId, View.OnClickListener listener)` -> `void`
+- `setButtonOnFullyVisibleListener(int buttonId, OnButtonFullyVisibleListener listener)` -> `void`
+- `setCenterAccentBackground(boolean accent, boolean animated)` -> `void`
+- `setOnButtonsTotalWidthChanged(OnButtonsTotalWidthChanged onButtonsTotalWidthChanged)` -> `void`
+- `setTotalVisibilityFactor(float factor)` -> `void`
+- `setVisibility(int visibility)` -> `void`
+- `setupDrawableForContainer()` -> `void`
+- `showButton(final int buttonId, boolean show, boolean animated)` -> `void`
+- `updateColors()` -> `void`
+- `updateWrappingVisible(boolean animated)` -> `void`
+
+## `org.telegram.ui.Components.chat.layouts.ChatActivityFadeView`
+- `onDraw(@NonNull Canvas canvas)` -> `void`
+- `onSizeChanged(int w, int h, int oldw, int oldh)` -> `void`
+- `setFadeHeightBottom(int height)` -> `void`
+- `setFadeHeightTop(int height, boolean opacity)` -> `void`
+- `setFadeHeightTop(int height)` -> `void`
+- `setFadeTopAlpha(int alpha)` -> `void`
+- `setFadeZoneBottom(int height)` -> `void`
+- `setFadeZoneTop(int height)` -> `void`
+- `setIgnoreFastWay(boolean ignoreFastWay)` -> `void`
+- `setup(BlurredBackgroundDrawableViewFactory factory)` -> `void`
+- `setup(BlurredBackgroundDrawableViewFactory factory, BlurredBackgroundColorProvider colorProvider)` -> `void`
+- `setupColorKey(int colorKey)` -> `void`
+- `updateColors()` -> `void`
+
+## `org.telegram.ui.Components.chat.layouts.ChatActivitySideControlsButtonsLayout`
+- `getButtonLocationInWindow(final int buttonId, int[] loc)` -> `boolean`
+- `isButtonVisible(final int buttonId)` -> `boolean`
+- `onFactorChanged(int id, float factor, float fraction, FactorAnimator callee)` -> `void`
+- `setButtonCount(final int buttonId, int count, boolean animated)` -> `void`
+- `setButtonEnabled(final int buttonId, boolean enabled, boolean animated)` -> `void`
+- `setButtonLoading(final int buttonId, boolean loading, boolean animated)` -> `void`
+- `setGravity(int gravity)` -> `void`
+- `setOnClickListener(ButtonOnClickListener onClickListener)` -> `void`
+- `setOnLongClickListener(ButtonOnLongClickListener onLongClickListener)` -> `void`
+- `showButton(final int buttonId, boolean show, boolean animated)` -> `void`
+- `updateColors()` -> `void`
+
+## `org.telegram.ui.Delegates.ChatActivityMemberRequestsDelegate`
+- `fillThemeDescriptions(List<ThemeDescription> themeDescriptions)` -> `void`
+- `getView()` -> `View`
+- `getViewHeight()` -> `int`
+- `onBackToScreen()` -> `void`
+- `setDelegate(ChangeVisibilityDelegate delegate)` -> `void`
+- `setLeftMargin(float leftMargin)` -> `void`
+
+## `org.telegram.ui.bots.ChatActivityBotWebViewButton`
+- `draw(Canvas canvas)` -> `void`
+- `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `setBotMenuButton(BotCommandsMenuView menuButton)` -> `void`
+- `setMeasuredButtonWidth(int width)` -> `void`
+- `setProgress(float progress)` -> `void`
+- `setupButtonParams(boolean isActive, String text, int color, int textColor, boolean isProgressVisible)` -> `void`
+
+## `org.telegram.ui.bots.ChatAttachAlertBotWebViewLayout`
+- `didReceivedNotification(int id, int account, Object... args)` -> `void`
+- `disallowSwipeOffsetAnimation()` -> `void`
+- `getButtonsHideOffset()` -> `int`
+- `getCurrentItemTop()` -> `int`
+- `getCustomActionBarBackground()` -> `int`
+- `getCustomBackground()` -> `int`
+- `getFirstOffset()` -> `int`
+- `getListTopPadding()` -> `int`
+- `getStartCommand()` -> `String`
+- `getWebViewContainer()` -> `BotWebViewContainer`
+- `isBotButtonAvailable()` -> `boolean`
+- `needReload()` -> `boolean`
+- `needsActionBar()` -> `int`
+- `onBackPressed()` -> `boolean`
+- `onCheckDismissByUser()` -> `boolean`
+- `onDestroy()` -> `void`
+- `onDismissWithTouchOutside()` -> `boolean`
+- `onHidden()` -> `void`
+- `onHide()` -> `void`
+- `onMeasure(int widthMeasureSpec, int heightMeasureSpec)` -> `void`
+- `onMenuItemClick(int id)` -> `void`
+- `onPanTransitionEnd()` -> `void`
+- `onPanTransitionStart(boolean keyboardVisible, int contentHeight)` -> `void`
+- `onPreMeasure(int availableWidth, int availableHeight)` -> `void`
+- `onShow(ChatAttachAlert.AttachAlertLayout previousLayout)` -> `void`
+- `onShown()` -> `void`
+- `scrollToTop()` -> `void`
+- `setAllowSwipes(boolean allowSwipes)` -> `void`
+- `setCustomActionBarBackground(int customActionBarBackground)` -> `void`
+- `setCustomBackground(int customBackground)` -> `void`
+- `setDelegate(BotWebViewContainer.Delegate delegate)` -> `void`
+- `setMeasureOffsetY(int measureOffsetY)` -> `void`
+- `setNeedCloseConfirmation(boolean needCloseConfirmation)` -> `void`
+- `setTranslationY(float translationY)` -> `void`
+- `showJustAddedBulletin()` -> `void`
+
+## `org.telegram.ui.bots.ChatAttachAlertBotWebViewLayout$WebProgressView`
+- `draw(Canvas canvas)` -> `void`
+- `getThemedColor(int key)` -> `int`
+- `onAttachedToWindow()` -> `void`
+- `onDetachedFromWindow()` -> `void`
+- `setLoadProgress(float loadProgress)` -> `void`
+- `setLoadProgressAnimated(float loadProgress)` -> `void`
+
+## `org.telegram.ui.bots.ChatAttachAlertBotWebViewLayout$WebViewSwipeContainer`
+- `allowThisScroll(boolean x, boolean y)` -> `void`
+- `allowingScroll(boolean x)` -> `boolean`
+- `dispatchDraw(@NonNull Canvas canvas)` -> `void`
+- `dispatchTouchEvent(MotionEvent ev)` -> `boolean`
+- `getOffsetY()` -> `float`
+- `getRenderNode()` -> `Object`
+- `getSwipeOffsetY()` -> `float`
+- `getTopActionBarOffsetY()` -> `float`
+- `invalidateTranslation()` -> `void`
+- `isAllowedSwipes()` -> `boolean`
+- `isFullSize()` -> `boolean`
+- `isSwipeInProgress()` -> `boolean`
+- `onConfigurationChanged(Configuration newConfig)` -> `void`
+- `setAllowFullSizeSwipe(boolean value)` -> `void`
+- `setAllowSwipes(boolean allowSwipes)` -> `void`
+- `setDelegate(Delegate delegate)` -> `void`
+- `setForceOffsetY(float offsetY)` -> `void`
+- `setFullSize(boolean fullsize)` -> `void`
+- `setIsKeyboardVisible(GenericProvider<Void, Boolean> isKeyboardVisible)` -> `void`
+- `setOffsetY(float offsetY)` -> `void`
+- `setScrollEndListener(Runnable scrollEndListener)` -> `void`
+- `setScrollListener(Runnable scrollListener)` -> `void`
+- `setShouldWaitWebViewScroll(boolean value)` -> `void`
+- `setSwipeOffsetAnimationDisallowed(boolean swipeOffsetAnimationDisallowed)` -> `void`
+- `setSwipeOffsetY(float swipeOffsetY)` -> `void`
+- `setTopActionBarOffsetY(float topActionBarOffsetY)` -> `void`
+- `setTranslationY(float translationY)` -> `void`
+- `setWebView(BotWebViewContainer.MyWebView webView)` -> `void`
+- `stickTo(float offset)` -> `void`
+- `stickTo(float offset, Runnable callback)` -> `void`
+- `stickTo(float offset, boolean force, Runnable callback)` -> `void`
+
+## `org.telegram.ui.iv.ChatAttachAlertRichLayout`
+- `didReceivedNotification(int id, int account, Object... args)` -> `void`
+- `disableBottomFade()` -> `boolean`
+- `dispatchKeyEvent(KeyEvent ev)` -> `boolean`
+- `dispatchTouchEvent(MotionEvent ev)` -> `boolean`
+- `getCurrentItemTop()` -> `int`
+- `getFirstOffset()` -> `int`
+- `getListTopPadding()` -> `int`
+- `getTextSelectionHelper()` -> `TextSelectionHelper.ArticleTextSelectionHelper`
+- `needsActionBar()` -> `int`
+- `onAttachedToWindow()` -> `void`
+- `onBackPressed()` -> `boolean`
+- `onDestroy()` -> `void`
+- `onDetachedFromWindow()` -> `void`
+- `onDismiss()` -> `boolean`
+- `onDismissWithTouchOutside()` -> `boolean`
+- `onExternalDocumentPicked(Intent data)` -> `void`
+- `onExternalMediaPicked(Intent data)` -> `void`
+- `onHidden()` -> `void`
+- `onHide()` -> `void`
+- `onPanTransitionEnd()` -> `void`
+- `onPanTransitionStart(boolean keyboardVisible, int contentHeight)` -> `void`
+- `onPreMeasure(int availableWidth, int availableHeight)` -> `void`
+- `onShow(ChatAttachAlert.AttachAlertLayout previousLayout)` -> `void`
+- `scrollToTop()` -> `void`
+- `setTranslationY(float translationY)` -> `void`
+- `static showEditLatexSheet(Context context, String initialSource, Utilities.Callback<String> whenDone, Theme.ResourcesProvider resourcesProvider)` -> `void`
+
+## `org.telegram.ui.recyclerview.ChatListItemAnimator`
+- `animateAdd(RecyclerView.ViewHolder holder)` -> `boolean`
+- `animateAddImpl(final RecyclerView.ViewHolder holder, int addedItemsHeight)` -> `void`
+- `animateAddImpl(RecyclerView.ViewHolder holder)` -> `void`
+- `animateAppearance(@NonNull RecyclerView.ViewHolder viewHolder, @Nullable ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo)` -> `boolean`
+- `animateChangeImpl(final ChangeInfo changeInfo)` -> `void`
+- `animateMove(RecyclerView.ViewHolder holder, ItemHolderInfo info, int fromX, int fromY, int toX, int toY)` -> `boolean`
+- `animateMoveImpl(RecyclerView.ViewHolder holder, MoveInfo moveInfo)` -> `void`
+- `animateMoveImpl(RecyclerView.ViewHolder holder, MoveInfo moveInfo, boolean withThanos)` -> `void`
+- `animateRemove(RecyclerView.ViewHolder holder, ItemHolderInfo info)` -> `boolean`
+- `animateRemoveImpl(final RecyclerView.ViewHolder holder, boolean thanos)` -> `void`
+- `endAnimation(RecyclerView.ViewHolder item)` -> `void`
+- `endAnimations()` -> `void`
+- `endChangeAnimationIfNecessary(ChangeInfo changeInfo, RecyclerView.ViewHolder item)` -> `boolean`
+- `getChangeDuration()` -> `long`
+- `getMoveAnimationDelay()` -> `long`
+- `getMoveDuration()` -> `long`
+- `groupWillChanged(MessageObject.GroupedMessages groupedMessages)` -> `void`
+- `groupWillTransformToSingleMessage(MessageObject.GroupedMessages groupedMessages)` -> `void`
+- `onAllAnimationsDone()` -> `void`
+- `onAnimationStart()` -> `void`
+- `onDestroy()` -> `void`
+- `onGreetingStickerTransition(RecyclerView.ViewHolder holder, ChatGreetingsView greetingsViewContainer)` -> `void`
+- `prepareThanos(RecyclerView.ViewHolder viewHolder)` -> `void`
+- `recordPreLayoutInformation(@NonNull RecyclerView.State state, @NonNull RecyclerView.ViewHolder viewHolder, int changeFlags, @NonNull List<Object> payloads)` -> `ItemHolderInfo`
+- `runOnAnimationEnd(Runnable runnable)` -> `void`
+- `runPendingAnimations()` -> `void`
+- `setReversePositions(boolean reversePositions)` -> `void`
+- `setShouldAnimateEnterFromBottom(boolean shouldAnimateEnterFromBottom)` -> `void`
+- `willAddedFromAlpha(View view)` -> `boolean`
+- `willRemoved(View view)` -> `boolean`
