@@ -171,7 +171,27 @@ final class Tweaks {
                         ((TLRPC.TL_messages_updatePinnedMessage) r).silent = true;
                     }
                     return false;
-                })
+                }),
+                new Tweak("pin_oneside", "Закреплять в личных чатах только у себя",
+                        "В личных чатах закрепление видно только вам, у собеседника сообщение не закрепляется.",
+                        Section.MESSAGES, false, r -> {
+                    if (r instanceof TLRPC.TL_messages_updatePinnedMessage && !((TLRPC.TL_messages_updatePinnedMessage) r).unpin) {
+                        ((TLRPC.TL_messages_updatePinnedMessage) r).pm_oneside = true;
+                    }
+                    return false;
+                }),
+                new Tweak("no_translate", "Не отправлять текст в переводчик Telegram",
+                        "Серверный перевод сообщений отключён: текст не уходит Telegram на перевод.",
+                        Section.PRIVACY, false, r -> r instanceof TLRPC.TL_messages_translateText),
+                new Tweak("no_inline_query", "Без inline-запросов к ботам",
+                        "Ввод «@бот запрос» не отправляет текст боту, пока вы не отправите сообщение сами.",
+                        Section.PRIVACY, false, r -> r instanceof TLRPC.TL_messages_getInlineBotResults),
+                new Tweak("no_top_peers_load", "Не загружать «частые контакты»",
+                        "Приложение не запрашивает список часто используемых контактов у сервера.",
+                        Section.PRIVACY, false, r -> r instanceof TLRPC.TL_contacts_getTopPeers),
+                new Tweak("no_outbox_date", "Не запрашивать дату прочтения",
+                        "Не запрашивает у сервера точное время, когда собеседник прочитал ваше сообщение.",
+                        Section.PRIVACY, false, r -> r instanceof TLRPC.TL_messages_getOutboxReadDate)
         );
     }
 }

@@ -68,6 +68,7 @@
 ## Интерфейс TgYou (плитки)
 Главный экран TgYou и экран «Обновления» — плитки с градиентом, скруглением и анимацией нажатия/появления (`TgYouTile`). Иконки лаунчера получили `<monochrome>`-слой для системных «тематических значков». Статус: скомпилировано, на устройстве не проверено.
 
+
 ## seconds_time и message_info
 `seconds_time` («Время с секундами», раздел интерфейса) заменяет ЧЧ:ММ в пузыре на ЧЧ:ММ:СС через `MESSAGE_TIME`. `message_info` добавляет в меню сообщения «Подробности сообщения» (ID, даты отправки и правки, пересылка) и копирует ID. Статус: скомпилировано, на устройстве не проверено.
 
@@ -75,7 +76,7 @@
 Раздел «Приватность». Снимает флаг `increment` у `messages.getMessagesViews` (просмотры постов каналов не растут) и отбрасывает `stories.incrementStoryViews`. Настройки: «Не считать просмотры постов», «Не считать просмотры историй» (по умолчанию включены). Статус: скомпилировано, на устройстве не проверено.
 
 ## Переключатели отправки и приватности (Tweaks)
-Каждый — отдельный плагин с одним выключателем, правит исходящий запрос через `OUTGOING_REQUEST` (`plugins/Tweaks.java`): `no_link_preview`, `no_telemetry` (по умолчанию вкл.), `protect_sent`, `no_read_mentions`, `silent_send`, `no_webpage_send`, `forward_no_author`, `forward_no_caption`, `keep_draft` (только серверный черновик; поле ввода очищается всегда), `keep_sticker_order`, `big_reactions`, `keep_recent_reactions`, `silent_pin`, `delete_for_all` (удаление всегда «у всех» в личных чатах), `spoiler_photo` (исходящие фото под спойлером; видео и файлы не затрагиваются), `no_cloud_drafts` (черновики только на устройстве), `no_top_peers`, `invert_media` (медиа над текстом), `no_contact_sync`, `no_recent_stickers`, `no_recent_gifs` (не слать `messages.saveGif`), `no_featured_read` (не слать `messages.readFeaturedStickers`). Плагины `allow_screenshots`, `no_views`, `message_tools` и типографика включены по умолчанию. Плюс `message_tools` (меню сообщения: Google, поделиться, цитата, ссылка). Статус: скомпилировано, на устройстве не проверено.
+Каждый — отдельный плагин с одним выключателем, правит исходящий запрос через `OUTGOING_REQUEST` (`plugins/Tweaks.java`): `no_link_preview`, `no_telemetry` (по умолчанию вкл.), `protect_sent`, `no_read_mentions`, `silent_send`, `no_webpage_send`, `forward_no_author`, `forward_no_caption`, `keep_draft` (только серверный черновик; поле ввода очищается всегда), `keep_sticker_order`, `big_reactions`, `keep_recent_reactions`, `silent_pin`, `delete_for_all` (удаление всегда «у всех» в личных чатах), `spoiler_photo` (исходящие фото под спойлером; видео и файлы не затрагиваются), `no_cloud_drafts` (черновики только на устройстве), `no_top_peers`, `invert_media` (медиа над текстом), `no_contact_sync`, `no_recent_stickers`, `no_recent_gifs` (не слать `messages.saveGif`), `no_featured_read` (не слать `messages.readFeaturedStickers`), `pin_oneside` (закрепление в личных чатах только у себя, `pm_oneside`), `no_translate` (не слать `messages.translateText`), `no_inline_query` (не слать `messages.getInlineBotResults`), `no_top_peers_load` (не слать `contacts.getTopPeers`), `no_outbox_date` (не слать `messages.getOutboxReadDate`). Плагины `allow_screenshots`, `no_views`, `message_tools` и типографика включены по умолчанию. Плюс `message_tools` (меню сообщения: Google, поделиться, цитата, ссылка). Статус: скомпилировано, на устройстве не проверено.
 
 ## Whisper через прокси
 Groq отвечает «Access denied» с части сетей. По умолчанию запрос идёт через `https://grzxk.ru/tgyou/groq/` (nginx на сервере проксирует на api.groq.com, ключ передаётся в заголовке и не хранится). Адрес меняется в настройках плагина.
@@ -100,6 +101,8 @@ Groq отвечает «Access denied» с части сетей. По умол�
 ## Экран ввода кода при входе
 
 На экране кода добавлена подсказка (`TgYouLoginHint`): каким способом Telegram отправил код (в приложение / SMS / звонок) и какие способы доступны дальше. Кнопка «Не получили код?» запрашивает повторную отправку; если код ушёл в приложение и других способов нет, запрос всё равно отправляется (сервер может ответить ошибкой SEND_CODE_UNAVAILABLE или выдать почту/SMS). Выбрать способ «почта» клиент не может: его выбирает сервер Telegram (код приходит на почту, только если она привязана для входа, см. https://core.telegram.org/api/auth). Статус: скомпилировано, на устройстве не проверено.
+
+Код не приходил: в `BuildVars` выключены `SAFETYNET_KEY` (пустой ключ → клиент не просит Firebase/Play Integrity SMS: официальный ключ Telegram не работает для чужого пакета `com.tgyou.app`, и сервер обещал SMS, которая не доходила) и `SUPPORTS_PASSKEYS` (работают только для официальных app id). Причина подтверждена только по коду, на устройстве не проверено.
 
 ## Снять запрет копирования (`allow_copy`, раздел «Сообщения»)
 
