@@ -839,6 +839,7 @@ public class FileLoader extends BaseController {
             FileLog.e(new RuntimeException("cant get hash from " + document));
             return null;
         }
+        com.tgyou.core.TgYouSpy.note(fileName, parentObject);
         if (cacheType != 10 && !TextUtils.isEmpty(fileName) && !fileName.contains("" + Integer.MIN_VALUE)) {
             loadOperationPathsUI.put(fileName, new LoadOperationUIObject());
         }

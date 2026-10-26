@@ -19,6 +19,7 @@ import java.util.Locale;
 public class SpyScreen extends TgYouScreen {
 
     private static final int REQUEST_IMPORT = 7301;
+    private static final int REQUEST_EXPORT = 7302;
 
     @Override
     protected String screenTitle() {
@@ -48,7 +49,13 @@ public class SpyScreen extends TgYouScreen {
             TgYouSpy.clearFolder();
             refresh();
         }));
-        info("Папка: Android/data/<приложение>/files/Saved Attachments. Сохраняются документы, фото и видео, которые уже скачаны приложением; стикеры и миниатюры пропускаются.");
+        button("Посмотреть сохранённое", false, () -> presentFragment(new SavedFilesScreen()));
+        button("Удалить все вложения", true, () -> confirm("Удалить все вложения?", "Все сохранённые вложения будут удалены без возможности восстановления.", "Удалить", () -> {
+            TgYouSpy.clearFolder();
+            toast("Вложения удалены");
+            refresh();
+        }));
+        info("Файлы из личных чатов в приоритете: когда папка заполнена, удаляются самые старые (сначала из групп и каналов), чтобы сохранить новые личные. Папка закрыта внутри приложения — её не видно ни в «Загрузках», ни в файловых менеджерах, ни в галерее. Сохраняются документы, фото и видео, которые уже скачаны приложением; стикеры и миниатюры пропускаются.");
         gap();
         tab("Исключения");
         value("Исключения", () -> String.valueOf(TgYouPrefs.list(AntiRecallPlugin.EXCEPTIONS).size()),
@@ -72,13 +79,16 @@ public class SpyScreen extends TgYouScreen {
 
     private void exportDb() {
         try {
-            File dir = ApplicationLoader.applicationContext.getExternalFilesDir(null);
-            if (dir == null) {
-                dir = ApplicationLoader.applicationContext.getFilesDir();
-            }
+            // файл живёт только во внутренней папке приложения; наружу уходит лишь через «Поделиться» по выбору пользователя
+            File dir = new File(ApplicationLoader.applicationContext.getFilesDir(), "cache");
+            dir.mkdirs();
             File target = new File(dir, "tgyou-backup.db");
             TgYouDb.get().exportTo(target);
-            toast("Сохранено: " + target.getAbsolutePath());
+            Intent send = new Intent(Intent.ACTION_SEND);
+            send.setType("application/octet-stream");
+            send.putExtra(Intent.EXTRA_STREAM, androidx.core.content.FileProvider.getUriForFile(ApplicationLoader.applicationContext, ApplicationLoader.getApplicationId() + ".provider", target));
+            send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivityForResult(Intent.createChooser(send, "Бэкап базы TgYou"), REQUEST_EXPORT);
         } catch (Throwable t) {
             toast("Не удалось экспортировать: " + t.getMessage());
         }
