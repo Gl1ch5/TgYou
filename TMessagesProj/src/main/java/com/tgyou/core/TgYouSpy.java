@@ -43,16 +43,118 @@ public final class TgYouSpy implements NotificationCenter.NotificationCenterDele
         });
     }
 
-    public static File folder() {
-        File base = ApplicationLoader.applicationContext.getExternalFilesDir(null);
-        if (base == null) {
-            base = ApplicationLoader.applicationContext.getFilesDir();
+    /** Закрытая папка во внутреннем хранилище приложения: файловые менеджеры, галерея и «Загрузки» её не видят. */
+    /** fileName -> true, если файл грузится из личного чата (вызывается однострочным хуком из FileLoader). */
+    private static final java.util.Map<String, Boolean> SOURCES = java.util.Collections.synchronizedMap(
+            new java.util.LinkedHashMap<String, Boolean>(64, 0.75f, true) {
+                @Override
+                protected boolean removeEldestEntry(java.util.Map.Entry<String, Boolean> eldest) {
+                    return size() > 3000;
+                }
+            });
+
+    public static void note(String fileName, Object parent) {
+        try {
+            if (fileName != null && parent instanceof org.telegram.messenger.MessageObject && TgYouPrefs.bool(SAVE_ATTACHMENTS, false)) {
+                SOURCES.put(fileName, ((org.telegram.messenger.MessageObject) parent).getDialogId() > 0);
+            }
+        } catch (Throwable ignore) {
         }
-        File dir = new File(base, "Saved Attachments");
+    }
+
+    public static final String PRIVATE_PREFIX = "p_";
+
+    /** Сохранённые файлы, новые сверху. */
+    public static java.util.List<File> files() {
+        File[] files = folder().listFiles();
+        java.util.List<File> list = new java.util.ArrayList<>();
+        if (files != null) {
+            java.util.Collections.addAll(list, files);
+        }
+        java.util.Collections.sort(list, (a, b) -> Long.compare(b.lastModified(), a.lastModified()));
+        return list;
+    }
+
+    public static boolean isPrivate(File f) {
+        return f.getName().startsWith(PRIVATE_PREFIX);
+    }
+
+    public static String displayName(File f) {
+        String n = f.getName();
+        return isPrivate(f) ? n.substring(PRIVATE_PREFIX.length()) : n;
+    }
+
+    /** Удаляет самые старые файлы, пока не освободится need байт под лимит; личные удаляются только если allowPrivate. */
+    private static boolean makeRoom(long need, long limit, boolean allowPrivate) {
+        if (limit <= 0) {
+            return true;
+        }
+        java.util.List<File> list = files();
+        long used = usedBytes();
+        for (int pass = 0; pass < 2 && used + need > limit; pass++) {
+            if (pass == 1 && !allowPrivate) {
+                break;
+            }
+            for (int i = list.size() - 1; i >= 0 && used + need > limit; i--) {
+                File f = list.get(i);
+                if (pass == 0 && isPrivate(f)) {
+                    continue;
+                }
+                long len = f.length();
+                if (f.delete()) {
+                    used -= len;
+                }
+            }
+        }
+        return used + need <= limit;
+    }
+
+    public static File folder() {
+        File dir = new File(ApplicationLoader.applicationContext.getFilesDir(), "tgyou_saved");
         if (!dir.exists()) {
             dir.mkdirs();
         }
+        migrateOld(dir);
         return dir;
+    }
+
+    private static boolean migrated;
+
+    /** Переносит файлы из прежней папки (Android/data/…/files/Saved Attachments) во внутреннюю и удаляет её. */
+    private static synchronized void migrateOld(File dir) {
+        if (migrated) {
+            return;
+        }
+        migrated = true;
+        try {
+            File base = ApplicationLoader.applicationContext.getExternalFilesDir(null);
+            if (base == null) {
+                return;
+            }
+            File old = new File(base, "Saved Attachments");
+            File[] files = old.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    File target = new File(dir, f.getName());
+                    if (target.exists() || !f.renameTo(target)) {
+                        if (!target.exists()) {
+                            try (InputStream in = new FileInputStream(f); OutputStream out = new FileOutputStream(target)) {
+                                byte[] buffer = new byte[64 * 1024];
+                                int n;
+                                while ((n = in.read(buffer)) > 0) {
+                                    out.write(buffer, 0, n);
+                                }
+                            }
+                        }
+                        f.delete();
+                    }
+                }
+            }
+            old.delete();
+            new File(base, "tgyou-backup.db").delete();
+        } catch (Throwable t) {
+            FileLog.e("tgyou: migrate saved attachments failed", t);
+        }
     }
 
     public static long usedBytes() {
@@ -107,11 +209,13 @@ public final class TgYouSpy implements NotificationCenter.NotificationCenterDele
             }
             long limit = limitBytes();
             File dir = folder();
-            if (limit > 0 && usedBytes() + file.length() > limit) {
+            boolean priv = Boolean.TRUE.equals(SOURCES.get(name));
+            File target = new File(dir, (priv ? PRIVATE_PREFIX : "") + name);
+            if (target.exists() || new File(dir, PRIVATE_PREFIX + name).exists()) {
                 return;
             }
-            File target = new File(dir, name);
-            if (target.exists()) {
+            // из личных чатов сохраняем всё: старые файлы (сначала из групп) удаляются, пока не освободится место
+            if (!makeRoom(file.length(), limit, priv)) {
                 return;
             }
             try (InputStream in = new FileInputStream(file); OutputStream out = new FileOutputStream(target)) {
@@ -121,6 +225,7 @@ public final class TgYouSpy implements NotificationCenter.NotificationCenterDele
                     out.write(buffer, 0, n);
                 }
             }
+            target.setLastModified(System.currentTimeMillis());
         } catch (Throwable t) {
             FileLog.e("tgyou: save attachment failed", t);
         }
